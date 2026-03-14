@@ -9,7 +9,7 @@ public class DBConnection {
     private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver"; 
     private static final String DB_URL = "jdbc:mysql://localhost:3306/sugar_plant_erp";
     private static final String DB_USER = "root";       // replace with your username
-    private static final String DB_PASSWORD = "Shubham@1234";   // replace with your password
+    private static final String DB_PASSWORD = "root";   // replace with your password
 
     /**
      * Establishes and returns a new database connection.
