@@ -13,7 +13,7 @@ app.controller('LoginController', function($scope) {
         var date = new Date();
         var currentYear = date.getFullYear();
         var currentMonth = date.getMonth(); // 0 is Jan, 9 is Oct
-        
+         
         // Sugar season typically starts in October
         if(currentMonth >= 9) {
             $scope.user.yearCode = currentYear + "-" + (currentYear + 1);
