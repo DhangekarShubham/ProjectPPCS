@@ -9,7 +9,7 @@ public class FactoryInfoDAO {
     // Helper method for DB connection (Update with your DB credentials)
     private Connection getConnection() throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/sugar_factory_db", "root", "root");
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/sugar_plant_erp", "root", "root");
     }
 
     public boolean save(FactoryInfo info) {
