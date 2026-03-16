@@ -93,7 +93,7 @@ public class FactoryInfo implements Serializable {
     public String getFssaiNo() { return fssaiNo; }
     public void setFssaiNo(String fssaiNo) { this.fssaiNo = fssaiNo; }
 
-    public Double getCommissionRate() { return commissionRate; } 
+    public Double getCommissionRate() { return commissionRate; }
     public void setCommissionRate(Double commissionRate) { this.commissionRate = commissionRate; }
 
     public String getDivision() { return division; }
@@ -121,8 +121,4 @@ public class FactoryInfo implements Serializable {
     public String toString() {
         return "FactoryInfo [seasonYear=" + seasonYear + ", factoryName=" + factoryName + ", gstNo=" + gstNo + "]";
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> branch 'master' of https://github.com/DhangekarShubham/ProjectPPCS.git

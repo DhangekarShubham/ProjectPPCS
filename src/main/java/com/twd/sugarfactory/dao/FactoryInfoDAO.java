@@ -12,7 +12,7 @@ public class FactoryInfoDAO {
 
     // Helper to clean ISO Date strings (e.g., "2015-10-31T18:30:00.000Z" -> "2015-10-31")
     private String formatDbDate(String dateStr) {
-        if (dateStr != null && dateStr.contains("T")) { 
+        if (dateStr != null && dateStr.contains("T")) {
             return dateStr.split("T")[0];
         }
         return dateStr;
@@ -139,8 +139,4 @@ public class FactoryInfoDAO {
         ps.setString(i++, info.getChiefChemist());
         ps.setString(i++, info.getLabIncharge());
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> branch 'master' of https://github.com/DhangekarShubham/ProjectPPCS.git
