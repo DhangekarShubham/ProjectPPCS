@@ -3,82 +3,189 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Change Password - Plant Control System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Settings | Sugar ERP</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
     <style>
-        body { background-color: #fdf5e6; }
-        .app-window { border: 2px solid #888; border-radius: 5px; background-color: #fff; margin-top: 20px; box-shadow: 0px 4px 8px rgba(0,0,0,0.2); }
-        .window-header { background-color: #dcdcdc; padding: 5px 15px; font-weight: bold; border-bottom: 1px solid #888; color: #b22222; text-transform: uppercase; }
-        .sidebar-panel { background-color: #d8bfd8; padding: 20px; min-height: 400px; border-right: 2px solid #888; }
-        .main-panel { background-color: #87cefa; padding: 30px; display: flex; align-items: center; justify-content: center; }
-        .action-btn { width: 100%; margin-bottom: 15px; background-color: #f8f9fa; border: 1px solid #999; box-shadow: 1px 1px 3px rgba(0,0,0,0.2); font-weight: bold; color: #333; }
-        .action-btn:hover { background-color: #e2e6ea; }
+        :root {
+            --primary-blue: #2563eb;
+            --sidebar-dark: #1e293b;
+            --bg-light: #f1f5f9;
+            --border-color: #e2e8f0;
+            --text-dark: #1e293b;
+        }
+
+        body { 
+            background-color: var(--bg-light); 
+            font-family: 'Inter', sans-serif; 
+            color: var(--text-dark);
+        }
+
+        /* Unified App Window */
+        .app-window { 
+            background: #ffffff; 
+            border-radius: 12px; 
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            margin-top: 30px;
+            border: none;
+        }
+
+        .window-header { 
+            background-color: #ffffff; 
+            padding: 18px 25px; 
+            font-weight: 700; 
+            border-bottom: 1px solid var(--border-color); 
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+        }
         
-        /* Form Specific Styling */
-        .password-box { background-color: rgba(255,255,255,0.8); border: 1px solid #999; border-radius: 5px; padding: 30px; width: 100%; max-width: 500px; box-shadow: 0px 4px 6px rgba(0,0,0,0.1); }
-        .input-label { font-size: 0.95rem; font-weight: bold; color: #333; }
+        .window-header i { color: var(--primary-blue); margin-right: 12px; }
+
+        /* Dark Industry Sidebar */
+        .sidebar-panel { 
+            background-color: var(--sidebar-dark); 
+            padding: 25px 15px; 
+            min-height: 450px; 
+        }
+
+        .action-btn { 
+            width: 100%; 
+            margin-bottom: 12px; 
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            color: #cbd5e1;
+            text-align: left;
+            padding: 10px 15px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            border-radius: 8px;
+        }
+        
+        .action-btn i { margin-right: 10px; font-size: 1.1rem; }
+
+        .action-btn:hover { 
+            background-color: var(--primary-blue); 
+            color: #ffffff;
+            transform: translateX(5px);
+        }
+
+        /* Centered Security Form */
+        .main-panel { background-color: #ffffff; padding: 40px; }
+
+        .password-card { 
+            background: #ffffff; 
+            border: 1px solid var(--border-color); 
+            border-radius: 12px; 
+            padding: 35px; 
+            width: 100%; 
+            max-width: 550px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        .input-label { 
+            font-size: 0.85rem; 
+            font-weight: 600; 
+            color: #475569; 
+            margin-bottom: 5px;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            padding: 10px 15px;
+            border: 1px solid #d1d5db;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+            border-color: var(--primary-blue);
+        }
+
+        .username-field { background-color: #f8fafc !important; font-weight: 600; color: var(--primary-blue); }
+
+        .security-note { font-size: 0.8rem; color: #64748b; margin-top: 15px; }
     </style>
 </head>
 <body>
     <jsp:include page="includes/navbar.jsp" />
 
-    <div class="container-fluid px-4 mb-5">
-        <a href="dashboard.jsp" class="btn btn-sm btn-outline-dark mt-2">&larr; Back to Dashboard</a>
-        <div class="row app-window mx-2">
-            <div class="window-header">USER SECURITY - CHANGE PASSWORD</div>
-            <div class="row m-0 p-0">
-                
-                <div class="col-md-2 sidebar-panel">
-                    <button type="button" class="btn action-btn mt-2" onclick="submitPasswordForm()">Save</button>
-                    <button type="button" class="btn action-btn" onclick="document.getElementById('pwdForm').reset();">Cancel</button>
-                    <a href="dashboard.jsp" class="btn action-btn mt-5">Close</a>
+    <div class="container px-5">
+        <div class="row app-window">
+            <div class="window-header">
+                <i class="bi bi-shield-lock-fill"></i> USER SECURITY - CREDENTIALS MANAGEMENT
+            </div>
+            
+            <div class="d-flex p-0">
+                <div class="sidebar-panel" style="width: 220px;">
+                    <button type="button" class="btn action-btn" onclick="submitPasswordForm()">
+                        <i class="bi bi-check-circle"></i> Save Changes
+                    </button>
+                    <button type="button" class="btn action-btn" onclick="document.getElementById('pwdForm').reset();">
+                        <i class="bi bi-arrow-counterclockwise"></i> Reset Form
+                    </button>
+                    <a href="dashboard.jsp" class="btn action-btn mt-5 bg-danger text-white border-0">
+                        <i class="bi bi-box-arrow-left"></i> Exit Security
+                    </a>
                 </div>
 
-                <div class="col-md-10 main-panel">
+                <div class="flex-grow-1 main-panel d-flex justify-content-center">
                     
-                    <div class="password-box">
-                        <h5 class="text-center text-primary mb-4 border-bottom pb-2">Update Credentials</h5>
+                    <div class="password-card">
+                        <div class="text-center mb-4">
+                            <div class="icon-circle mb-3 mx-auto bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                <i class="bi bi-key-fill fs-3"></i>
+                            </div>
+                            <h5 class="fw-bold">Update Password</h5>
+                            <p class="text-muted small">Manage your account access and security</p>
+                        </div>
                         
                         <% 
                             String message = (String) request.getAttribute("message");
                             if(message != null) { 
                         %>
-                            <div class="alert alert-info py-2 text-center" role="alert">
-                                <%= message %>
+                            <div class="alert alert-info border-0 rounded-3 small py-2 text-center" role="alert">
+                                <i class="bi bi-info-circle me-2"></i> <%= message %>
                             </div>
                         <% } %>
 
                         <form action="ChangePasswordServlet" method="POST" id="pwdForm">
                             
-                            <div class="row mb-3 align-items-center">
-                                <label class="col-sm-5 text-end input-label">Username :</label>
-                                <div class="col-sm-7">
-                                    <input type="text" class="form-control form-control-sm bg-light" name="username" 
+                            <div class="mb-3">
+                                <label class="input-label">Username</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-person"></i></span>
+                                    <input type="text" class="form-control border-start-0 username-field" name="username" 
                                            value="<%= session.getAttribute("username") != null ? session.getAttribute("username") : "Admin" %>" readonly>
                                 </div>
                             </div>
                             
-                            <hr class="my-3 text-muted">
+                            <hr class="my-4 opacity-50">
 
-                            <div class="row mb-3 align-items-center">
-                                <label class="col-sm-5 text-end input-label">Old Password :</label>
-                                <div class="col-sm-7">
-                                    <input type="password" class="form-control form-control-sm" id="oldPwd" name="oldPassword" required>
-                                </div>
+                            <div class="mb-3">
+                                <label class="input-label">Old Password</label>
+                                <input type="password" class="form-control" id="oldPwd" name="oldPassword" placeholder="••••••••" required>
                             </div>
                             
-                            <div class="row mb-3 align-items-center">
-                                <label class="col-sm-5 text-end input-label">New Password :</label>
-                                <div class="col-sm-7">
-                                    <input type="password" class="form-control form-control-sm" id="newPwd" name="newPassword" required>
-                                </div>
+                            <div class="mb-3">
+                                <label class="input-label">New Password</label>
+                                <input type="password" class="form-control" id="newPwd" name="newPassword" placeholder="••••••••" required>
                             </div>
 
-                            <div class="row mb-3 align-items-center">
-                                <label class="col-sm-5 text-end input-label">Confirm Password :</label>
-                                <div class="col-sm-7">
-                                    <input type="password" class="form-control form-control-sm" id="confirmPwd" name="confirmPassword" required>
-                                </div>
+                            <div class="mb-3">
+                                <label class="input-label">Confirm New Password</label>
+                                <input type="password" class="form-control" id="confirmPwd" name="confirmPassword" placeholder="••••••••" required>
+                            </div>
+                            
+                            <div class="security-note d-flex align-items-start">
+                                <i class="bi bi-exclamation-triangle-fill me-2 text-warning"></i>
+                                <span>Password must be updated periodically for security compliance.</span>
                             </div>
                             
                             <button type="submit" id="hiddenSubmit" style="display: none;"></button>
@@ -98,24 +205,22 @@
             const newPwd = document.getElementById('newPwd').value;
             const confirmPwd = document.getElementById('confirmPwd').value;
 
+            // Simple validations for professional feel
             if (!oldPwd || !newPwd || !confirmPwd) {
-                alert("Please fill in all password fields.");
+                alert("All password fields are required.");
                 return;
             }
 
             if (newPwd !== confirmPwd) {
-                alert("New Password and Confirm Password do not match!");
-                document.getElementById('confirmPwd').focus();
+                alert("Passwords do not match!");
                 return;
             }
             
             if (oldPwd === newPwd) {
-                alert("New Password cannot be the same as the Old Password.");
-                document.getElementById('newPwd').focus();
+                alert("The new password must be different from the current one.");
                 return;
             }
 
-            // If everything is valid, submit the form
             document.getElementById('hiddenSubmit').click();
         }
     </script>

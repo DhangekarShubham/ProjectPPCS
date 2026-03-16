@@ -3,202 +3,304 @@
 <html lang="en" ng-app="weeklyReportApp">
 <head>
     <meta charset="UTF-8">
-    <title>Weekly Manufacturing Report</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Performance Report | Sugar ERP</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="js/reportWeekly.js"></script>
 
     <style>
-        body { background-color: #fdf5e6; }
-        .app-window { border: 2px solid #888; border-radius: 5px; background-color: #fff; margin-top: 20px; box-shadow: 0px 4px 8px rgba(0,0,0,0.2); }
-        .window-header { background-color: #dcdcdc; padding: 5px 15px; font-weight: bold; border-bottom: 1px solid #888; color: #b22222; text-transform: uppercase; }
-        .sidebar-panel { background-color: #d8bfd8; padding: 20px; min-height: 600px; border-right: 2px solid #888; }
-        .main-panel { background-color: #e9ecef; padding: 20px; }
-        .action-btn { width: 100%; margin-bottom: 15px; background-color: #f8f9fa; border: 1px solid #999; box-shadow: 1px 1px 3px rgba(0,0,0,0.2); font-weight: bold; }
-        .action-btn:hover { background-color: #e2e6ea; }
+        :root {
+            --primary-blue: #2563eb;
+            --sidebar-dark: #1e293b;
+            --bg-light: #f1f5f9;
+            --border-color: #e2e8f0;
+            --text-main: #1e293b;
+        }
+
+        body { 
+            background-color: var(--bg-light); 
+            font-family: 'Inter', sans-serif; 
+            color: var(--text-main);
+        }
+
+        /* ERP Layout Window */
+        .app-window { 
+            background: #ffffff; 
+            border-radius: 12px; 
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            margin-top: 20px;
+            border: none;
+        }
+
+        .window-header { 
+            background-color: #ffffff; 
+            padding: 15px 25px; 
+            font-weight: 700; 
+            border-bottom: 1px solid var(--border-color); 
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
         
-        .report-paper { background-color: white; padding: 40px; border: 1px solid #ccc; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); margin: 0 auto; max-width: 950px; }
-        .report-title { text-align: center; font-weight: bold; color: #000; margin-bottom: 5px; font-size: 1.4rem; }
-        .report-subtitle { text-align: center; font-weight: bold; font-size: 1.1rem; margin-bottom: 25px; text-decoration: underline; }
-        .table-report { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        .table-report th { background-color: #f8f9fa !important; border: 1px solid #000; text-align: center; vertical-align: middle; padding: 8px; font-size: 0.95rem; }
-        .table-report td { border: 1px solid #000; padding: 6px 10px; font-size: 0.95rem; }
-        .section-header { background-color: #e9ecef !important; font-weight: bold; text-align: left !important; }
+        .window-header i { color: var(--primary-blue); margin-right: 12px; }
+
+        /* Modern Sidebar */
+        .sidebar-panel { 
+            background-color: var(--sidebar-dark); 
+            padding: 25px 15px; 
+            min-height: 900px; 
+        }
+
+        .action-btn { 
+            width: 100%; 
+            margin-bottom: 10px; 
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            color: #cbd5e1;
+            text-align: left;
+            padding: 12px 15px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            border-radius: 8px;
+            font-size: 0.88rem;
+        }
         
+        .action-btn i { margin-right: 10px; font-size: 1.1rem; }
+
+        .action-btn:hover { 
+            background-color: var(--primary-blue); 
+            color: #ffffff;
+            transform: translateX(5px);
+        }
+
+        /* Search Filter Controls */
+        .filter-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        /* --- Report Paper Styling --- */
+        .report-paper { 
+            background-color: white; 
+            padding: 50px; 
+            border: 1px solid #d1d5db; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
+            margin: 0 auto; 
+            max-width: 950px; 
+            color: #000;
+        }
+
+        .report-header-section { border-bottom: 3px solid #000; margin-bottom: 25px; padding-bottom: 10px; }
+        .report-title { text-align: center; font-weight: 800; font-size: 1.5rem; text-transform: uppercase; margin: 0; }
+        .report-subtitle { text-align: center; font-weight: 700; font-size: 1.1rem; color: #4b5563; }
+
+        /* Performance Table Styling */
+        .table-report { width: 100%; border-collapse: collapse; border: 1.5px solid #000; }
+        .table-report th { 
+            background-color: #f3f4f6 !important; 
+            border: 1px solid #000; 
+            text-align: center; 
+            padding: 8px; 
+            font-size: 0.75rem; 
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+        .table-report td { 
+            border: 1px solid #000; 
+            padding: 8px 12px; 
+            font-size: 0.88rem; 
+            font-family: 'JetBrains Mono', monospace; /* Professional numeric alignment */
+        }
+        
+        .section-header { 
+            background-color: #000 !important; 
+            color: #fff !important; 
+            font-weight: 800 !important; 
+            text-transform: uppercase;
+            font-size: 0.8rem !important;
+            font-family: 'Inter', sans-serif !important;
+        }
+
+        .particulars-col { font-family: 'Inter', sans-serif !important; font-weight: 600; color: #1f2937; }
+
+        /* Signature Lines */
+        .signature-line { border-top: 1.5px solid #000; width: 80%; margin: 80px auto 10px auto; }
+
         @media print {
-            body * { visibility: hidden; }
-            #printableArea, #printableArea * { visibility: visible; }
-            #printableArea { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; border: none; padding: 0; }
+            body { background: white; }
+            .navbar, .sidebar-panel, .filter-card, .btn-sm { display: none !important; }
+            .main-panel { padding: 0; background: white; }
+            .app-window { box-shadow: none; margin: 0; border: none; }
+            .window-header { display: none; }
+            .report-paper { box-shadow: none; border: none; padding: 20px; width: 100%; max-width: 100%; }
         }
     </style>
 </head>
 <body ng-controller="WeeklyReportController">
     <jsp:include page="includes/navbar.jsp" />
 
-    <div class="container-fluid px-4 mb-5">
-        <a href="dashboard.jsp" class="btn btn-sm btn-outline-dark mt-2">&larr; Back to Dashboard</a>
-        <div class="row app-window mx-2">
-            <div class="window-header">WEEKLY MANUFACTURING REPORT</div>
+    <div class="container-fluid px-5 mb-5">
+        <div class="d-flex justify-content-between align-items-center mt-3 mb-1">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 small fw-bold">
+                    <li class="breadcrumb-item"><a href="dashboard.jsp" class="text-decoration-none">Home</a></li>
+                    <li class="breadcrumb-item active text-muted">Weekly Reports</li>
+                    <li class="breadcrumb-item active text-primary">Manufacturing & Performance</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="row app-window">
+            <div class="window-header">
+                <i class="bi bi-calendar-range-fill"></i> WEEKLY MANUFACTURING PERFORMANCE ENGINE
+            </div>
+            
             <div class="row m-0 p-0">
-                
                 <div class="col-md-2 sidebar-panel">
-                    <button type="button" class="btn action-btn mt-2 text-primary" ng-click="printReport()">Print Report</button>
-                    <button type="button" class="btn action-btn text-danger">Export to PDF</button>
-                    <button type="button" class="btn action-btn text-success">Export to Excel</button>
-                    <a href="dashboard.jsp" class="btn action-btn mt-5">Close</a>
+                    <button type="button" class="btn action-btn mt-2 text-white" ng-click="printReport()">
+                        <i class="bi bi-printer-fill text-info"></i> Print Report
+                    </button>
+                    <button type="button" class="btn action-btn">
+                        <i class="bi bi-file-earmark-pdf-fill text-danger"></i> Export PDF
+                    </button>
+                    <button type="button" class="btn action-btn">
+                        <i class="bi bi-file-earmark-excel-fill text-success"></i> Export Excel
+                    </button>
+                    <a href="dashboard.jsp" class="btn action-btn mt-5 bg-danger bg-opacity-10 text-danger border-danger border-opacity-25">
+                        <i class="bi bi-power"></i> Close Engine
+                    </a>
                 </div>
 
-                <div class="col-md-10 main-panel">
+                <div class="col-md-10 main-panel p-4">
                     
-                    <form name="searchForm" class="mb-4 bg-white p-3 border rounded shadow-sm w-75 mx-auto" novalidate>
-                        <div class="row align-items-center justify-content-center">
-                            <label class="col-auto fw-bold text-dark">Week No:</label>
+                    <div class="filter-card shadow-sm mx-auto" style="max-width: 900px;">
+                        <form name="searchForm" class="row g-3 align-items-end justify-content-center" novalidate>
                             <div class="col-auto">
-                                <input type="number" class="form-control form-control-sm border-secondary" ng-model="weekNo" style="width: 80px;" required>
+                                <label class="small fw-bold text-muted text-uppercase mb-1 d-block">Week No.</label>
+                                <input type="number" class="form-control form-control-sm" ng-model="weekNo" style="width: 80px;" required>
                             </div>
-                            <label class="col-auto fw-bold text-dark ms-3">From Date:</label>
                             <div class="col-auto">
-                                <input type="date" class="form-control form-control-sm border-secondary" ng-model="fromDate" required>
+                                <label class="small fw-bold text-muted text-uppercase mb-1 d-block">From Date</label>
+                                <input type="date" class="form-control form-control-sm" ng-model="fromDate" required>
                             </div>
-                            <label class="col-auto fw-bold text-dark ms-2">To Date:</label>
                             <div class="col-auto">
-                                <input type="date" class="form-control form-control-sm border-secondary" ng-model="toDate" required>
+                                <label class="small fw-bold text-muted text-uppercase mb-1 d-block">To Date</label>
+                                <input type="date" class="form-control form-control-sm" ng-model="toDate" required>
                             </div>
-                            <div class="col-auto ms-3">
-                                <button type="button" class="btn btn-sm btn-dark px-4 fw-bold" ng-click="generateReport()">Generate</button>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-sm btn-primary px-4 fw-bold shadow-sm" ng-click="generateReport()">
+                                    <i class="bi bi-gear-wide-connected me-2"></i>GENERATE
+                                </button>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
 
-                    <div id="printableArea" class="report-paper" ng-show="isDataLoaded">
-                        <h3 class="report-title">Shri. Chhatrapati S.S.K. Ltd, Bhavaninagar.</h3>
-                        <h5 class="report-subtitle">Weekly Manufacturing & Performance Report</h5>
+                    <div id="printableArea" class="report-paper shadow" ng-show="isDataLoaded">
+                        <div class="report-header-section text-center">
+                            <h3 class="report-title">Shri. Chhatrapati S.S.K. Ltd, Bhavaninagar.</h3>
+                            <h5 class="report-subtitle">Weekly Manufacturing & Technical Performance Report</h5>
+                        </div>
                         
-                        <div class="row mb-3">
-                            <div class="col-4 fw-bold">Season: {{ report.seasonYear }}</div>
-                            <div class="col-4 fw-bold text-center">Week No: {{ report.weekNo }}</div>
-                            <div class="col-4 fw-bold text-end">Period: {{ displayFromDate }} to {{ displayToDate }}</div>
+                        <div class="row mb-4" style="font-size: 0.9rem; font-weight: bold;">
+                            <div class="col-4">SEASON: {{ report.seasonYear }}</div>
+                            <div class="col-4 text-center">WEEK NO: <span class="text-primary">{{ report.weekNo }}</span></div>
+                            <div class="col-4 text-end">PERIOD: {{ displayFromDate }} TO {{ displayToDate }}</div>
                         </div>
 
-                        <table class="table table-report table-sm">
+                        <table class="table-report">
                             <thead>
                                 <tr>
-                                    <th style="width: 40%;">Particulars</th>
-                                    <th style="width: 30%;">This Week</th>
-                                    <th style="width: 30%;">To-Date (Season)</th>
+                                    <th style="width: 40%; text-align: left;">OPERATIONAL PARTICULARS</th>
+                                    <th class="text-end">THIS WEEK</th>
+                                    <th class="text-end">TO-DATE (SEASON)</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr><td class="section-header" colspan="3">1.0 Throughput & Production Metrics</td></tr>
                                 <tr>
-                                    <td class="section-header" colspan="3">1. Cane Crushing & Sugar Production</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding-left: 20px;">Total Cane Crushed (MT)</td>
-                                    <td class="text-end">{{ report.caneCrushedWeek | number:3 }}</td>
+                                    <td class="particulars-col">Total Cane Crushed (MT)</td>
+                                    <td class="text-end fw-bold">{{ report.caneCrushedWeek | number:3 }}</td>
                                     <td class="text-end">{{ report.caneCrushedTodate | number:3 }}</td>
                                 </tr>
                                 <tr>
-                                    <td style="padding-left: 20px;">Sugar Bagged (Qtls)</td>
-                                    <td class="text-end">{{ report.sugarBaggedWeek | number:2 }}</td>
-                                    <td class="text-end">{{ report.sugarBaggedTodate | number:2 }}</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding-left: 20px;">Sugar in Process (Qtls)</td>
-                                    <td class="text-end">{{ report.sugarInProcessWeek | number:2 }}</td>
-                                    <td class="text-end">{{ report.sugarInProcessTodate | number:2 }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-bold" style="padding-left: 20px;">Total Sugar Made (Qtls)</td>
+                                    <td class="particulars-col">Total Sugar Made (Qtls)</td>
                                     <td class="text-end fw-bold">{{ report.totalSugarMadeWeek | number:2 }}</td>
-                                    <td class="text-end fw-bold">{{ report.totalSugarMadeTodate | number:2 }}</td>
+                                    <td class="text-end">{{ report.totalSugarMadeTodate | number:2 }}</td>
                                 </tr>
-                                <tr>
-                                    <td class="fw-bold text-primary" style="padding-left: 20px;">Recovery % Cane</td>
-                                    <td class="text-end fw-bold text-primary">{{ report.recoveryWeek | number:2 }}</td>
-                                    <td class="text-end fw-bold text-primary">{{ report.recoveryTodate | number:2 }}</td>
+                                <tr class="bg-dark text-white fw-bold">
+                                    <td class="text-white">AVERAGE RECOVERY % CANE</td>
+                                    <td class="text-end text-white">{{ report.recoveryWeek | number:2 }}</td>
+                                    <td class="text-end text-white">{{ report.recoveryTodate | number:2 }}</td>
                                 </tr>
 
+                                <tr><td class="section-header" colspan="3">2.0 Efficiency & Technical Losses (%)</td></tr>
                                 <tr>
-                                    <td class="section-header" colspan="3">2. Time Account & Crushing Rate</td>
+                                    <td class="particulars-col">Reduced Mill Extraction</td>
+                                    <td class="text-end fw-bold">{{ report.redMillExtWeek | number:2 }}</td>
+                                    <td class="text-end">{{ report.redMillExtTodate | number:2 }}</td>
                                 </tr>
                                 <tr>
-                                    <td style="padding-left: 20px;">Total Available Hours</td>
-                                    <td class="text-end">{{ report.availableHrsWeek | number:2 }}</td>
-                                    <td class="text-end">{{ report.availableHrsTodate | number:2 }}</td>
+                                    <td class="particulars-col">Boiling House Extraction</td>
+                                    <td class="text-end fw-bold">{{ report.boilingHouseExtWeek | number:2 }}</td>
+                                    <td class="text-end">{{ report.boilingHouseExtTodate | number:2 }}</td>
+                                </tr>
+                                <tr class="bg-light fw-bold" style="border-top: 2px solid #000;">
+                                    <td>OVERALL EXTRACTION (%)</td>
+                                    <td class="text-end text-primary">{{ report.overallExtWeek | number:2 }}</td>
+                                    <td class="text-end text-primary">{{ report.overallExtTodate | number:2 }}</td>
                                 </tr>
                                 <tr>
-                                    <td style="padding-left: 20px;">Hours Lost (Mech/Elec/Process)</td>
-                                    <td class="text-end">{{ report.lostHrsWeek | number:2 }}</td>
-                                    <td class="text-end">{{ report.lostHrsTodate | number:2 }}</td>
+                                    <td class="particulars-col">Total Sugar Losses % Cane</td>
+                                    <td class="text-end fw-bold text-danger">{{ report.sugarLossesWeek | number:2 }}</td>
+                                    <td class="text-end text-danger">{{ report.sugarLossesTodate | number:2 }}</td>
                                 </tr>
+
+                                <tr><td class="section-header" colspan="3">3.0 Time Account & Crushing Rate</td></tr>
                                 <tr>
-                                    <td style="padding-left: 20px;">Actual Crushing Hours</td>
+                                    <td class="particulars-col">Actual Crushing Hours</td>
                                     <td class="text-end">{{ report.crushingHrsWeek | number:2 }}</td>
                                     <td class="text-end">{{ report.crushingHrsTodate | number:2 }}</td>
                                 </tr>
                                 <tr>
-                                    <td style="padding-left: 20px;">Crushing Rate per 24 Hrs (MT)</td>
-                                    <td class="text-end">{{ report.crushRateWeek | number:2 }}</td>
+                                    <td class="particulars-col">Crushing Rate per 24 Hrs (MT)</td>
+                                    <td class="text-end fw-bold">{{ report.crushRateWeek | number:2 }}</td>
                                     <td class="text-end">{{ report.crushRateTodate | number:2 }}</td>
                                 </tr>
                             </tbody>
                         </table>
-
-                        <table class="table table-report table-sm mt-4">
-                            <thead>
-                                <tr>
-                                    <th style="width: 40%;">Technical Parameters</th>
-                                    <th style="width: 30%;">This Week (%)</th>
-                                    <th style="width: 30%;">To-Date (%)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="section-header" colspan="3">3. Efficiency & Losses</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding-left: 20px;">Mill Extraction</td>
-                                    <td class="text-end">{{ report.millExtWeek | number:2 }}</td>
-                                    <td class="text-end">{{ report.millExtTodate | number:2 }}</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding-left: 20px;">Reduced Mill Extraction</td>
-                                    <td class="text-end">{{ report.redMillExtWeek | number:2 }}</td>
-                                    <td class="text-end">{{ report.redMillExtTodate | number:2 }}</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding-left: 20px;">Boiling House Extraction</td>
-                                    <td class="text-end">{{ report.boilingHouseExtWeek | number:2 }}</td>
-                                    <td class="text-end">{{ report.boilingHouseExtTodate | number:2 }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-bold" style="padding-left: 20px;">Overall Extraction</td>
-                                    <td class="text-end fw-bold">{{ report.overallExtWeek | number:2 }}</td>
-                                    <td class="text-end fw-bold">{{ report.overallExtTodate | number:2 }}</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding-left: 20px;">Total Sugar Losses % Cane</td>
-                                    <td class="text-end">{{ report.sugarLossesWeek | number:2 }}</td>
-                                    <td class="text-end">{{ report.sugarLossesTodate | number:2 }}</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding-left: 20px;">Bagasse % Cane</td>
-                                    <td class="text-end">{{ report.bagassePctWeek | number:2 }}</td>
-                                    <td class="text-end">{{ report.bagassePctTodate | number:2 }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
                         
-                        <div class="row mt-5">
-                            <div class="col-4 text-center fw-bold mt-5">Chief Chemist</div>
-                            <div class="col-4 text-center fw-bold mt-5">Works Manager</div>
-                            <div class="col-4 text-center fw-bold mt-5">Managing Director</div>
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <div class="signature-line"></div>
+                                <span class="small fw-bold">CHIEF CHEMIST</span>
+                            </div>
+                            <div class="col-4">
+                                <div class="signature-line"></div>
+                                <span class="small fw-bold">WORKS MANAGER</span>
+                            </div>
+                            <div class="col-4">
+                                <div class="signature-line"></div>
+                                <span class="small fw-bold">MANAGING DIRECTOR</span>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="alert alert-info w-75 mx-auto text-center shadow-sm" ng-hide="isDataLoaded">
-                        <strong>Info:</strong> Please enter the Week Number and Date Range, then click Generate to view the report.
+                    <div class="alert alert-custom w-75 mx-auto text-center border-0 shadow-sm" ng-hide="isDataLoaded" style="background: #eef2ff; color: #4338ca;">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        <strong>System Notice:</strong> Please enter the target Week Number and date range to compute performance metrics.
                     </div>
 
                 </div>

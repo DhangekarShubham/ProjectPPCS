@@ -3,239 +3,299 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>RT-8(C) Final Manufacturing Report</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RT-8(C) Final Season Report | Sugar ERP</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
     <style>
-        body { background-color: #fdf5e6; }
-        .app-window { border: 2px solid #888; border-radius: 5px; background-color: #fff; margin-top: 20px; box-shadow: 0px 4px 8px rgba(0,0,0,0.2); }
-        .window-header { background-color: #dcdcdc; padding: 5px 15px; font-weight: bold; border-bottom: 1px solid #888; color: #b22222; text-transform: uppercase; }
-        .sidebar-panel { background-color: #d8bfd8; padding: 20px; min-height: 700px; border-right: 2px solid #888; }
-        .main-panel { background-color: #e9ecef; padding: 20px; }
-        .action-btn { width: 100%; margin-bottom: 15px; background-color: #f8f9fa; border: 1px solid #999; box-shadow: 1px 1px 3px rgba(0,0,0,0.2); font-weight: bold; }
-        .action-btn:hover { background-color: #e2e6ea; }
+        :root {
+            --primary-blue: #2563eb;
+            --sidebar-dark: #1e293b;
+            --bg-light: #f1f5f9;
+            --border-color: #e2e8f0;
+            --text-main: #1e293b;
+        }
+
+        body { 
+            background-color: var(--bg-light); 
+            font-family: 'Inter', sans-serif; 
+            color: var(--text-main);
+        }
+
+        /* ERP Layout Window */
+        .app-window { 
+            background: #ffffff; 
+            border: none;
+            border-radius: 12px; 
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            margin-top: 20px;
+        }
+
+        .window-header { 
+            background-color: #ffffff; 
+            padding: 15px 25px; 
+            font-weight: 700; 
+            border-bottom: 1px solid var(--border-color); 
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
         
-        /* Report Specific Styling */
-        .report-paper { background-color: white; padding: 40px; border: 1px solid #ccc; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); margin: 0 auto; max-width: 950px; }
-        .report-title { text-align: center; font-weight: bold; color: #000; margin-bottom: 5px; font-size: 1.3rem; }
-        .report-subtitle { text-align: center; font-weight: bold; font-size: 1.1rem; margin-bottom: 10px; }
-        .excise-header { text-align: center; font-weight: bold; font-size: 1.2rem; margin-bottom: 25px; text-decoration: underline; }
+        .window-header i { color: var(--primary-blue); margin-right: 12px; }
+
+        /* Industry Sidebar */
+        .sidebar-panel { 
+            background-color: var(--sidebar-dark); 
+            padding: 25px 15px; 
+            min-height: 900px; 
+        }
+
+        .action-btn { 
+            width: 100%; 
+            margin-bottom: 10px; 
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            color: #cbd5e1;
+            text-align: left;
+            padding: 12px 15px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            border-radius: 8px;
+            font-size: 0.88rem;
+        }
         
-        .table-report { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
-        .table-report th { background-color: #f8f9fa !important; border: 1px solid #000; text-align: center; vertical-align: middle; padding: 6px; font-size: 0.85rem; }
-        .table-report td { border: 1px solid #000; padding: 4px 8px; font-size: 0.85rem; }
-        .section-header { background-color: #e9ecef !important; font-weight: bold; text-align: left !important; }
+        .action-btn i { margin-right: 10px; font-size: 1.1rem; }
+
+        .action-btn:hover { 
+            background-color: var(--primary-blue); 
+            color: #ffffff;
+            transform: translateX(5px);
+        }
+
+        /* Main Workspace */
+        .main-panel { background-color: var(--bg-light); padding: 30px; }
+
+        /* Filter Controls */
+        .filter-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        /* --- Final Report Paper Styling --- */
+        .report-paper { 
+            background-color: white; 
+            padding: 60px; 
+            border: 1px solid #d1d5db; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
+            margin: 0 auto; 
+            max-width: 1000px; 
+            color: #000;
+        }
+
+        .report-header-box { border-bottom: 3px solid #000; margin-bottom: 25px; padding-bottom: 15px; }
+        .report-title { text-align: center; font-weight: 800; font-size: 1.5rem; text-transform: uppercase; margin: 0; }
+        .report-subtitle { text-align: center; font-weight: 600; font-size: 1.1rem; color: #374151; margin-top: 5px; }
+        .excise-header { text-align: center; font-weight: 900; font-size: 1.3rem; margin: 20px 0; text-decoration: underline; text-underline-offset: 8px; }
+
+        /* Data Tables */
+        .table-report { width: 100%; border-collapse: collapse; border: 1.5px solid #000; margin-bottom: 30px; }
+        .table-report th { 
+            background-color: #f3f4f6 !important; 
+            border: 1px solid #000; 
+            text-align: center; 
+            padding: 10px; 
+            font-size: 0.75rem; 
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+        .table-report td { 
+            border: 1px solid #000; 
+            padding: 8px 12px; 
+            font-size: 0.88rem; 
+            font-family: 'JetBrains Mono', monospace; /* Professional numeric alignment */
+        }
+        
+        .section-header { 
+            background-color: #000 !important; 
+            color: #fff !important; 
+            font-weight: 800 !important; 
+            text-transform: uppercase;
+            font-size: 0.85rem !important;
+            font-family: 'Inter', sans-serif !important;
+        }
+
+        .row-label { font-family: 'Inter', sans-serif !important; font-weight: 600; color: #1f2937; }
+
+        /* Signature Section */
+        .signature-line { border-top: 1.5px solid #000; width: 85%; margin: 80px auto 10px auto; }
         
         @media print {
-            body * { visibility: hidden; }
-            #printableArea, #printableArea * { visibility: visible; }
-            #printableArea { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; border: none; padding: 0; }
+            body { background: white; }
+            .navbar, .sidebar-panel, .filter-card, .btn-outline-dark { display: none !important; }
+            .main-panel { padding: 0; background: white; }
+            .app-window { box-shadow: none; margin: 0; border: none; }
+            .window-header { display: none; }
+            .report-paper { box-shadow: none; border: none; padding: 20px; width: 100%; max-width: 100%; }
         }
     </style>
 </head>
 <body>
     <jsp:include page="includes/navbar.jsp" />
 
-    <div class="container-fluid px-4 mb-5">
-        <a href="dashboard.jsp" class="btn btn-sm btn-outline-dark mt-2">&larr; Back to Dashboard</a>
-        <div class="row app-window mx-2">
-            <div class="window-header">RT-8(C) FINAL REPORT GENERATION</div>
+    <div class="container-fluid px-5 mb-5">
+        <div class="d-flex justify-content-between align-items-center mt-3 mb-1">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 small fw-bold">
+                    <li class="breadcrumb-item"><a href="dashboard.jsp" class="text-decoration-none text-muted">Home</a></li>
+                    <li class="breadcrumb-item active text-muted">Final Reports</li>
+                    <li class="breadcrumb-item active text-primary">Form RT-8(C)</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="row app-window">
+            <div class="window-header">
+                <i class="bi bi-calendar-check-fill"></i> SEASONAL CLOSURE ENGINE - FINAL RT-8(C)
+            </div>
+            
             <div class="row m-0 p-0">
-                
                 <div class="col-md-2 sidebar-panel">
-                    <button type="button" class="btn action-btn mt-2 text-primary" onclick="window.print()">Print Report</button>
-                    <button type="button" class="btn action-btn text-danger">Export to PDF</button>
-                    <button type="button" class="btn action-btn text-success">Export to Excel</button>
-                    <a href="dashboard.jsp" class="btn action-btn mt-5">Close</a>
+                    <button type="button" class="btn action-btn mt-2 text-white" onclick="window.print()">
+                        <i class="bi bi-printer-fill text-info"></i> Print Final Report
+                    </button>
+                    <button type="button" class="btn action-btn">
+                        <i class="bi bi-file-earmark-pdf-fill text-danger"></i> Export PDF
+                    </button>
+                    <button type="button" class="btn action-btn">
+                        <i class="bi bi-file-earmark-excel-fill text-success"></i> Export Excel
+                    </button>
+                    <a href="dashboard.jsp" class="btn action-btn mt-5 bg-danger bg-opacity-10 text-danger border-danger border-opacity-25">
+                        <i class="bi bi-power"></i> Close Engine
+                    </a>
                 </div>
 
                 <div class="col-md-10 main-panel">
                     
-                    <form action="GenerateRT8CServlet" method="GET" class="mb-4 bg-white p-3 border rounded shadow-sm w-75 mx-auto">
-                        <div class="row align-items-center justify-content-center">
-                            <label class="col-auto fw-bold text-dark">Select Season Year:</label>
+                    <div class="filter-card shadow-sm mx-auto" style="max-width: 900px;">
+                        <form action="GenerateRT8CServlet" method="GET" class="row g-3 align-items-end justify-content-center">
                             <div class="col-auto">
-                                <select class="form-select form-select-sm" name="seasonYear" required>
-                                    <option value="2025-2026" selected>2025-2026</option>
-                                    <option value="2024-2025">2024-2025</option>
-                                </select>
+                                <label class="small fw-bold text-muted text-uppercase mb-1 d-block">Select Crushing Season</label>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text bg-white"><i class="bi bi-calendar-range"></i></span>
+                                    <select class="form-select" name="seasonYear" required>
+                                        <option value="2025-2026" selected>2025-2026 (Current)</option>
+                                        <option value="2024-2025">2024-2025</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-auto ms-3">
-                                <button type="submit" class="btn btn-sm btn-dark px-4 fw-bold">Generate</button>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-sm btn-primary px-4 fw-bold shadow-sm">
+                                    <i class="bi bi-gear-wide-connected me-2"></i>GENERATE FINAL DATA
+                                </button>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
 
-                    <div id="printableArea" class="report-paper">
-                        <h3 class="report-title">Shri. Chhatrapati S.S.K. Ltd, Bhavaninagar.</h3>
-                        <h5 class="report-subtitle">Tal. Indapur, Dist. Pune - 413 106</h5>
+                    <div id="printableArea" class="report-paper shadow">
+                        <div class="report-header-box text-center">
+                            <h3 class="report-title">Shri. Chhatrapati S.S.K. Ltd, Bhavaninagar.</h3>
+                            <p class="report-subtitle">Tal. Indapur, Dist. Pune, Maharashtra - 413 106</p>
+                        </div>
+                        
                         <div class="excise-header">FORM R.T. 8 (C) - FINAL MANUFACTURING REPORT</div>
                         
-                        <div class="row mb-3" style="font-size: 0.95rem;">
-                            <div class="col-6"><strong>Season:</strong> 2025-2026</div>
-                            <div class="col-6 text-end"><strong>Date of Report:</strong> 30/04/2026</div>
-                            <div class="col-6"><strong>Plant Capacity:</strong> 3500 TCD</div>
-                            <div class="col-6 text-end"><strong>Total Crushing Days:</strong> 165</div>
+                        <div class="row mb-4" style="font-size: 0.9rem; font-weight: bold;">
+                            <div class="col-6">CRUSHING SEASON: 2025-2026</div>
+                            <div class="col-6 text-end">REPORT DATE: 30-APR-2026</div>
+                            <div class="col-6">PLANT CAPACITY: 3500 TCD</div>
+                            <div class="col-6 text-end">TOTAL OPERATIONAL DAYS: 165</div>
                         </div>
 
-                        <table class="table table-report table-sm">
+                        <table class="table-report">
                             <thead>
+                                <tr><th colspan="3" class="section-header">1.0 Milling & Technical Efficiency Performance</th></tr>
                                 <tr>
-                                    <th colspan="3" class="section-header">1. Milling & Technical Performance</th>
-                                </tr>
-                                <tr>
-                                    <th style="width: 50%;">Particulars</th>
-                                    <th style="width: 25%;">Current Season (2025-26)</th>
-                                    <th style="width: 25%;">Previous Season (2024-25)</th>
+                                    <th style="width: 50%; text-align: left;">Particulars</th>
+                                    <th class="text-end">Current (2025-26)</th>
+                                    <th class="text-end">Previous (2024-25)</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Total Cane Crushed (MT)</td>
-                                    <td class="text-end">575,250.000</td>
-                                    <td class="text-end">540,100.000</td>
-                                </tr>
-                                <tr>
-                                    <td>Average Recovery % Cane</td>
-                                    <td class="text-end">11.45</td>
-                                    <td class="text-end">11.20</td>
-                                </tr>
-                                <tr>
-                                    <td>Added Water % Fiber</td>
-                                    <td class="text-end">235.50</td>
-                                    <td class="text-end">240.10</td>
-                                </tr>
-                                <tr>
-                                    <td>Mixed Juice % Cane</td>
-                                    <td class="text-end">98.50</td>
-                                    <td class="text-end">99.10</td>
-                                </tr>
-                                <tr>
-                                    <td>Mill Extraction %</td>
-                                    <td class="text-end">96.15</td>
-                                    <td class="text-end">95.80</td>
-                                </tr>
-                                <tr>
-                                    <td>Reduced Mill Extraction %</td>
-                                    <td class="text-end">96.50</td>
-                                    <td class="text-end">96.20</td>
-                                </tr>
-                                <tr>
-                                    <td>Overall Extraction %</td>
-                                    <td class="text-end">85.40</td>
-                                    <td class="text-end">84.90</td>
-                                </tr>
-                                <tr>
-                                    <td>Total Sugar Losses % Cane</td>
-                                    <td class="text-end">2.05</td>
-                                    <td class="text-end">2.15</td>
-                                </tr>
+                                <tr><td class="row-label">Total Cane Crushed (MT)</td><td class="text-end fw-bold">575,250.000</td><td class="text-end">540,100.000</td></tr>
+                                <tr><td class="row-label">Average Recovery % Cane</td><td class="text-end fw-bold text-primary">11.45</td><td class="text-end text-muted">11.20</td></tr>
+                                <tr><td class="row-label">Mill Extraction %</td><td class="text-end fw-bold">96.15</td><td class="text-end">95.80</td></tr>
+                                <tr><td class="row-label">Reduced Mill Extraction %</td><td class="text-end fw-bold">96.50</td><td class="text-end">96.20</td></tr>
+                                <tr><td class="row-label">Total Sugar Losses % Cane</td><td class="text-end fw-bold text-danger">2.05</td><td class="text-end">2.15</td></tr>
                             </tbody>
                         </table>
 
-                        <table class="table table-report table-sm">
+                        <table class="table-report">
                             <thead>
+                                <tr><th colspan="3" class="section-header">2.0 Bagasse Energy Balance (MT)</th></tr>
                                 <tr>
-                                    <th colspan="3" class="section-header">2. Bagasse Data Balance (MT)</th>
-                                </tr>
-                                <tr>
-                                    <th style="width: 50%;">Particulars</th>
-                                    <th style="width: 25%;">Current Season</th>
-                                    <th style="width: 25%;">Previous Season</th>
+                                    <th style="width: 50%; text-align: left;">Energy Particulars</th>
+                                    <th class="text-end">Current Season</th>
+                                    <th class="text-end">Previous Season</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Opening Balance at start of season</td>
-                                    <td class="text-end">12,500.000</td>
-                                    <td class="text-end">10,200.000</td>
-                                </tr>
-                                <tr>
-                                    <td>Production of Bagasse during season</td>
-                                    <td class="text-end">161,070.000</td>
-                                    <td class="text-end">151,228.000</td>
-                                </tr>
-                                <tr class="fw-bold bg-light">
-                                    <td>Total Bagasse Available</td>
-                                    <td class="text-end">173,570.000</td>
-                                    <td class="text-end">161,428.000</td>
-                                </tr>
-                                <tr>
-                                    <td>Used as fuel for Sugar Mill Boiler</td>
-                                    <td class="text-end">105,000.000</td>
-                                    <td class="text-end">102,500.000</td>
-                                </tr>
-                                <tr>
-                                    <td>Used as fuel for Co-Generation Unit</td>
-                                    <td class="text-end">45,000.000</td>
-                                    <td class="text-end">40,000.000</td>
-                                </tr>
-                                <tr>
-                                    <td>Used for Vacuum/Oliver filter</td>
-                                    <td class="text-end">1,500.000</td>
-                                    <td class="text-end">1,428.000</td>
-                                </tr>
-                                <tr class="fw-bold bg-light">
-                                    <td>Total Bagasse Used as Fuel/Process</td>
-                                    <td class="text-end">151,500.000</td>
-                                    <td class="text-end">143,928.000</td>
-                                </tr>
-                                <tr class="fw-bold text-success">
-                                    <td>Bagasse Saved / Closing Balance</td>
-                                    <td class="text-end">22,070.000</td>
+                                <tr><td class="row-label">Total Bagasse Produced</td><td class="text-end fw-bold">161,070.000</td><td class="text-end">151,228.000</td></tr>
+                                <tr><td class="row-label">Used for Sugar Mill Boiler</td><td class="text-end">105,000.000</td><td class="text-end">102,500.000</td></tr>
+                                <tr><td class="row-label">Used for Co-Generation Unit</td><td class="text-end">45,000.000</td><td class="text-end">40,000.000</td></tr>
+                                <tr class="bg-light fw-bold" style="border-top: 2px solid #000;">
+                                    <td>NET BAGASSE SAVED (MT)</td>
+                                    <td class="text-end text-success">22,070.000</td>
                                     <td class="text-end">17,500.000</td>
                                 </tr>
                             </tbody>
                         </table>
 
-                        <table class="table table-report table-sm">
+                        <table class="table-report">
                             <thead>
+                                <tr><th colspan="3" class="section-header">3.0 Operational Consumables & Utilities</th></tr>
                                 <tr>
-                                    <th colspan="3" class="section-header">3. Stores Consumption & Utilities</th>
-                                </tr>
-                                <tr>
-                                    <th style="width: 50%;">Particulars</th>
-                                    <th style="width: 25%;">Current Season</th>
-                                    <th style="width: 25%;">Previous Season</th>
+                                    <th style="width: 50%; text-align: left;">Particulars</th>
+                                    <th class="text-end">Current Season</th>
+                                    <th class="text-end">Previous Season</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Lime Consumption % Cane (Process)</td>
-                                    <td class="text-end">0.180</td>
-                                    <td class="text-end">0.185</td>
-                                </tr>
-                                <tr>
-                                    <td>Sulphur Consumption % Cane</td>
-                                    <td class="text-end">0.055</td>
-                                    <td class="text-end">0.060</td>
-                                </tr>
-                                <tr>
-                                    <td>Lubricants: Oils (Litres)</td>
-                                    <td class="text-end">14,250.00</td>
-                                    <td class="text-end">15,100.00</td>
-                                </tr>
-                                <tr>
-                                    <td>Lubricants: Greases (Kg)</td>
-                                    <td class="text-end">4,120.00</td>
-                                    <td class="text-end">4,350.00</td>
-                                </tr>
-                                <tr>
-                                    <td>Total Electricity Generated (KWH)</td>
-                                    <td class="text-end">18,500,000</td>
-                                    <td class="text-end">17,200,000</td>
-                                </tr>
+                                <tr><td class="row-label">Sulphur Consumption % Cane</td><td class="text-end">0.055</td><td class="text-end">0.060</td></tr>
+                                <tr><td class="row-label">Total Electricity Generated (KWH)</td><td class="text-end fw-bold">18,500,000</td><td class="text-end">17,200,000</td></tr>
                             </tbody>
                         </table>
                         
-                        <div class="row mt-5 pt-3">
-                            <div class="col-3 text-center fw-bold mt-5">Chief Chemist<br><span style="font-weight: normal; font-size: 0.85rem;">(Signature)</span></div>
-                            <div class="col-3 text-center fw-bold mt-5">Chief Engineer<br><span style="font-weight: normal; font-size: 0.85rem;">(Signature)</span></div>
-                            <div class="col-3 text-center fw-bold mt-5">Managing Director<br><span style="font-weight: normal; font-size: 0.85rem;">(Signature)</span></div>
-                            <div class="col-3 text-center fw-bold mt-5">Central Excise<br><span style="font-weight: normal; font-size: 0.85rem;">(Signature & Seal)</span></div>
+                        <div class="row text-center" style="margin-top: 60px;">
+                            <div class="col-3">
+                                <div class="signature-line"></div>
+                                <span class="small fw-bold">CHIEF CHEMIST</span>
+                            </div>
+                            <div class="col-3">
+                                <div class="signature-line"></div>
+                                <span class="small fw-bold">CHIEF ENGINEER</span>
+                            </div>
+                            <div class="col-3">
+                                <div class="signature-line"></div>
+                                <span class="small fw-bold">MANAGING DIRECTOR</span>
+                            </div>
+                            <div class="col-3">
+                                <div class="signature-line"></div>
+                                <span class="small fw-bold">CENTRAL EXCISE / GST</span>
+                                <br><span class="text-muted small">(Seal & Signature)</span>
+                            </div>
                         </div>
-                    </div>
-
-                </div>
+                    </div></div>
             </div>
         </div>
     </div>
