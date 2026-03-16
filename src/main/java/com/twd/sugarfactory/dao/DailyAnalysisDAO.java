@@ -4,6 +4,7 @@ import com.twd.sugarfactory.model.DailyDataAnalysis;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class DailyAnalysisDAO {
 
@@ -12,17 +13,29 @@ public class DailyAnalysisDAO {
         return DriverManager.getConnection("jdbc:mysql://localhost:3306/sugar_plant_erp", "root", "root");
     }
 
+    /**
+     * Helper to clean ISO Date strings (e.g., "2026-03-15T18:30:00.000Z" -> "2026-03-15")
+     */
+    private String formatDbDate(String dateStr) {
+        if (dateStr != null && dateStr.contains("T")) {
+            return dateStr.split("T")[0];
+        }
+        return dateStr;
+    }
+
     public boolean saveDailyAnalysis(DailyDataAnalysis data) {
-        // We use a transaction to ensure all related tables update together
         Connection conn = null;
+        // Clean the date once at the start
+        String cleanedDate = formatDbDate(data.getSampleDate());
+
         try {
             conn = getConnection();
             conn.setAutoCommit(false); // Start Transaction
 
-            // 1. Insert into daily_crushing_log (Base Data)
+            // 1. Insert into daily_crushing_log
             String sqlBase = "INSERT INTO daily_crushing_log (sample_date, season_year, member_cane_crushed_mt, non_member_cane_crushed_mt, filter_cake_weight_mt, dirt_correction_pct, recovery_correction_pct, undetermined_losses_pct, condenser_inlet_temp, condenser_outlet_temp) VALUES (?, '2025-2026', ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE member_cane_crushed_mt=VALUES(member_cane_crushed_mt)";
             try (PreparedStatement ps = conn.prepareStatement(sqlBase)) {
-                ps.setString(1, data.getSampleDate());
+                ps.setString(1, cleanedDate); // FIXED
                 ps.setDouble(2, data.getMemberCane() != null ? data.getMemberCane() : 0.0);
                 ps.setDouble(3, data.getNonMemberCane() != null ? data.getNonMemberCane() : 0.0);
                 ps.setDouble(4, data.getFcWeight() != null ? data.getFcWeight() : 0.0);
@@ -37,38 +50,46 @@ public class DailyAnalysisDAO {
             // 2. Insert Time Account
             String sqlTime = "INSERT INTO daily_time_account (sample_date, working_hours, hours_lost_mechanical, hours_lost_electrical) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE working_hours=VALUES(working_hours)";
             try (PreparedStatement ps = conn.prepareStatement(sqlTime)) {
-                ps.setString(1, data.getSampleDate());
+                ps.setString(1, cleanedDate); // FIXED
                 ps.setDouble(2, data.getWorkHours() != null ? data.getWorkHours() : 0.0);
                 ps.setDouble(3, data.getLostMech() != null ? data.getLostMech() : 0.0);
                 ps.setDouble(4, data.getLostElec() != null ? data.getLostElec() : 0.0);
                 ps.executeUpdate();
             }
 
-            // 3. Insert Lab Analysis Details (Example: Primary Juice mapped to material_id 1)
+            // 3. Insert Lab Analysis Details
             String sqlLab = "INSERT INTO daily_lab_analysis_details (sample_date, material_id, brix_pct, pol_pct, purity_pct) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE brix_pct=VALUES(brix_pct), pol_pct=VALUES(pol_pct)";
             try (PreparedStatement ps = conn.prepareStatement(sqlLab)) {
                 // Primary Juice (material_id = 1)
-                ps.setString(1, data.getSampleDate());
+                ps.setString(1, cleanedDate); // FIXED
                 ps.setInt(2, 1);
                 ps.setObject(3, data.getPjBrix());
                 ps.setObject(4, data.getPjPole());
                 ps.setObject(5, data.getPjPurity());
                 ps.executeUpdate();
                 
-                // You would repeat this block or use a batch execution for Mixed Juice(2), Clear Juice(4), etc.
+                // Example of adding Mixed Juice (material_id = 2) if present in your model
+                /*
+                ps.setString(1, cleanedDate);
+                ps.setInt(2, 2);
+                ps.setObject(3, data.getMjBrix());
+                ps.setObject(4, data.getMjPole());
+                ps.setObject(5, data.getMjPurity());
+                ps.executeUpdate();
+                */
             }
 
             conn.commit(); // End Transaction
             return true;
         } catch (Exception e) {
             if (conn != null) {
-                try { conn.rollback(); } catch (Exception ex) { ex.printStackTrace(); }
+                try { conn.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
             }
             e.printStackTrace();
             return false;
         } finally {
             if (conn != null) {
-                try { conn.close(); } catch (Exception e) { e.printStackTrace(); }
+                try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
             }
         }
     }
