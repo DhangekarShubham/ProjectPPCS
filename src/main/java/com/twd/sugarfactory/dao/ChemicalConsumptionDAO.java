@@ -12,7 +12,7 @@ public class ChemicalConsumptionDAO {
 
     private Connection getConnection() throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/sugar_plant_erp", "root", "password");
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/sugar_plant_erp", "root", "root");
     }
 
     /**
