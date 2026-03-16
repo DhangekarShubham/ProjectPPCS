@@ -1,6 +1,10 @@
 package com.twd.sugarfactory.model;
 
-public class FactoryInfo {
+import java.io.Serializable;
+
+public class FactoryInfo implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String seasonYear;
     private String startDate;
     private String startTime;
@@ -29,6 +33,13 @@ public class FactoryInfo {
 
     // Default Constructor
     public FactoryInfo() {}
+
+    // Parameterized Constructor for quick instantiation
+    public FactoryInfo(String seasonYear, String factoryName, String gstNo) {
+        this.seasonYear = seasonYear;
+        this.factoryName = factoryName;
+        this.gstNo = gstNo;
+    }
 
     // Getters and Setters
     public String getSeasonYear() { return seasonYear; }
@@ -82,7 +93,7 @@ public class FactoryInfo {
     public String getFssaiNo() { return fssaiNo; }
     public void setFssaiNo(String fssaiNo) { this.fssaiNo = fssaiNo; }
 
-    public Double getCommissionRate() { return commissionRate; }
+    public Double getCommissionRate() { return commissionRate; } 
     public void setCommissionRate(Double commissionRate) { this.commissionRate = commissionRate; }
 
     public String getDivision() { return division; }
@@ -105,4 +116,9 @@ public class FactoryInfo {
 
     public String getLabIncharge() { return labIncharge; }
     public void setLabIncharge(String labIncharge) { this.labIncharge = labIncharge; }
+
+    @Override
+    public String toString() {
+        return "FactoryInfo [seasonYear=" + seasonYear + ", factoryName=" + factoryName + ", gstNo=" + gstNo + "]";
+    }
 }
