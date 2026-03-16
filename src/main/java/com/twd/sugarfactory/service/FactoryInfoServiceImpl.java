@@ -16,7 +16,7 @@ public class FactoryInfoServiceImpl implements FactoryInfoService {
         }
         return dao.save(info);
     }
-
+ 
     @Override
     public FactoryInfo getFactoryInfo(String seasonYear) {
         return dao.findBySeasonYear(seasonYear);

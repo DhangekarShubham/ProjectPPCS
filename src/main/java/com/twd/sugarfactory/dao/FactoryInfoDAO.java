@@ -139,4 +139,8 @@ public class FactoryInfoDAO {
         ps.setString(i++, info.getChiefChemist());
         ps.setString(i++, info.getLabIncharge());
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> branch 'master' of https://github.com/DhangekarShubham/ProjectPPCS.git

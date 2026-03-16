@@ -121,4 +121,8 @@ public class FactoryInfo implements Serializable {
     public String toString() {
         return "FactoryInfo [seasonYear=" + seasonYear + ", factoryName=" + factoryName + ", gstNo=" + gstNo + "]";
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> branch 'master' of https://github.com/DhangekarShubham/ProjectPPCS.git
