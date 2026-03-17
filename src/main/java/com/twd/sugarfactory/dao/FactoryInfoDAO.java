@@ -60,6 +60,7 @@ public class FactoryInfoDAO {
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, seasonYear);
+            System.out.println(seasonYear);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     info = new FactoryInfo();

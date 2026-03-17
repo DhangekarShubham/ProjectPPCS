@@ -30,6 +30,7 @@ public class FactoryInfoServlet extends HttpServlet {
 
         if ("find".equals(action)) {
             String seasonYear = request.getParameter("seasonYear");
+            System.out.println(seasonYear);
             FactoryInfo info = service.getFactoryInfo(seasonYear);
             if (info != null) {
                 out.print(gson.toJson(info));
