@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
 --
 -- Host: localhost    Database: sugar_plant_erp
 -- ------------------------------------------------------
--- Server version	8.0.44
+-- Server version	8.0.42
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,35 +14,6 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Table structure for table `chemical_consumption_log`
---
-
-DROP TABLE IF EXISTS `chemical_consumption_log`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `chemical_consumption_log` (
-  `consumption_id` int NOT NULL AUTO_INCREMENT,
-  `sample_date` date NOT NULL,
-  `material_id` int NOT NULL,
-  `volume_consumed` decimal(12,3) DEFAULT '0.000',
-  PRIMARY KEY (`consumption_id`),
-  KEY `fk_chem_date` (`sample_date`),
-  KEY `fk_chem_material` (`material_id`),
-  CONSTRAINT `fk_chem_date` FOREIGN KEY (`sample_date`) REFERENCES `daily_crushing_log` (`sample_date`) ON DELETE CASCADE,
-  CONSTRAINT `fk_chem_material` FOREIGN KEY (`material_id`) REFERENCES `material_master` (`material_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `chemical_consumption_log`
---
-
-LOCK TABLES `chemical_consumption_log` WRITE;
-/*!40000 ALTER TABLE `chemical_consumption_log` DISABLE KEYS */;
-/*!40000 ALTER TABLE `chemical_consumption_log` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `daily_analysis_log`
@@ -113,6 +84,7 @@ CREATE TABLE `daily_crushing_log` (
 
 LOCK TABLES `daily_crushing_log` WRITE;
 /*!40000 ALTER TABLE `daily_crushing_log` DISABLE KEYS */;
+INSERT INTO `daily_crushing_log` VALUES ('2025-10-15','2025-2026',1,0.000,0.000,0.000,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,0.00);
 /*!40000 ALTER TABLE `daily_crushing_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -136,7 +108,7 @@ CREATE TABLE `daily_lab_analysis_details` (
   KEY `fk_lab_material` (`material_id`),
   CONSTRAINT `fk_lab_date` FOREIGN KEY (`sample_date`) REFERENCES `daily_crushing_log` (`sample_date`) ON DELETE CASCADE,
   CONSTRAINT `fk_lab_material` FOREIGN KEY (`material_id`) REFERENCES `material_master` (`material_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -145,6 +117,7 @@ CREATE TABLE `daily_lab_analysis_details` (
 
 LOCK TABLES `daily_lab_analysis_details` WRITE;
 /*!40000 ALTER TABLE `daily_lab_analysis_details` DISABLE KEYS */;
+INSERT INTO `daily_lab_analysis_details` VALUES (1,'2025-10-15',1,18.500,15.200,82.160,NULL),(2,'2025-10-15',2,15.100,12.400,82.110,NULL),(3,'2025-10-15',3,2.500,1.800,72.000,NULL),(4,'2025-10-15',4,14.800,12.200,82.430,NULL),(5,'2025-10-15',5,65.200,54.100,82.970,NULL),(6,'2025-10-15',6,92.500,78.400,84.750,NULL),(7,'2025-10-15',7,94.200,68.100,72.290,NULL),(8,'2025-10-15',8,96.100,56.500,58.790,NULL),(9,'2025-10-15',9,88.500,32.100,36.270,NULL),(10,'2025-10-15',10,NULL,2.100,NULL,48.500);
 /*!40000 ALTER TABLE `daily_lab_analysis_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -487,4 +460,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-03-16 16:25:32
+-- Dump completed on 2026-03-17 13:48:23
