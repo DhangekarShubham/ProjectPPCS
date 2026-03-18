@@ -16,6 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `chemical_consumption_log`
+--
+
+DROP TABLE IF EXISTS `chemical_consumption_log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `chemical_consumption_log` (
+  `consumption_id` int NOT NULL AUTO_INCREMENT,
+  `sample_date` date NOT NULL,
+  `material_id` int NOT NULL,
+  `volume_consumed` decimal(12,3) NOT NULL DEFAULT '0.000',
+  PRIMARY KEY (`consumption_id`),
+  UNIQUE KEY `uk_date_material` (`sample_date`,`material_id`),
+  KEY `fk_chem_material_id` (`material_id`),
+  CONSTRAINT `fk_chem_material_id` FOREIGN KEY (`material_id`) REFERENCES `material_master` (`material_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `chemical_consumption_log`
+--
+
+LOCK TABLES `chemical_consumption_log` WRITE;
+/*!40000 ALTER TABLE `chemical_consumption_log` DISABLE KEYS */;
+INSERT INTO `chemical_consumption_log` VALUES (1,'2026-03-17',109,11.000),(2,'2026-03-17',102,11.000),(3,'2026-03-17',107,11.000),(4,'2026-03-17',108,11.000),(5,'2026-03-17',104,11.000),(6,'2026-03-17',100,11.000),(7,'2026-03-17',101,11.000),(8,'2026-03-17',106,11.000),(9,'2026-03-17',103,11.000),(10,'2026-03-17',105,11.000);
+/*!40000 ALTER TABLE `chemical_consumption_log` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `daily_analysis_log`
 --
 
@@ -90,7 +119,7 @@ CREATE TABLE `daily_crushing_log` (
 
 LOCK TABLES `daily_crushing_log` WRITE;
 /*!40000 ALTER TABLE `daily_crushing_log` DISABLE KEYS */;
-INSERT INTO `daily_crushing_log` VALUES ('2025-10-15','2025-2026',1,0.000,0.000,0.000,3500.000,36750.000,10.500,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,94.50,95.10,'08:00 AM',125000.000),('2025-10-16','2025-2026',2,0.000,0.000,0.000,3600.000,38160.000,10.600,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,94.60,95.20,'00:00',128500.000),('2025-10-17','2025-2026',3,0.000,0.000,0.000,3550.000,37985.000,10.700,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,94.75,95.35,'00:00',127000.000),('2025-10-18','2025-2026',4,0.000,0.000,0.000,3400.000,36720.000,10.800,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,94.80,95.40,'00:00',122000.000),('2025-10-19','2025-2026',5,0.000,0.000,0.000,3500.000,38150.000,10.900,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,94.90,95.50,'00:00',126500.000),('2025-10-20','2025-2026',6,0.000,0.000,0.000,3650.000,39785.000,10.900,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,95.00,95.60,'00:00',130000.000),('2025-10-21','2025-2026',7,0.000,0.000,0.000,3700.000,40700.000,11.000,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,95.10,95.70,'00:00',132500.000),('2025-10-22','2025-2026',8,0.000,0.000,0.000,3600.000,39960.000,11.100,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,95.15,95.75,'00:00',129000.000),('2025-10-23','2025-2026',9,0.000,0.000,0.000,3450.000,38295.000,11.100,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,95.20,95.80,'00:00',124000.000),('2025-10-24','2025-2026',10,0.000,0.000,0.000,3500.000,39200.000,11.200,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,95.30,95.90,'00:00',126000.000),('2026-03-18','2025-2026',22,0.000,0.000,0.000,1232.000,121.000,21.000,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,2.00,11.00,'12',222.000);
+INSERT INTO `daily_crushing_log` VALUES ('2024-10-24','2025-2026',NULL,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,0.00,0.00,NULL,0.000),('2025-10-15','2025-2026',NULL,2850.500,650.000,0.000,0.000,0.000,0.000,102.300,32.50,48.20,0,0.000,0,0.000,0,0.000,0.020,0.010,0.120,0.00,0.00,NULL,0.000),('2025-10-16','2025-2026',NULL,2900.000,700.000,0.000,0.000,0.000,0.000,110.450,31.80,47.90,0,0.000,0,0.000,0,0.000,0.021,0.011,0.115,0.00,0.00,NULL,0.000),('2025-10-17','2025-2026',NULL,3100.250,450.000,0.000,0.000,0.000,0.000,115.000,33.10,49.50,0,0.000,0,0.000,0,0.000,0.019,0.010,0.130,0.00,0.00,NULL,0.000),('2025-10-18','2025-2026',NULL,3050.000,550.000,0.000,0.000,0.000,0.000,108.300,32.70,48.80,0,0.000,0,0.000,0,0.000,0.022,0.012,0.125,0.00,0.00,NULL,0.000),('2025-10-19','2025-2026',NULL,2750.000,850.000,0.000,0.000,0.000,0.000,98.600,31.50,46.50,0,0.000,0,0.000,0,0.000,0.020,0.010,0.110,0.00,0.00,NULL,0.000),('2025-10-20','2025-2026',NULL,3200.000,350.000,0.000,0.000,0.000,0.000,120.100,34.20,51.00,0,0.000,0,0.000,0,0.000,0.025,0.015,0.140,0.00,0.00,NULL,0.000),('2025-10-21','2025-2026',NULL,3150.000,480.000,0.000,0.000,0.000,0.000,112.000,32.00,47.50,0,0.000,0,0.000,0,0.000,0.020,0.010,0.122,0.00,0.00,NULL,0.000),('2025-10-22','2025-2026',NULL,3000.500,520.000,0.000,0.000,0.000,0.000,107.500,31.00,46.20,0,0.000,0,0.000,0,0.000,0.021,0.011,0.118,0.00,0.00,NULL,0.000),('2025-10-23','2025-2026',NULL,2920.000,610.000,0.000,0.000,0.000,0.000,104.200,32.50,48.00,0,0.000,0,0.000,0,0.000,0.023,0.013,0.128,0.00,0.00,NULL,0.000),('2025-10-24','2025-2026',NULL,3350.000,250.000,0.000,0.000,0.000,0.000,125.400,33.50,50.10,0,0.000,0,0.000,0,0.000,0.020,0.010,0.135,0.00,0.00,NULL,0.000),('2026-03-17','2025-2026',NULL,NULL,NULL,0.000,0.000,0.000,0.000,NULL,NULL,NULL,0,0.000,0,0.000,0,0.000,NULL,NULL,NULL,0.00,0.00,NULL,0.000),('2026-03-18','2025-2026',22,0.000,0.000,0.000,1232.000,121.000,21.000,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,2.00,11.00,'12',222.000);
 /*!40000 ALTER TABLE `daily_crushing_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -114,7 +143,7 @@ CREATE TABLE `daily_lab_analysis_details` (
   KEY `fk_lab_material` (`material_id`),
   CONSTRAINT `fk_lab_date` FOREIGN KEY (`crush_date`) REFERENCES `daily_crushing_log` (`crush_date`) ON DELETE CASCADE,
   CONSTRAINT `fk_lab_material` FOREIGN KEY (`material_id`) REFERENCES `material_master` (`material_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,6 +152,7 @@ CREATE TABLE `daily_lab_analysis_details` (
 
 LOCK TABLES `daily_lab_analysis_details` WRITE;
 /*!40000 ALTER TABLE `daily_lab_analysis_details` DISABLE KEYS */;
+INSERT INTO `daily_lab_analysis_details` VALUES (11,'2025-10-15',1,18.500,15.200,82.160,NULL),(12,'2025-10-15',2,15.100,12.400,82.110,NULL),(13,'2025-10-15',10,NULL,2.100,NULL,48.500),(14,'2025-10-16',1,18.800,15.500,82.440,NULL),(15,'2025-10-16',2,15.400,12.700,82.460,NULL),(16,'2025-10-16',10,NULL,2.050,NULL,48.200),(17,'2025-10-17',1,19.100,15.900,83.250,NULL),(18,'2025-10-18',1,18.900,15.700,83.070,NULL),(19,'2025-10-19',1,18.400,15.100,82.070,NULL),(20,'2025-10-20',1,19.500,16.300,83.590,NULL),(21,'2025-10-21',1,19.200,16.000,83.330,NULL),(22,'2025-10-22',1,18.700,15.400,82.350,NULL),(23,'2025-10-23',1,18.500,15.100,81.620,NULL),(24,'2025-10-24',1,19.600,16.500,84.180,NULL),(25,'2024-10-24',1,NULL,NULL,NULL,NULL),(26,'2024-10-24',2,NULL,NULL,NULL,NULL),(27,'2024-10-24',4,NULL,NULL,NULL,NULL),(28,'2024-10-24',9,NULL,NULL,NULL,NULL),(29,'2024-10-24',10,NULL,NULL,NULL,NULL),(30,'2026-03-17',1,5.000,5.000,100.000,NULL),(31,'2026-03-17',2,5.000,5.000,100.000,NULL),(32,'2026-03-17',4,5.000,5.000,100.000,NULL),(33,'2026-03-17',9,5.000,5.000,100.000,NULL),(34,'2026-03-17',10,NULL,5.000,NULL,5.000);
 /*!40000 ALTER TABLE `daily_lab_analysis_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -136,12 +166,13 @@ DROP TABLE IF EXISTS `daily_stoppage_log`;
 CREATE TABLE `daily_stoppage_log` (
   `stoppage_id` int NOT NULL AUTO_INCREMENT,
   `stoppage_date` date NOT NULL,
-  `reason_code` varchar(20) NOT NULL,
-  `total_hours` decimal(5,2) DEFAULT NULL,
+  `reason_code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `total_hours` decimal(10,2) DEFAULT '0.00',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`stoppage_id`),
-  KEY `reason_code` (`reason_code`),
-  CONSTRAINT `daily_stoppage_log_ibfk_1` FOREIGN KEY (`reason_code`) REFERENCES `stoppage_reason_master` (`reason_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `fk_stoppage_reason` (`reason_code`),
+  CONSTRAINT `fk_stoppage_reason` FOREIGN KEY (`reason_code`) REFERENCES `stoppage_reason_master` (`reason_code`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -150,6 +181,7 @@ CREATE TABLE `daily_stoppage_log` (
 
 LOCK TABLES `daily_stoppage_log` WRITE;
 /*!40000 ALTER TABLE `daily_stoppage_log` DISABLE KEYS */;
+INSERT INTO `daily_stoppage_log` VALUES (1,'2026-03-18','DEBUG_101',1.50,'2026-03-18 11:33:26'),(2,'2026-03-18','TEST_123',1.50,'2026-03-18 11:43:50');
 /*!40000 ALTER TABLE `daily_stoppage_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -170,7 +202,7 @@ CREATE TABLE `daily_sugar_production` (
   KEY `fk_prod_material` (`material_id`),
   CONSTRAINT `fk_prod_date` FOREIGN KEY (`crush_date`) REFERENCES `daily_crushing_log` (`crush_date`) ON DELETE CASCADE,
   CONSTRAINT `fk_prod_material` FOREIGN KEY (`material_id`) REFERENCES `material_master` (`material_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -179,6 +211,7 @@ CREATE TABLE `daily_sugar_production` (
 
 LOCK TABLES `daily_sugar_production` WRITE;
 /*!40000 ALTER TABLE `daily_sugar_production` DISABLE KEYS */;
+INSERT INTO `daily_sugar_production` VALUES (1,'2025-10-15',50,1200),(2,'2025-10-15',51,800),(3,'2025-10-16',50,1250),(4,'2025-10-16',51,850),(5,'2025-10-17',50,1300),(6,'2025-10-17',51,900),(7,'2025-10-18',50,1280),(8,'2025-10-18',51,880),(9,'2025-10-19',50,1150),(10,'2025-10-19',51,750),(11,'2025-10-20',50,1400),(12,'2025-10-20',51,950),(13,'2025-10-21',50,1350),(14,'2025-10-21',51,920),(15,'2025-10-22',50,1280),(16,'2025-10-22',51,860),(17,'2025-10-23',50,1200),(18,'2025-10-23',51,800),(19,'2025-10-24',50,1450),(20,'2025-10-24',51,1000),(21,'2026-03-17',50,555),(22,'2026-03-17',51,55),(23,'2026-03-17',52,55),(24,'2026-03-17',53,55),(25,'2026-03-17',50,5),(26,'2026-03-17',51,5),(27,'2026-03-17',52,5),(28,'2026-03-17',53,5);
 /*!40000 ALTER TABLE `daily_sugar_production` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -210,6 +243,7 @@ CREATE TABLE `daily_time_account` (
 
 LOCK TABLES `daily_time_account` WRITE;
 /*!40000 ALTER TABLE `daily_time_account` DISABLE KEYS */;
+INSERT INTO `daily_time_account` VALUES ('2024-10-24',0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00),('2025-10-15',22.50,0.00,1.00,0.50,0.00,0.00,0.00,0.00),('2025-10-16',24.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00),('2025-10-17',20.00,0.00,3.50,0.50,0.00,0.00,0.00,0.00),('2025-10-18',23.20,0.00,0.80,0.00,0.00,0.00,0.00,0.00),('2025-10-19',21.50,0.00,2.00,0.50,0.00,0.00,0.00,0.00),('2025-10-20',24.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00),('2025-10-21',23.00,0.00,1.00,0.00,0.00,0.00,0.00,0.00),('2025-10-22',24.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00),('2025-10-23',22.00,0.00,1.50,0.50,0.00,0.00,0.00,0.00),('2025-10-24',24.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00),('2026-03-17',NULL,0.00,NULL,NULL,0.00,0.00,0.00,0.00);
 /*!40000 ALTER TABLE `daily_time_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -320,7 +354,7 @@ CREATE TABLE `material_master` (
   `category` enum('CHEMICAL','IN_PROCESS','SUGAR_GRADE','BY_PRODUCT','FUEL') NOT NULL,
   `unit_of_measure` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`material_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=120 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -329,7 +363,7 @@ CREATE TABLE `material_master` (
 
 LOCK TABLES `material_master` WRITE;
 /*!40000 ALTER TABLE `material_master` DISABLE KEYS */;
-INSERT INTO `material_master` VALUES (1,'Primary Juice','IN_PROCESS','HL'),(2,'Mixed Juice','IN_PROCESS','HL'),(3,'Last Expressed Juice','IN_PROCESS','HL'),(4,'Clear Juice','IN_PROCESS','HL'),(5,'Unsulphured Syrup','IN_PROCESS','HL'),(6,'A-Massecuite','IN_PROCESS','HL'),(7,'B-Massecuite','IN_PROCESS','HL'),(8,'C-Massecuite','IN_PROCESS','HL'),(9,'Final Molasses','BY_PRODUCT','MT'),(10,'Bagasse','BY_PRODUCT','MT'),(11,'Filter Cake','BY_PRODUCT','MT'),(50,'L-30 (50 Kg)','SUGAR_GRADE','Bags'),(51,'M-30 (50 Kg)','SUGAR_GRADE','Bags'),(52,'S1-30 (50 Kg)','SUGAR_GRADE','Bags'),(53,'Raw Sugar (50 Kg)','SUGAR_GRADE','Bags'),(100,'Lime Process','CHEMICAL','Kg'),(101,'Phosphoric Acid','CHEMICAL','Litre'),(102,'Caustic Soda','CHEMICAL','Kg'),(103,'Sulphur','CHEMICAL','Kg');
+INSERT INTO `material_master` VALUES (1,'Primary Juice','IN_PROCESS','HL'),(2,'Mixed Juice','IN_PROCESS','HL'),(3,'Last Expressed Juice','IN_PROCESS','HL'),(4,'Clear Juice','IN_PROCESS','HL'),(5,'Unsulphured Syrup','IN_PROCESS','HL'),(6,'A-Massecuite','IN_PROCESS','HL'),(7,'B-Massecuite','IN_PROCESS','HL'),(8,'C-Massecuite','IN_PROCESS','HL'),(9,'Final Molasses','BY_PRODUCT','MT'),(10,'Bagasse','BY_PRODUCT','MT'),(11,'Filter Cake','BY_PRODUCT','MT'),(50,'L-30 (50 Kg)','SUGAR_GRADE','Bags'),(51,'M-30 (50 Kg)','SUGAR_GRADE','Bags'),(52,'S1-30 (50 Kg)','SUGAR_GRADE','Bags'),(53,'Raw Sugar (50 Kg)','SUGAR_GRADE','Bags'),(100,'Lime Process','CHEMICAL','Kg'),(101,'Phosphoric Acid','CHEMICAL','Litre'),(102,'Caustic Soda','CHEMICAL','Kg'),(103,'Sulphur','CHEMICAL','Kg'),(104,'Lime Powder','CHEMICAL','Kg'),(105,'Sulphur','CHEMICAL','Kg'),(106,'Phosphoric Acid','CHEMICAL','Litre'),(107,'Caustic Soda','CHEMICAL','Kg'),(108,'Flocculant','CHEMICAL','Kg'),(109,'Antiscalant','CHEMICAL','Kg'),(110,'L-30 Sugar (50kg)','SUGAR_GRADE','Bags'),(111,'M-30 Sugar (50kg)','SUGAR_GRADE','Bags'),(112,'S-30 Sugar (50kg)','SUGAR_GRADE','Bags'),(113,'Raw Sugar','SUGAR_GRADE','Bags'),(114,'A-Massecuite','IN_PROCESS','HL'),(115,'B-Massecuite','IN_PROCESS','HL'),(116,'C-Massecuite','IN_PROCESS','HL'),(117,'Final Molasses Stock','IN_PROCESS','MT'),(118,'Clear Juice Stock','IN_PROCESS','HL'),(119,'Syrup Stock','IN_PROCESS','HL');
 /*!40000 ALTER TABLE `material_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -347,11 +381,12 @@ CREATE TABLE `material_stock_log` (
   `quantity_qtls` decimal(12,3) DEFAULT '0.000',
   `volume_hl` decimal(12,3) DEFAULT '0.000',
   PRIMARY KEY (`stock_id`),
+  UNIQUE KEY `uk_crush_material` (`crush_date`,`material_id`),
   KEY `fk_stock_date` (`crush_date`),
   KEY `fk_stock_material` (`material_id`),
   CONSTRAINT `fk_stock_date` FOREIGN KEY (`crush_date`) REFERENCES `daily_crushing_log` (`crush_date`) ON DELETE CASCADE,
   CONSTRAINT `fk_stock_material` FOREIGN KEY (`material_id`) REFERENCES `material_master` (`material_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -360,6 +395,7 @@ CREATE TABLE `material_stock_log` (
 
 LOCK TABLES `material_stock_log` WRITE;
 /*!40000 ALTER TABLE `material_stock_log` DISABLE KEYS */;
+INSERT INTO `material_stock_log` VALUES (1,'2026-03-17',1,11.000,1111.000),(2,'2026-03-17',2,11.000,11.000),(3,'2026-03-17',3,11.000,11.000),(4,'2026-03-17',4,0.010,11.000),(5,'2026-03-17',5,11.000,1.000),(6,'2026-03-17',6,1.000,1.000),(7,'2026-03-17',7,1.000,1.000),(8,'2026-03-17',8,1.000,1.000),(9,'2026-03-17',50,1.000,1.000),(10,'2026-03-17',51,1.000,1.000),(11,'2026-03-17',52,1.000,1.000),(12,'2026-03-17',53,1.000,1.000),(13,'2026-03-17',110,1.000,1.000),(14,'2026-03-17',111,1.000,1.000),(15,'2026-03-17',112,1.000,1.000),(16,'2026-03-17',113,1.000,1.000),(17,'2026-03-17',114,1.000,1.000),(18,'2026-03-17',115,1.000,1.000),(19,'2026-03-17',116,1.000,1.000),(20,'2026-03-17',117,1.000,1.000),(21,'2026-03-17',118,1.000,1.000),(22,'2026-03-17',119,1.000,1.000);
 /*!40000 ALTER TABLE `material_stock_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -406,12 +442,12 @@ DROP TABLE IF EXISTS `stoppage_reason_master`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `stoppage_reason_master` (
-  `reason_code` varchar(20) NOT NULL,
-  `category_code` varchar(50) DEFAULT NULL,
-  `description_eng` varchar(150) DEFAULT NULL,
+  `reason_code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `category_code` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description_eng` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description_mar` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`reason_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -420,7 +456,7 @@ CREATE TABLE `stoppage_reason_master` (
 
 LOCK TABLES `stoppage_reason_master` WRITE;
 /*!40000 ALTER TABLE `stoppage_reason_master` DISABLE KEYS */;
-INSERT INTO `stoppage_reason_master` VALUES ('E01','ELECTRICAL','Power Failure (Grid)','??? ?????? ?????'),('M01','MECHANICAL','Donally Chute Jam','?????? ????? ???'),('P01','PROCESS','Evaporator Cleaning','??????????? ????????');
+INSERT INTO `stoppage_reason_master` VALUES ('DEBUG_101','MECHANICAL','Testing Save','टेस्टिंग सेव्ह'),('E01','ELECTRICAL','Power Failure (Grid)','??? ?????? ?????'),('M01','MECHANICAL','Donally Chute Jam','?????? ????? ???'),('P01','PROCESS','Evaporator Cleaning','??????????? ????????'),('TEST_123','MECHANICAL','Test Save','चाचणी जतन करा');
 /*!40000 ALTER TABLE `stoppage_reason_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -465,4 +501,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-03-18 14:28:38
+-- Dump completed on 2026-03-18 17:17:04
