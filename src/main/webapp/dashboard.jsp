@@ -23,7 +23,10 @@
 <script src="js/factory_information.js"></script>
 <script src="js/dailyCrushing.js"></script>
 <script src="js/dailyAnalysis.js"></script>
-<script>var app = angular.module('sugarErpApp', ['factoryApp', 'crushingApp', 'analysisApp']);</script>
+<script src="js/chemicalConsumption.js"></script>
+<script src="js/materialStock.js"></script>
+<script src="js/stoppageReason.js"></script>
+<script>var app = angular.module('sugarErpApp', ['factoryApp', 'crushingApp', 'analysisApp','chemicalApp','stockApp','stoppageApp']);</script>
 </head>
 <body>
 

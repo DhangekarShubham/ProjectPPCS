@@ -1,72 +1,102 @@
 var app = angular.module('chemicalApp', []);
 
 app.controller('ChemicalController', function($scope, $http) {
-    
+    alert("alert");
     $scope.sampleDate = "";
-    $scope.chemicalList = []; // This array will hold the grid data
+    $scope.chemicalList = [];
 
-    // Initialize the grid with empty chemical names on page load
+    // 1. LOAD BLANK GRID (Fetches Chemical names from Master)
     $scope.loadBlankGrid = function() {
         $http.get('ChemicalServlet?action=load')
         .then(function(response) {
             $scope.chemicalList = response.data;
+        }, function(error) {
+            console.error("Master load failed", error);
         });
     };
     
-    // Call on page load
+    // Initial Load
     $scope.loadBlankGrid();
 
-    // Clear Form (New / Cancel)
+    // 2. CLEAR FORM
     $scope.clearForm = function() {
         $scope.sampleDate = "";
-        $scope.loadBlankGrid(); // Reset grid volumes to blank
+        // Keep the master list but reset volumes
+        angular.forEach($scope.chemicalList, function(chem) {
+            chem.volumeConsumed = null;
+        });
     };
 
-    // Find saved data for a specific date
+    // 3. FIND RECORD
     $scope.findData = function() {
         if (!$scope.sampleDate) {
-            alert("Please select a Sample Date to find data.");
+            alert("Please select a Consumption Date to search.");
             return;
         }
-        $http.get('ChemicalServlet?action=load&sampleDate=' + $scope.sampleDate)
+
+        // Format date to YYYY-MM-DD
+        var formattedDate = $scope.sampleDate;
+        if (formattedDate instanceof Date) {
+            formattedDate = formattedDate.toISOString().split('T')[0];
+        }
+
+        $http.get('ChemicalServlet?action=find&sampleDate=' + formattedDate)
         .then(function(response) {
             if(response.data && response.data.length > 0) {
                  $scope.chemicalList = response.data;
             } else {
-                 alert("No data found for this date.");
+                 alert("No data found for the selected date.");
+                 $scope.clearForm();
+                 $scope.sampleDate = new Date(formattedDate);
             }
+        }, function(error) {
+            alert("Server error while searching.");
         });
     };
 
-    // Save or Update Data
+    // 4. SAVE / UPDATE
     $scope.saveData = function(actionType) {
         if (!$scope.sampleDate) {
-            alert("Please select a Sample Date before saving.");
+            alert("Date is mandatory.");
             return;
         }
 
-        // Attach the selected date to every object in the list before sending to backend
-        angular.forEach($scope.chemicalList, function(chem) {
-            chem.sampleDate = $scope.sampleDate;
-        });
+        var formattedDate = $scope.sampleDate;
+        if (formattedDate instanceof Date) {
+            formattedDate = formattedDate.toISOString().split('T')[0];
+        }
 
-        $http.post('ChemicalServlet?action=' + actionType, $scope.chemicalList)
+        // Prepare data for backend
+        var payload = {
+            sampleDate: formattedDate,
+            consumptions: $scope.chemicalList
+        };
+
+        $http.post('ChemicalServlet?action=' + actionType, payload)
         .then(function(response) {
             alert(response.data.message);
+            if(response.data.status === 'success') {
+                $scope.findData(); // Refresh to show saved state
+            }
         }, function(error) {
             alert("Error communicating with server.");
         });
     };
 
-    // Delete Data
+    // 5. DELETE
     $scope.deleteData = function() {
         if (!$scope.sampleDate) {
             alert("Select a date to delete.");
             return;
         }
         
-        if (confirm("Are you sure you want to delete all chemical consumption data for " + $scope.sampleDate + "?")) {
-            $http.post('ChemicalServlet?action=delete&sampleDate=' + $scope.sampleDate)
+        var formattedDate = $scope.sampleDate;
+        if (formattedDate instanceof Date) {
+            formattedDate = formattedDate.toISOString().split('T')[0];
+        }
+
+        if (confirm("Permanently delete chemical logs for " + formattedDate + "?")) {
+            $http.post('ChemicalServlet?action=delete&sampleDate=' + formattedDate)
             .then(function(response) {
                 alert(response.data.message);
                 if(response.data.status === 'success') {

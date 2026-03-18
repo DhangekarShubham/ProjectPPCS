@@ -32,11 +32,24 @@ public class MaterialStockServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
 
-        if ("load".equals(action)) {
-            List<MaterialStock> list = service.getStockData(sampleDate);
-            out.print(gson.toJson(list));
+        try {
+            // "load" fetches the blank master list
+            // "find" fetches saved data for a specific date
+            if ("load".equals(action) || "find".equals(action)) {
+                List<MaterialStock> list = service.getStockData(sampleDate);
+                if (list != null) {
+                    out.print(gson.toJson(list));
+                } else {
+                    out.print("[]"); // Return empty array to keep Angular happy
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            out.print("{\"status\":\"error\", \"message\":\"Server Error: " + e.getMessage() + "\"}");
+        } finally {
+            out.flush();
         }
-        out.flush();
     }
 
     @Override
@@ -46,36 +59,48 @@ public class MaterialStockServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
 
-        if ("delete".equals(action)) {
-             String sampleDate = request.getParameter("sampleDate");
-             boolean success = service.deleteStockData(sampleDate);
-             out.print(success ? "{\"status\":\"success\", \"message\":\"Deleted Successfully\"}" : "{\"status\":\"error\", \"message\":\"Failed to Delete\"}");
-             out.flush();
-             return;
-        }
-
-        StringBuilder sb = new StringBuilder();
-        BufferedReader reader = request.getReader();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            sb.append(line);
-        }
-
         try {
+            // 1. Handle Delete Logic
+            if ("delete".equals(action)) {
+                 String sampleDate = request.getParameter("sampleDate");
+                 boolean success = service.deleteStockData(sampleDate);
+                 if (success) {
+                     out.print("{\"status\":\"success\", \"message\":\"Stock records deleted successfully.\"}");
+                 } else {
+                     out.print("{\"status\":\"error\", \"message\":\"No records found to delete for this date.\"}");
+                 }
+                 return;
+            }
+
+            // 2. Handle Save/Update Logic (Reading JSON body)
+            StringBuilder sb = new StringBuilder();
+            String line;
+            try (BufferedReader reader = request.getReader()) {
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                }
+            }
+
             if ("save".equals(action) || "update".equals(action)) {
                 Type listType = new TypeToken<List<MaterialStock>>(){}.getType();
                 List<MaterialStock> stockList = gson.fromJson(sb.toString(), listType);
                 
+                if (stockList == null || stockList.isEmpty()) {
+                    out.print("{\"status\":\"error\", \"message\":\"No data received to save.\"}");
+                    return;
+                }
+
                 boolean success = service.saveStockData(stockList);
+                
                 if (success) {
-                    out.print("{\"status\":\"success\", \"message\":\"Stock Data Saved Successfully.\"}");
+                    out.print("{\"status\":\"success\", \"message\":\"Stock data " + action + "d successfully.\"}");
                 } else {
-                    out.print("{\"status\":\"error\", \"message\":\"Failed to Save Data.\"}");
+                    out.print("{\"status\":\"error\", \"message\":\"Failed to " + action + " stock data.\"}");
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
-            out.print("{\"status\":\"error\", \"message\":\"Server Error: " + e.getMessage() + "\"}");
+            out.print("{\"status\":\"error\", \"message\":\"Exception: " + e.getMessage() + "\"}");
         } finally {
             out.flush();
         }

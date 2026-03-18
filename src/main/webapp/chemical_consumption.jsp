@@ -1,243 +1,135 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html lang="en" ng-app="chemicalApp">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chemical Consumption | Sugar ERP</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    <script src="js/chemicalConsumption.js"></script>
 
+<div class="contentpanel" id="chemical-panel" ng-controller="ChemicalController">
+    
     <style>
-        :root {
-            --primary-blue: #2563eb;
-            --sidebar-dark: #1e293b;
-            --bg-light: #f1f5f9;
-            --border-color: #e2e8f0;
-            --text-main: #1e293b;
+        .erp-form-container {
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            margin-bottom: 30px;
         }
-
-        body { 
-            background-color: var(--bg-light); 
-            font-family: 'Inter', sans-serif; 
-            color: var(--text-main);
-            font-size: 0.9rem;
-        }
-
-        /* App Window Styling */
-        .app-window { 
-            background: #ffffff; 
-            border-radius: 12px; 
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            margin-top: 25px;
-            border: none;
-        }
-
-        .window-header { 
-            background-color: #ffffff; 
-            padding: 18px 25px; 
-            font-weight: 700; 
-            border-bottom: 1px solid var(--border-color); 
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-        }
-        
-        .window-header i { color: var(--primary-blue); margin-right: 12px; }
-
-        /* Sidebar Styling */
-        .sidebar-panel { 
-            background-color: var(--sidebar-dark); 
-            padding: 25px 15px; 
-            min-height: 600px; 
-        }
-
-        .action-btn { 
-            width: 100%; 
-            margin-bottom: 12px; 
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            color: #cbd5e1;
-            text-align: left;
-            padding: 10px 15px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            border-radius: 8px;
-        }
-        
-        .action-btn i { margin-right: 10px; font-size: 1.1rem; }
-
-        .action-btn:hover { 
-            background-color: var(--primary-blue); 
-            color: #ffffff;
-            transform: translateX(5px);
-        }
-
-        /* Main Form Panel */
-        .main-panel { background-color: #ffffff; padding: 30px; }
-
-        .date-picker-card {
-            background-color: #f8fafc;
-            padding: 15px 25px;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 25px;
-        }
-
-        /* Table Design */
-        .table-container { 
-            background-color: white; 
-            border: 1px solid var(--border-color); 
-            border-radius: 10px;
-            height: 450px; 
-            overflow-y: auto; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
-        }
-
-        .table thead th { 
-            background-color: #f8fafc; 
-            border-bottom: 2px solid var(--border-color);
-            color: #64748b;
-            font-weight: 700;
+        .erp-form-header {
+            background-color: #3bb4b4; 
+            color: #ffffff; 
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
             text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 0.5px;
-            padding: 12px;
+            border-bottom: 1px solid #33a0a0;
+        }
+        .table-sticky-header {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+        }
+        .table-sticky-header thead th {
             position: sticky;
             top: 0;
+            background-color: #f8fafc;
             z-index: 10;
+            border-bottom: 2px solid #cbd5e1;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #475569;
         }
-
-        .table tbody td { padding: 10px 15px; vertical-align: middle; border-color: #f1f5f9; }
-
-        .chemical-name { font-weight: 600; color: #334155; }
-
         .volume-input {
-            max-width: 150px;
-            border-radius: 6px;
-            border: 1px solid #d1d5db;
             text-align: right;
             font-weight: 600;
-            color: var(--primary-blue);
+            color: #2563eb;
+            border: 1px solid #d1d5db;
         }
-
         .volume-input:focus {
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-            border-color: var(--primary-blue);
+            background-color: #eff6ff;
+            border-color: #3bb4b4;
+            box-shadow: none;
         }
-
-        /* Modern Scrollbar */
-        .table-container::-webkit-scrollbar { width: 8px; }
-        .table-container::-webkit-scrollbar-track { background: #f1f5f9; }
-        .table-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        /* Action Buttons */
+        .btn-erp { font-size: 13px; font-weight: 500; min-width: 100px; }
+        .btn-save { background-color: #6593b4; color: white; border: none; }
+        .btn-find { background-color: #e5a751; color: white; border: none; }
     </style>
-</head>
-<body ng-controller="ChemicalController">
-    <jsp:include page="includes/navbar.jsp" /> 
 
-    <div class="container-fluid px-5">
-        <div class="d-flex justify-content-between align-items-center mt-3 mb-1">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="dashboard.jsp" class="text-decoration-none">Home</a></li>
-                    <li class="breadcrumb-item active">Transaction</li>
-                    <li class="breadcrumb-item active">Chemical Consumption</li>
-                </ol>
-            </nav>
+    <div class="erp-form-container mt-3 mx-2 border">
+        
+        <div class="erp-form-header px-3 py-2">
+            <i class="fa fa-flask me-2"></i> DAILY CHEMICAL CONSUMPTION LOG
         </div>
-
-        <div class="row app-window">
-            <div class="window-header">
-                <i class="bi bi-flask-fill"></i> DAILY CHEMICAL CONSUMPTION LOG
+        
+        <form name="chemForm" class="p-4" novalidate>
+            
+            <div class="row mb-4 align-items-center bg-light p-3 border rounded mx-1 shadow-sm">
+                <label class="col-sm-3 text-end text-muted small fw-bold text-uppercase">Consumption Date:<span class="text-danger">*</span></label>
+                <div class="col-sm-3">
+                    <input type="date" class="form-control form-control-sm border-success" ng-model="sampleDate" required>
+                </div>
+                <div class="col-sm-6 text-end text-muted small">
+                    <span class="badge bg-info bg-opacity-10 text-info px-3 py-2 rounded-pill border border-info border-opacity-25" style="background-color: #f0f9ff; color: #0284c7; border: 1px solid #bae6fd;">
+                        <i class="fa fa-info-circle me-1"></i> Data recorded in Metric Tons (MT)
+                    </span>
+                </div>
             </div>
             
-            <div class="d-flex p-0">
-                <div class="sidebar-panel" style="width: 220px;">
-                    <button type="button" class="btn action-btn mt-2" ng-click="clearForm()">
-                        <i class="bi bi-file-earmark-plus"></i> New
-                    </button>
-                    <button type="button" class="btn action-btn" ng-click="findData()">
-                        <i class="bi bi-search"></i> Find
-                    </button>
-                    <button type="button" class="btn action-btn" ng-click="saveData('update')">
-                        <i class="bi bi-pencil-square"></i> Change
-                    </button>
-                    <button type="button" class="btn action-btn" ng-click="saveData('save')">
-                        <i class="bi bi-floppy-fill"></i> Save
-                    </button>
-                    <button type="button" class="btn action-btn" ng-click="clearForm()">
-                        <i class="bi bi-x-circle"></i> Cancel
-                    </button>
-                    <button type="button" class="btn action-btn" ng-click="deleteData()">
-                        <i class="bi bi-trash"></i> Delete
-                    </button>
+            <div class="row justify-content-center">
+                <div class="col-md-11 col-lg-9">
                     
-                    <a href="dashboard.jsp" class="btn action-btn mt-auto bg-danger bg-opacity-10 text-danger border-danger border-opacity-25">
-                        <i class="bi bi-power"></i> Close Log
-                    </a>
-                </div>
-
-                <div class="flex-grow-1 main-panel">
-                    <form name="chemForm" novalidate>
-                        
-                        <div class="date-picker-card d-flex align-items-center">
-                            <i class="bi bi-calendar-event me-3 text-primary fs-5"></i>
-                            <div style="width: 250px;">
-                                <label class="small fw-bold text-muted mb-1 d-block">Consumption Date</label>
-                                <input type="date" class="form-control form-control-sm" ng-model="sampleDate" required>
-                            </div>
-                            <div class="ms-4 text-muted small">
-                                <i class="bi bi-info-circle me-1"></i> Enter the daily chemical usage volumes below.
-                            </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md-10 col-lg-8">
-                                <div class="table-container">
-                                    <table class="table table-hover mb-0">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 60%;">Chemical / Material Name</th>
-                                                <th style="width: 40%;" class="text-end">Volume Consumed (MT/Kg)</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr ng-repeat="chem in chemicalList">
-                                                <td class="chemical-name">
-                                                    <input type="hidden" ng-model="chem.materialId">
-                                                    {{ chem.materialName }}
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex justify-content-end">
-                                                        <input type="number" step="0.01" 
-                                                               class="form-control form-control-sm volume-input" 
-                                                               ng-model="chem.volumeConsumed" 
-                                                               placeholder="0.00">
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="mt-3 text-muted small">
-                                    <strong>Note:</strong> Volume should be entered in Metric Tons (MT) unless specified otherwise.
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                    <div class="table-sticky-header shadow-sm bg-white">
+                        <table class="table table-hover table-sm table-bordered mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="ps-3 py-2">Chemical / Material Name</th>
+                                    <th class="text-center py-2" style="width: 250px;">Volume Consumed</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="chem in chemicalList">
+                                    <td class="align-middle fw-bold text-secondary small ps-3">
+                                        <i class="fa fa-caret-right text-muted me-2"></i>
+                                        {{ chem.materialName }}
+                                    </td>
+                                    <td class="pe-3 py-1">
+                                        <div class="input-group input-group-sm">
+                                            <input type="number" step="0.001" 
+                                                   class="form-control volume-input" 
+                                                   ng-model="chem.volumeConsumed" 
+                                                   placeholder="0.000">
+                                            <span class="input-group-text bg-light text-muted small" style="font-size: 10px;">{{chem.unitName || 'MT'}}</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr ng-if="chemicalList.length == 0">
+                                    <td colspan="2" class="text-center py-5 text-muted">
+                                        <i class="fa fa-spinner fa-spin me-2"></i> Loading Chemical Master...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <div class="row mt-4 mb-2 bg-light py-3 border-top">
+                <div class="col-12 text-center">
+                    <button type="button" class="btn btn-erp btn-save px-4 me-2" ng-click="saveData('save')" ng-disabled="chemForm.$invalid">
+                        <i class="fa fa-save me-1"></i> Save Data
+                    </button>
+                    <button type="button" class="btn btn-erp btn-light border px-4 me-2" ng-click="clearForm()">
+                        <i class="fa fa-refresh me-1"></i> Reset
+                    </button>
+                    <button type="button" class="btn btn-erp btn-find px-4 me-2" ng-click="findData()">
+                        <i class="fa fa-search me-1"></i> Find Record
+                    </button>
+                    
+                    <button type="button" class="btn btn-erp btn-outline-secondary px-3 ms-2" ng-click="saveData('update')">
+                        <i class="fa fa-edit me-1"></i> Change
+                    </button>
+                    <button type="button" class="btn btn-erp btn-outline-danger px-3 ms-2" ng-click="deleteData()">
+                        <i class="fa fa-trash me-1"></i> Delete
+                    </button>
+                </div>
+            </div>
+
+        </form>
     </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+</div>

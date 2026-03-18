@@ -3,14 +3,11 @@ var app = angular.module('stoppageApp', []);
 app.controller('StoppageController', function($scope, $http) {
     
     $scope.stoppage = {
-        categoryCode: "MECHANICAL" // Default selection
+        categoryCode: "MECHANICAL"
     };
-    
-    $scope.searchStoppageId = "";
 
     $scope.clearForm = function() {
         $scope.stoppage = { categoryCode: "MECHANICAL" };
-        $scope.searchStoppageId = "";
     };
 
     $scope.saveData = function(actionType) {
@@ -19,11 +16,19 @@ app.controller('StoppageController', function($scope, $http) {
             return;
         }
 
-        $http.post('StoppageServlet?action=' + actionType, $scope.stoppage)
+        var formattedDate = $scope.stoppage.stoppageDate;
+        if (formattedDate instanceof Date) {
+            formattedDate = formattedDate.toISOString().split('T')[0];
+        }
+
+        // Create a copy to send with formatted date
+        var payload = angular.copy($scope.stoppage);
+        payload.stoppageDate = formattedDate;
+
+        $http.post('StoppageServlet?action=' + actionType, payload)
         .then(function(response) {
             alert(response.data.message);
             if(response.data.status === 'success') {
-                // Update UI with the auto-generated ID from the server
                 $scope.stoppage.stoppageId = response.data.data.stoppageId;
             }
         }, function(error) {
@@ -32,7 +37,7 @@ app.controller('StoppageController', function($scope, $http) {
     };
 
     $scope.findData = function() {
-        var idToSearch = prompt("Enter Stoppage Number to Find:");
+        var idToSearch = prompt("Enter Stoppage Reference Number to Find:");
         if (!idToSearch) return;
 
         $http.get('StoppageServlet?action=find&stoppageId=' + idToSearch)
@@ -41,18 +46,19 @@ app.controller('StoppageController', function($scope, $http) {
                  alert(response.data.message);
                  $scope.clearForm();
             } else {
+                 // Convert string date back to Date object for the <input type="date">
+                 if (response.data.stoppageDate) {
+                     response.data.stoppageDate = new Date(response.data.stoppageDate);
+                 }
                  $scope.stoppage = response.data;
             }
         });
     };
 
     $scope.deleteData = function() {
-        if (!$scope.stoppage.stoppageId) {
-            alert("Find a record to delete first.");
-            return;
-        }
+        if (!$scope.stoppage.stoppageId) return;
         
-        if (confirm("Are you sure you want to delete Stoppage #" + $scope.stoppage.stoppageId + "?")) {
+        if (confirm("Permanently delete Stoppage Log #" + $scope.stoppage.stoppageId + "?")) {
             $http.post('StoppageServlet?action=delete&stoppageId=' + $scope.stoppage.stoppageId)
             .then(function(response) {
                 alert(response.data.message);

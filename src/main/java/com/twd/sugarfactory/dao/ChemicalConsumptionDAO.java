@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,34 +17,38 @@ public class ChemicalConsumptionDAO {
     }
 
     /**
-     * Fetches the master list of chemicals to populate the UI grid.
-     * If data exists for the given date, it populates the volumes.
+     * Fetches the chemical master list.
+     * If volumes exist for 'sampleDate', they are populated; otherwise, they are null/0.
      */
     public List<ChemicalConsumption> getChemicalList(String sampleDate) {
         List<ChemicalConsumption> list = new ArrayList<>();
-        // Query joins material_master with the daily log (if it exists)
+        // LEFT JOIN ensures we see all chemicals even if no consumption is recorded yet
         String sql = "SELECT m.material_id, m.material_name, c.volume_consumed " +
                      "FROM material_master m " +
                      "LEFT JOIN chemical_consumption_log c ON m.material_id = c.material_id AND c.sample_date = ? " +
-                     "WHERE m.category = 'CHEMICAL' ORDER BY m.material_id";
+                     "WHERE m.category = 'CHEMICAL' ORDER BY m.material_name ASC";
                      
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             
-            ps.setString(1, sampleDate != null ? sampleDate : "1900-01-01"); // Dummy date if new
-            ResultSet rs = ps.executeQuery();
+            // If sampleDate is null (initial load), use an impossible date to return empty volumes
+            ps.setString(1, (sampleDate != null && !sampleDate.isEmpty()) ? sampleDate : "1900-01-01");
             
-            while (rs.next()) {
-                ChemicalConsumption chem = new ChemicalConsumption();
-                chem.setMaterialId(rs.getInt("material_id"));
-                chem.setMaterialName(rs.getString("material_name"));
-                
-                double volume = rs.getDouble("volume_consumed");
-                if (!rs.wasNull()) {
-                    chem.setVolumeConsumed(volume);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    ChemicalConsumption chem = new ChemicalConsumption();
+                    chem.setMaterialId(rs.getInt("material_id"));
+                    chem.setMaterialName(rs.getString("material_name"));
                     chem.setSampleDate(sampleDate);
+                    
+                    double volume = rs.getDouble("volume_consumed");
+                    if (!rs.wasNull()) {
+                        chem.setVolumeConsumed(volume);
+                    } else {
+                        chem.setVolumeConsumed(null); // Keep as null for the UI placeholder
+                    }
+                    list.add(chem);
                 }
-                list.add(chem);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -52,40 +57,48 @@ public class ChemicalConsumptionDAO {
     }
 
     /**
-     * Saves or Updates the consumption log using JDBC Batch Processing.
+     * Saves/Updates consumption using Batch Processing.
+     * Uses Transaction Rollback to ensure data integrity.
      */
     public boolean saveConsumptionLog(List<ChemicalConsumption> chemicalList) {
         String sql = "INSERT INTO chemical_consumption_log (sample_date, material_id, volume_consumed) " +
                      "VALUES (?, ?, ?) " +
                      "ON DUPLICATE KEY UPDATE volume_consumed = VALUES(volume_consumed)";
                      
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            conn.setAutoCommit(false); // Start Transaction
             
-            conn.setAutoCommit(false);
-            
-            for (ChemicalConsumption chem : chemicalList) {
-                // Only save if a volume was actually entered
-                if (chem.getVolumeConsumed() != null && chem.getSampleDate() != null) {
-                    ps.setString(1, chem.getSampleDate());
-                    ps.setInt(2, chem.getMaterialId());
-                    ps.setDouble(3, chem.getVolumeConsumed());
-                    ps.addBatch();
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                for (ChemicalConsumption chem : chemicalList) {
+                    // Only process rows with a valid volume
+                    if (chem.getVolumeConsumed() != null && chem.getSampleDate() != null) {
+                        ps.setString(1, chem.getSampleDate());
+                        ps.setInt(2, chem.getMaterialId());
+                        ps.setDouble(3, chem.getVolumeConsumed());
+                        ps.addBatch();
+                    }
                 }
+                ps.executeBatch();
+                conn.commit(); // Commit all rows at once
+                return true;
             }
-            
-            ps.executeBatch();
-            conn.commit();
-            return true;
-            
         } catch (Exception e) {
+            if (conn != null) {
+                try { conn.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
+            }
             e.printStackTrace();
             return false;
+        } finally {
+            if (conn != null) {
+                try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
+            }
         }
     }
     
     /**
-     * Deletes the consumption log for a specific date.
+     * Deletes chemical log for a date.
      */
     public boolean deleteConsumptionLog(String sampleDate) {
         String sql = "DELETE FROM chemical_consumption_log WHERE sample_date = ?";

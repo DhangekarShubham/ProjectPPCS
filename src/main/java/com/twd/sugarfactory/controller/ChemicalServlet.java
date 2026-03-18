@@ -1,6 +1,7 @@
 package com.twd.sugarfactory.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.twd.sugarfactory.model.ChemicalConsumption;
 import com.twd.sugarfactory.service.ChemicalServiceImpl;
@@ -32,12 +33,24 @@ public class ChemicalServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
 
-        if ("load".equals(action)) {
-            // If date is null, it loads the blank master list. If date exists, it loads saved data.
-            List<ChemicalConsumption> list = service.getChemicals(sampleDate);
-            out.print(gson.toJson(list));
+        try {
+            // "load" handles fetching the blank master list
+            // "find" handles fetching saved data for a specific date
+            if ("load".equals(action) || "find".equals(action)) {
+                List<ChemicalConsumption> list = service.getChemicals(sampleDate);
+                if (list != null) {
+                    out.print(gson.toJson(list));
+                } else {
+                    out.print("[]"); // Return empty array instead of null
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            out.print("{\"status\":\"error\", \"message\":\"" + e.getMessage() + "\"}");
+        } finally {
+            out.flush();
         }
-        out.flush();
     }
 
     @Override
@@ -47,34 +60,44 @@ public class ChemicalServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
 
-        if ("delete".equals(action)) {
-             String sampleDate = request.getParameter("sampleDate");
-             boolean success = service.deleteChemicals(sampleDate);
-             out.print(success ? "{\"status\":\"success\", \"message\":\"Deleted Successfully\"}" : "{\"status\":\"error\", \"message\":\"Failed to Delete\"}");
-             out.flush();
-             return;
-        }
-
-        // Handle Save/Update action
-        StringBuilder sb = new StringBuilder();
-        BufferedReader reader = request.getReader();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            sb.append(line);
-        }
-
         try {
+            // 1. Handle Delete
+            if ("delete".equals(action)) {
+                 String sampleDate = request.getParameter("sampleDate");
+                 boolean success = service.deleteChemicals(sampleDate);
+                 out.print(success ? "{\"status\":\"success\", \"message\":\"Deleted Successfully\"}" 
+                                   : "{\"status\":\"error\", \"message\":\"Failed to Delete Record\"}");
+                 return;
+            }
+
+            // 2. Handle Save/Update (Reading the Wrapper Object from JS)
+            StringBuilder sb = new StringBuilder();
+            String line;
+            try (BufferedReader reader = request.getReader()) {
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                }
+            }
+
             if ("save".equals(action) || "update".equals(action)) {
-                // Parse JSON Array to List of Objects
-                Type listType = new TypeToken<List<ChemicalConsumption>>(){}.getType();
-                List<ChemicalConsumption> chemicalList = gson.fromJson(sb.toString(), listType);
+                // Parse the wrapper object: { sampleDate: '...', consumptions: [...] }
+                JsonObject jsonObject = gson.fromJson(sb.toString(), JsonObject.class);
+                String date = jsonObject.get("sampleDate").getAsString();
                 
+                Type listType = new TypeToken<List<ChemicalConsumption>>(){}.getType();
+                List<ChemicalConsumption> chemicalList = gson.fromJson(jsonObject.get("consumptions"), listType);
+                
+                // Ensure every item has the date set
+                for(ChemicalConsumption item : chemicalList) {
+                    item.setSampleDate(date);
+                }
+
                 boolean success = service.saveChemicals(chemicalList);
                 
                 if (success) {
-                    out.print("{\"status\":\"success\", \"message\":\"Chemical Data Saved Successfully.\"}");
+                    out.print("{\"status\":\"success\", \"message\":\"Chemical Data " + action + "d successfully.\"}");
                 } else {
-                    out.print("{\"status\":\"error\", \"message\":\"Failed to Save Data.\"}");
+                    out.print("{\"status\":\"error\", \"message\":\"Database error during " + action + ".\"}");
                 }
             }
         } catch (Exception e) {
