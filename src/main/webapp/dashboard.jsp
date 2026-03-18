@@ -1,37 +1,48 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en" ng-app="sugarErpApp">
 <head>
-    <meta charset="UTF-8">
-    <title>Sugar ERP</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
-    <link rel="stylesheet" href="css/style.css">
-    
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    
-    <script src="js/factory_information.js"></script>
-    <script src="js/dailyCrushing.js"></script> <script>var app = angular.module('sugarErpApp', ['factoryApp', 'crushingApp']);</script>
+<meta charset="UTF-8">
+<title>Sugar ERP</title>
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="css/style.css">
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+<script src="js/factory_information.js"></script>
+<script src="js/dailyCrushing.js"></script>
+<script src="js/dailyAnalysis.js"></script>
+<script>var app = angular.module('sugarErpApp', ['factoryApp', 'crushingApp', 'analysisApp']);</script>
 </head>
 <body>
 
-    <jsp:include page="includes/header.jsp"/>
-    <jsp:include page="includes/menu.jsp"/>
+	<jsp:include page="includes/header.jsp" />
+	<jsp:include page="includes/menu.jsp" />
 
-    <section id="content">
-        <div class="mainpanel" id="app-container">
-            <div class="contentpanel text-center mt-5">
-                <h1 style="color: #bdc3d1; font-size: 80px;"><i class="fa fa-industry"></i></h1>
-                <h3 style="color: #657390; font-weight: 300;">Welcome to Sugar ERP</h3>
-            </div>
-        </div>
-    </section>
+	<section id="content">
+		<div class="mainpanel" id="app-container">
+			<div class="contentpanel text-center mt-5">
+				<h1 style="color: #bdc3d1; font-size: 80px;">
+					<i class="fa fa-industry"></i>
+				</h1>
+				<h3 style="color: #657390; font-weight: 300;">Welcome to Sugar
+					ERP</h3>
+			</div>
+		</div>
+	</section>
 
-<script>
+	<script>
 $(document).ready(function() {
     
     // 1. Sidebar Toggle (Hamburger)
