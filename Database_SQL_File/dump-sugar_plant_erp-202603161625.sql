@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
 --
 -- Host: localhost    Database: sugar_plant_erp
 -- ------------------------------------------------------
--- Server version	8.0.42
+-- Server version	8.0.44
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -53,12 +53,15 @@ DROP TABLE IF EXISTS `daily_crushing_log`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `daily_crushing_log` (
-  `sample_date` date NOT NULL,
+  `crush_date` date NOT NULL,
   `season_year` varchar(15) NOT NULL,
   `crop_day` int DEFAULT NULL,
   `member_cane_crushed_mt` decimal(12,3) DEFAULT '0.000',
   `non_member_cane_crushed_mt` decimal(12,3) DEFAULT '0.000',
   `other_cane_crushed_mt` decimal(12,3) DEFAULT '0.000',
+  `cane_crushed_today` decimal(12,3) DEFAULT '0.000',
+  `sugar_produced_today` decimal(12,3) DEFAULT '0.000',
+  `recovery_percent_today` decimal(6,3) DEFAULT '0.000',
   `filter_cake_weight_mt` decimal(12,3) DEFAULT '0.000',
   `condenser_inlet_temp` decimal(5,2) DEFAULT '0.00',
   `condenser_outlet_temp` decimal(5,2) DEFAULT '0.00',
@@ -71,8 +74,11 @@ CREATE TABLE `daily_crushing_log` (
   `dirt_correction_pct` decimal(6,3) DEFAULT '0.000',
   `recovery_correction_pct` decimal(6,3) DEFAULT '0.000',
   `undetermined_losses_pct` decimal(6,3) DEFAULT '0.000',
-  `cogen_12mw_export_kwh` decimal(15,2) DEFAULT '0.00',
-  PRIMARY KEY (`sample_date`),
+  `mill_ext_today` decimal(10,2) DEFAULT '0.00',
+  `reduced_ext_today` decimal(10,2) DEFAULT '0.00',
+  `mill_start_today` varchar(50) DEFAULT NULL,
+  `cogen_export_today` decimal(15,3) DEFAULT '0.000',
+  PRIMARY KEY (`crush_date`),
   KEY `season_year` (`season_year`),
   CONSTRAINT `fk_crushing_season` FOREIGN KEY (`season_year`) REFERENCES `factory_season_master` (`season_year`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -84,7 +90,7 @@ CREATE TABLE `daily_crushing_log` (
 
 LOCK TABLES `daily_crushing_log` WRITE;
 /*!40000 ALTER TABLE `daily_crushing_log` DISABLE KEYS */;
-INSERT INTO `daily_crushing_log` VALUES ('2025-10-15','2025-2026',1,0.000,0.000,0.000,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,0.00);
+INSERT INTO `daily_crushing_log` VALUES ('2025-10-15','2025-2026',1,0.000,0.000,0.000,3500.000,36750.000,10.500,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,94.50,95.10,'08:00 AM',125000.000),('2025-10-16','2025-2026',2,0.000,0.000,0.000,3600.000,38160.000,10.600,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,94.60,95.20,'00:00',128500.000),('2025-10-17','2025-2026',3,0.000,0.000,0.000,3550.000,37985.000,10.700,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,94.75,95.35,'00:00',127000.000),('2025-10-18','2025-2026',4,0.000,0.000,0.000,3400.000,36720.000,10.800,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,94.80,95.40,'00:00',122000.000),('2025-10-19','2025-2026',5,0.000,0.000,0.000,3500.000,38150.000,10.900,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,94.90,95.50,'00:00',126500.000),('2025-10-20','2025-2026',6,0.000,0.000,0.000,3650.000,39785.000,10.900,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,95.00,95.60,'00:00',130000.000),('2025-10-21','2025-2026',7,0.000,0.000,0.000,3700.000,40700.000,11.000,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,95.10,95.70,'00:00',132500.000),('2025-10-22','2025-2026',8,0.000,0.000,0.000,3600.000,39960.000,11.100,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,95.15,95.75,'00:00',129000.000),('2025-10-23','2025-2026',9,0.000,0.000,0.000,3450.000,38295.000,11.100,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,95.20,95.80,'00:00',124000.000),('2025-10-24','2025-2026',10,0.000,0.000,0.000,3500.000,39200.000,11.200,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,95.30,95.90,'00:00',126000.000),('2026-03-18','2025-2026',22,0.000,0.000,0.000,1232.000,121.000,21.000,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,2.00,11.00,'12',222.000);
 /*!40000 ALTER TABLE `daily_crushing_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -97,16 +103,16 @@ DROP TABLE IF EXISTS `daily_lab_analysis_details`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `daily_lab_analysis_details` (
   `analysis_id` int NOT NULL AUTO_INCREMENT,
-  `sample_date` date NOT NULL,
+  `crush_date` date NOT NULL,
   `material_id` int NOT NULL,
   `brix_pct` decimal(8,3) DEFAULT NULL,
   `pol_pct` decimal(8,3) DEFAULT NULL,
   `purity_pct` decimal(8,3) DEFAULT NULL,
   `moisture_pct` decimal(8,3) DEFAULT NULL,
   PRIMARY KEY (`analysis_id`),
-  UNIQUE KEY `unique_daily_material` (`sample_date`,`material_id`),
+  UNIQUE KEY `unique_daily_material` (`crush_date`,`material_id`),
   KEY `fk_lab_material` (`material_id`),
-  CONSTRAINT `fk_lab_date` FOREIGN KEY (`sample_date`) REFERENCES `daily_crushing_log` (`sample_date`) ON DELETE CASCADE,
+  CONSTRAINT `fk_lab_date` FOREIGN KEY (`crush_date`) REFERENCES `daily_crushing_log` (`crush_date`) ON DELETE CASCADE,
   CONSTRAINT `fk_lab_material` FOREIGN KEY (`material_id`) REFERENCES `material_master` (`material_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -117,7 +123,6 @@ CREATE TABLE `daily_lab_analysis_details` (
 
 LOCK TABLES `daily_lab_analysis_details` WRITE;
 /*!40000 ALTER TABLE `daily_lab_analysis_details` DISABLE KEYS */;
-INSERT INTO `daily_lab_analysis_details` VALUES (1,'2025-10-15',1,18.500,15.200,82.160,NULL),(2,'2025-10-15',2,15.100,12.400,82.110,NULL),(3,'2025-10-15',3,2.500,1.800,72.000,NULL),(4,'2025-10-15',4,14.800,12.200,82.430,NULL),(5,'2025-10-15',5,65.200,54.100,82.970,NULL),(6,'2025-10-15',6,92.500,78.400,84.750,NULL),(7,'2025-10-15',7,94.200,68.100,72.290,NULL),(8,'2025-10-15',8,96.100,56.500,58.790,NULL),(9,'2025-10-15',9,88.500,32.100,36.270,NULL),(10,'2025-10-15',10,NULL,2.100,NULL,48.500);
 /*!40000 ALTER TABLE `daily_lab_analysis_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -157,13 +162,13 @@ DROP TABLE IF EXISTS `daily_sugar_production`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `daily_sugar_production` (
   `production_id` int NOT NULL AUTO_INCREMENT,
-  `sample_date` date NOT NULL,
+  `crush_date` date NOT NULL,
   `material_id` int NOT NULL,
   `no_of_bags` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`production_id`),
-  KEY `fk_prod_date` (`sample_date`),
+  KEY `fk_prod_date` (`crush_date`),
   KEY `fk_prod_material` (`material_id`),
-  CONSTRAINT `fk_prod_date` FOREIGN KEY (`sample_date`) REFERENCES `daily_crushing_log` (`sample_date`) ON DELETE CASCADE,
+  CONSTRAINT `fk_prod_date` FOREIGN KEY (`crush_date`) REFERENCES `daily_crushing_log` (`crush_date`) ON DELETE CASCADE,
   CONSTRAINT `fk_prod_material` FOREIGN KEY (`material_id`) REFERENCES `material_master` (`material_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -185,7 +190,7 @@ DROP TABLE IF EXISTS `daily_time_account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `daily_time_account` (
-  `sample_date` date NOT NULL,
+  `crush_date` date NOT NULL,
   `working_hours` decimal(5,2) DEFAULT '0.00',
   `hours_lost_rain` decimal(5,2) DEFAULT '0.00',
   `hours_lost_mechanical` decimal(5,2) DEFAULT '0.00',
@@ -194,8 +199,8 @@ CREATE TABLE `daily_time_account` (
   `hours_lost_cleaning` decimal(5,2) DEFAULT '0.00',
   `hours_lost_process` decimal(5,2) DEFAULT '0.00',
   `hours_lost_misc` decimal(5,2) DEFAULT '0.00',
-  PRIMARY KEY (`sample_date`),
-  CONSTRAINT `fk_time_date` FOREIGN KEY (`sample_date`) REFERENCES `daily_crushing_log` (`sample_date`) ON DELETE CASCADE
+  PRIMARY KEY (`crush_date`),
+  CONSTRAINT `fk_time_date` FOREIGN KEY (`crush_date`) REFERENCES `daily_crushing_log` (`crush_date`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -251,7 +256,7 @@ CREATE TABLE `factory_master` (
 
 LOCK TABLES `factory_master` WRITE;
 /*!40000 ALTER TABLE `factory_master` DISABLE KEYS */;
-INSERT INTO `factory_master` VALUES ('2011-2012',NULL,NULL,'yuwteuyt','jhsdgfjhasg','gsdhfgakhdg','jhsgdhcgs','gsgdcgg','6465465','1234567890','464565465','hgJHDFFjsd@gmail.com',NULL,'gsajdhgAJHSGDGJHg','5454','4545445','545454',466.00,'5445','454',446.00,'jhssdggf','kjccgSJDGGDJagds','DJKCKSDFF','GCJgg'),('2013-2014','2016-11-01','09:00:00','Sardar Patel Sugars','GIDC Estate','Bardoli','Surat','Gujarat','394601','220044','02622','info@sardarsugar.com','www.sardarsugar.com','Defecation','REG1010','24JJJJ8901J8Z0','10024022000777',4.90,'Surat','South-Guj',4000.00,'G.B. Patel','M.K. Shah','N.D. Desai','R.J. Mehta'),('2016-2017','2016-11-01','09:00:00','Sardar Patel Sugars','GIDC Estate','Bardoli','Surat','Gujarat','394601','220044','02622','info@sardarsugar.com','www.sardarsugar.com','Defecation','REG1010','24JJJJ8901J8Z0','10024022000777',4.90,'Surat','South-Guj',4000.00,'G.B. Patel','M.K. Shah','N.D. Desai','R.J. Mehta'),('2018-2019','2018-11-02','10:00:00','Malwa Sugar Corp','Industrial Area Ph 2','Indore','Indore','Madhya Pradesh','452001','243344','0731','malwa@sugarcorp.in','www.sugarcorp.in','Double Sulphitation','REG1008','23HHHH6789H6Z8','10022022000555',5.10,'Indore','West',5500.00,'H.L. Mittal','C.P. Gupta','J.K. Jain','B.R. Chouhan'),('2019-2020','2019-10-28','09:30:00','Southern Gold Sugars','Main Road, Kovilpatti','Tuticorin','Thoothukudi','Tamil Nadu','628501','230111','04632','help@southerngold.tn','www.southerngold.tn','Defecation','REG1007','33GGGG5678G5Z7','10021022000444',4.80,'Madurai','South',4800.00,'T.R. Mani','K.S. Rajan','G.V. Iyer','M.P. Kumar'),('2020-2021','2020-11-10','08:45:00','Northern Crystal Ind.','GT Road, Sec 12','Karnal','Karnal','Haryana','132001','225588','0184','hr@northcrystal.com','www.northcrystal.com','Double Sulphitation','REG1006','06FFFF4567F4Z6','10020022000333',5.25,'Rohtak','North-A',6200.00,'V.K. Singh','A.P. Sharma','R.S. Yadav','S.S. Verma'),('2021-2022','2021-10-25','11:00:00','Coastal Sweetners','Verna Industrial Estate','Salcete','South Goa','Goa','403722','272200','0832','ops@coastalsweet.com','www.coastalsweet.com','Phospho-Defecation','REG1005','30EEEE3456E3Z5','10019022000222',4.50,'Panaji','Coastal',2800.00,'M.N. Fernandes','J.P. D-Souza','R.L. Prabhu','K.K. Naik'),('2022-2023','2022-11-05','09:15:00','Royal Cane Processors','Survey No 88/1','Baramati','Pune','Maharashtra','413102','222333','02112','sales@royalcane.com','www.royalcane.com','Double Sulphitation','REG1004','27DDDD2345D2Z4','10018022000111',5.00,'Pune','Central',4200.00,'P.R. Pawar','S.T. More','A.B. Gadre','W.N. Kadam'),('2023-2024','2023-10-20','08:00:00','Heritage Sugars Ltd','NH-4, Milestone 12','Belagavi','Belagavi','Karnataka','590001','240500','0831','admin@heritagesugar.com','www.heritagesugar.com','Defeco-Remelt','REG1003','29CCCC1234C1Z3','10017022000789',6.00,'Belgaum','North',7500.00,'S.R. Hegde','K.L. Rao','V.M. Bhat','D.R. Nayak'),('2024-2025','2024-11-01','10:30:00','Green Valley Co-op','Sugar Lane, Ward 4','Sangli','Sangli','Maharashtra','416416','233100','0233','info@greenvalley.in','www.greenvalley.in','Defeco-Melt','REG1002','27BBBCB2345B2Z2','10016022000456',4.75,'Kolhapur','East',3500.00,'B.L. Jadhav','N.M. Shinde','G.H. Thorat','P.S. Mane'),('2025-2026','2025-10-15','09:00:00','Apex Sugar Mills','Plot 45, Industrial Area','Karad','Satara','Maharashtra','415110','224455','02164','contact@apexsugar.com','www.apexsugar.com','Double Sulphitation','REG1001','27AAACA1234A1Z1','10015022000123',5.50,'Pune','South',5000.00,'A.S. Deshmukh','R.P. Patil','S.K. Kulkarni','M.V. Joshi');
+INSERT INTO `factory_master` VALUES ('2025-2026','2025-10-15','09:00:00','Apex Sugar Mills','Plot 45, Industrial Area','Karad','Satara','Maharashtra','415110','224455','02164','contact@apexsugar.com','www.apexsugar.com','Double Sulphitation','REG1001','27AAACA1234A1Z1','10015022000123',5.50,'Pune','South',5000.00,'A.S. Deshmukh','R.P. Patil','S.K. Kulkarni','M.V. Joshi');
 /*!40000 ALTER TABLE `factory_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -337,14 +342,14 @@ DROP TABLE IF EXISTS `material_stock_log`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `material_stock_log` (
   `stock_id` int NOT NULL AUTO_INCREMENT,
-  `sample_date` date NOT NULL,
+  `crush_date` date NOT NULL,
   `material_id` int NOT NULL,
   `quantity_qtls` decimal(12,3) DEFAULT '0.000',
   `volume_hl` decimal(12,3) DEFAULT '0.000',
   PRIMARY KEY (`stock_id`),
-  KEY `fk_stock_date` (`sample_date`),
+  KEY `fk_stock_date` (`crush_date`),
   KEY `fk_stock_material` (`material_id`),
-  CONSTRAINT `fk_stock_date` FOREIGN KEY (`sample_date`) REFERENCES `daily_crushing_log` (`sample_date`) ON DELETE CASCADE,
+  CONSTRAINT `fk_stock_date` FOREIGN KEY (`crush_date`) REFERENCES `daily_crushing_log` (`crush_date`) ON DELETE CASCADE,
   CONSTRAINT `fk_stock_material` FOREIGN KEY (`material_id`) REFERENCES `material_master` (`material_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -460,4 +465,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-03-17 13:48:23
+-- Dump completed on 2026-03-18 14:28:38

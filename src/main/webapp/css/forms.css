@@ -1,0 +1,161 @@
+/* =========================================
+   1. General Layout & Typography
+   ========================================= */
+body {
+    background-color: #f4f6f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Form Container */
+.erp-form-container {
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    margin-bottom: 30px;
+    overflow: hidden; /* Ensures the header's border-radius shows */
+}
+
+/* Form Header */
+.erp-form-header {
+    background-color: #e0e0e0; /* Matches the gray from your image */
+    color: #b22222; /* Matches the dark red text from your image */
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: 1px solid #c0c0c0;
+    letter-spacing: 0.5px;
+}
+
+.erp-form-body {
+    padding: 20px;
+    /* background-color: #8cd3f5; Uncomment this if you want the exact light blue background from the picture */
+}
+
+/* =========================================
+   2. Form Controls & Labels
+   ========================================= */
+.label-right {
+    text-align: right;
+    font-size: 13px;
+    color: #444;
+    padding-top: 5px;
+    font-weight: 600;
+}
+
+.required-asterisk {
+    color: #dc3545;
+    margin-left: 2px;
+}
+
+.form-control-sm {
+    font-size: 13px;
+    border-radius: 2px;
+}
+
+/* Base Validation Borders */
+.border-success {
+    border-color: #28a745 !important;
+}
+
+.border-danger {
+    border-color: #dc3545 !important;
+    background-color: #fff8f8;
+}
+
+/* =========================================
+   3. Dynamic "Filled" States (AngularJS)
+   ========================================= */
+/* Triggered when an input is successfully filled */
+.input-filled {
+    border-color: #28a745 !important;
+    background-color: #f4fdf6 !important; /* Very light green tint */
+    box-shadow: 0 0 0 0.1rem rgba(40, 167, 69, 0.15) !important;
+}
+
+/* The checkmark icon inside the filled input */
+.input-filled-icon {
+    position: absolute;
+    right: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #28a745;
+    font-size: 12px;
+    pointer-events: none; /* Ensures the icon doesn't block mouse clicks */
+}
+
+/* Standard validation icons layout */
+.validation-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.error-text {
+    color: #dc3545;
+    font-size: 11px;
+    margin-top: 2px;
+    display: block;
+}
+
+/* =========================================
+   4. Action Buttons
+   ========================================= */
+.erp-btn-container {
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid #eee;
+    background-color: #fafafa;
+}
+
+.btn {
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 3px;
+}
+
+.btn-erp-submit {
+    background-color: #6593b4;
+    color: white;
+    min-width: 120px;
+    border: none;
+}
+
+.btn-erp-reset {
+    background-color: #ffffff;
+    color: #333;
+    min-width: 120px;
+    border: 1px solid #ccc;
+}
+
+.btn-erp-view {
+    background-color: #e5a751;
+    color: white;
+    min-width: 120px;
+    border: none;
+}
+
+.btn-erp-submit:hover, .btn-erp-view:hover {
+    opacity: 0.9;
+    color: white;
+}
+
+.btn-erp-reset:hover {
+    background-color: #f0f0f0;
+}
+
+@media print {
+    /* Hide everything except the printable area */
+    body * { visibility: hidden; }
+    #printableArea, #printableArea * { visibility: visible; }
+    #printableArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
+    .erp-form-container, .navbar, .leftpanel { display: none !important; }
+}

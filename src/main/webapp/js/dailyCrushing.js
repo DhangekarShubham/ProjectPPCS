@@ -2,15 +2,38 @@ var app = angular.module('crushingApp', []);
 
 app.controller('CrushingController', function($scope, $http) {
     
-    $scope.crushing = {};
+    // UI state variable for the hidden find bar
+    $scope.showFindBar = false; 
 
+    // Clear Form (New / Cancel) and explicitly set all new fields to null/empty
     $scope.clearForm = function() {
-        $scope.crushing = {};
+        $scope.crushing = {
+            crushDate: '',
+            cropDay: null,
+            caneOnDate: null,
+            caneToDate: null,
+            sugarOnDate: null,
+            sugarToDate: null,
+            percentOnDate: null,
+            percentToDate: null,
+            millExtOnDate: null,
+            millExtToDate: null,
+            reducedExtOnDate: null,
+            reducedExtToDate: null,
+            millStartOnDate: '',
+            millStartToDate: '',
+            cogenOnDate: null,
+            cogenToDate: null
+        };
     };
 
+    // Run clearForm on initial load to set up the two-way binding perfectly
+    $scope.clearForm();
+
+    // Find Data (Can be triggered by the side button or the bottom search bar)
     $scope.findData = function() {
         if (!$scope.crushing.crushDate) {
-            alert("Please select a Crushing Date to find data.");
+            alert("Please enter a Crushing Date to find data.");
             return;
         }
         
@@ -23,12 +46,14 @@ app.controller('CrushingController', function($scope, $http) {
                  $scope.crushing.crushDate = keptDate;
             } else {
                  $scope.crushing = response.data;
+                 $scope.showFindBar = false; // Close the find bar upon success
             }
         }, function(error) {
             alert("Error communicating with server.");
         });
     };
 
+    // Save or Update Data
     $scope.saveData = function(actionType) {
         if (!$scope.crushing.crushDate || !$scope.crushing.cropDay) {
             alert("Please fill out the Crushing Date and Crop Day.");
@@ -47,6 +72,7 @@ app.controller('CrushingController', function($scope, $http) {
         });
     };
 
+    // Delete Data
     $scope.deleteData = function() {
         if (!$scope.crushing.crushDate) {
             alert("Select a date to delete.");

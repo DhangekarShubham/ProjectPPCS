@@ -1,0 +1,220 @@
+@charset "UTF-8";
+
+/* Global Variables */
+:root {
+    --header-bg: #2c323f;
+    --logo-bg: #20242d;
+    --sidebar-bg: #262b36;
+    --body-bg: #e9ecef;
+    --primary-teal: #259dab;
+    --text-muted: #818da7;
+    --sidebar-width: 250px;
+    --header-height: 60px;
+    
+    /* Animation Timing */
+    --transition-speed: 0.3s;
+    --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+    background-color: var(--body-bg);
+    font-family: 'Segoe UI', 'Open Sans', Helvetica, Arial, sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+/* ================= HEADER ================= */
+.headerpanel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--header-height);
+    background-color: var(--header-bg);
+    z-index: 1030;
+    display: flex;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+.logopanel {
+    width: var(--sidebar-width);
+    background-color: var(--logo-bg);
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    transition: width var(--transition-speed) var(--transition-timing);
+}
+
+.logopanel h2 { margin: 0; font-size: 24px; font-weight: 600; white-space: nowrap; }
+.logopanel h2 a { color: var(--primary-teal); text-decoration: none; }
+
+.headerbar {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.menutoggle { cursor: pointer; font-size: 22px; color: var(--text-muted); transition: 0.2s; }
+.menutoggle:hover { color: #fff; transform: scale(1.1); }
+
+.factory-header-title {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+/* ================= SIDEBAR ================= */
+.leftpanel {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    width: var(--sidebar-width);
+    bottom: 0;
+    background-color: var(--sidebar-bg);
+    z-index: 1020;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: width var(--transition-speed) var(--transition-timing);
+}
+
+/* Custom Scrollbar for Sidebar */
+.leftpanel::-webkit-scrollbar { width: 6px; }
+.leftpanel::-webkit-scrollbar-thumb { background-color: #3b4354; border-radius: 10px; }
+
+.leftpanel-profile {
+    padding: 15px 20px;
+    background-color: #3b4354;
+    border-bottom: 1px solid #20242d;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.leftpanel-profile img {
+    width: 45px;
+    height: 45px;
+    border: 2px solid #657390;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.leftpanel-profile .profile-info { 
+    margin-left: 15px; 
+    transition: opacity 0.4s ease;
+}
+
+.leftpanel-profile .profile-name { color: #fff; font-size: 14px; font-weight: 600; margin: 0; text-transform: uppercase;}
+.leftpanel-profile .profile-sub { color: #9fa8bc; font-size: 11px; margin: 0; }
+
+.nav-sidebar { padding: 0; margin: 0; list-style: none; }
+.nav-sidebar .nav-item { border-bottom: 1px solid #20242d; }
+
+.nav-sidebar .nav-link {
+    color: var(--text-muted);
+    padding: 14px 20px;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.nav-sidebar .nav-link i.main-icon { width: 30px; font-size: 16px; color: var(--text-muted); text-align: center; }
+.nav-sidebar .nav-link:hover { background-color: #313745; color: #fff; }
+.nav-sidebar .nav-item.active > .nav-link { background-color: var(--primary-teal); color: #fff; border-left: 4px solid #fff; }
+.nav-sidebar .nav-item.active > .nav-link i.main-icon { color: #fff; }
+
+/* Submenu Navigation */
+.nav-sidebar .children {
+    background-color: #1c202a; /* Darker shade for submenus */
+    list-style: none;
+    padding: 0; 
+    margin: 0;
+    display: none; 
+    overflow: hidden;
+}
+
+.nav-sidebar .children .nav-link {
+    color: #818da7;
+    padding: 10px 20px 10px 50px;
+    font-size: 13px;
+    text-transform: none;
+    font-weight: 500;
+}
+
+.nav-sidebar .children .nav-link:hover { color: #fff; background-color: rgba(37, 157, 171, 0.2); }
+
+/* Rotating Arrow Animation */
+.caret-icon { transition: transform var(--transition-speed) ease-in-out; display: inline-block; }
+.menu-item-parent.active .caret-icon { transform: rotate(180deg); }
+
+/* ================= MAIN CONTENT ================= */
+.mainpanel {
+    margin-left: var(--sidebar-width);
+    padding: calc(var(--header-height) + 20px) 20px 20px 20px;
+    transition: margin-left var(--transition-speed) var(--transition-timing);
+    min-height: 100vh;
+}
+
+/* ================= COMPONENT STYLING ================= */
+/* Teal Panel Wrapper */
+.panel-teal {
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+    border: none;
+}
+
+.panel-teal > .panel-heading {
+    background-color: var(--primary-teal);
+    color: #ffffff;
+    padding: 15px 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 14px;
+    border-radius: 5px 5px 0 0;
+}
+
+.panel-body { padding: 30px; }
+
+/* Form Controls */
+.form-control {
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    font-size: 13px;
+    padding: 8px 12px;
+    box-shadow: none;
+    transition: border-color 0.2s;
+}
+
+.form-control:focus { border-color: var(--primary-teal); box-shadow: 0 0 0 0.2rem rgba(37, 157, 171, 0.25); }
+
+/* Buttons */
+.btn-action { background-color: #f8f9fa; border: 1px solid #ced4da; font-weight: 600; color: #495057; }
+.btn-action:hover { background-color: #e2e6ea; }
+
+/* Loading State Helpers */
+#app-container { transition: opacity 0.3s ease; }
+
+/* ================= SIDEBAR COLLAPSE ANIMATION ================= */
+body.sidebar-collapsed .logopanel { width: 70px; }
+body.sidebar-collapsed .logopanel h2 a span,
+body.sidebar-collapsed .leftpanel .profile-info,
+body.sidebar-collapsed .nav-sidebar .nav-link span,
+body.sidebar-collapsed .nav-sidebar .nav-link .fa-angle-down {
+    display: none;
+    opacity: 0;
+}
+body.sidebar-collapsed .leftpanel { width: 70px; }
+body.sidebar-collapsed .mainpanel { margin-left: 70px; }
+body.sidebar-collapsed .nav-sidebar .nav-link { justify-content: center; padding: 15px 0; }
+body.sidebar-collapsed .nav-sidebar .nav-link i.main-icon { margin: 0; width: auto; font-size: 20px; }

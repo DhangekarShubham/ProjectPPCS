@@ -3,272 +3,273 @@
 <html lang="en" ng-app="factoryApp">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Factory Information | Sugar ERP</title>
+    <title>Factory Information</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="js/factory_information.js"></script>
-
-    <style>
-        :root {
-            --primary-blue: #2563eb;
-            --bg-light: #f1f5f9;
-            --card-border: #e2e8f0;
-            --text-dark: #1e293b;
-            --sidebar-dark: #1e293b;
-            --input-focus: #3b82f6;
-        }
-
-        body { 
-            background-color: var(--bg-light); 
-            font-family: 'Inter', sans-serif; 
-            color: var(--text-dark);
-            font-size: 0.9rem;
-        }
-
-        /* App Container Layout */
-        .app-window { 
-            background: #ffffff; 
-            border: none;
-            border-radius: 12px; 
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            margin-top: 20px;
-        }
-
-        .window-header { 
-            background-color: #ffffff; 
-            padding: 15px 25px; 
-            font-weight: 700; 
-            border-bottom: 1px solid var(--card-border); 
-            color: var(--text-dark);
-            display: flex;
-            align-items: center;
-        }
-
-        .window-header i { color: var(--primary-blue); margin-right: 10px; }
-
-        /* Sidebar Branding */
-        .sidebar-panel { 
-            background-color: var(--sidebar-dark); 
-            padding: 25px 15px; 
-            min-height: 700px; 
-        }
-
-        /* Action Buttons */
-        .action-btn { 
-            width: 100%; 
-            margin-bottom: 12px; 
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            color: #cbd5e1;
-            text-align: left;
-            padding: 10px 15px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-        }
-        
-        .action-btn i { margin-right: 10px; font-size: 1.1rem; }
-
-        .action-btn:hover { 
-            background-color: var(--primary-blue); 
-            color: #ffffff;
-            border-color: var(--primary-blue);
-            transform: translateX(5px);
-        }
-
-        .btn-close-app { background: #ef4444 !important; color: white !important; margin-top: 40px; }
-
-        /* Form Styling */
-        .main-panel { background-color: #ffffff; padding: 30px; }
-
-        .form-section { 
-            border: 1px solid var(--card-border); 
-            padding: 20px; 
-            border-radius: 8px; 
-            background-color: #ffffff; 
-            margin-bottom: 20px; 
-            transition: border 0.3s ease;
-        }
-        
-        .form-section:hover { border-color: #cbd5e1; }
-
-        .section-title {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            font-weight: 700;
-            color: #64748b;
-            margin-bottom: 15px;
-            letter-spacing: 0.5px;
-            display: block;
-        }
-
-        .input-label { 
-            font-size: 0.8rem; 
-            font-weight: 600; 
-            color: #475569; 
-            margin-bottom: 4px;
-        }
-
-        .form-control-sm {
-            border-radius: 6px;
-            border: 1px solid #d1d5db;
-            padding: 0.5rem 0.75rem;
-            transition: all 0.2s ease;
-        }
-
-        .form-control-sm:focus {
-            border-color: var(--input-focus);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-
-        /* Search Footer */
-        .search-strip {
-            background-color: #f8fafc;
-            border-top: 1px solid var(--card-border);
-            padding: 20px;
-            border-radius: 0 0 12px 12px;
-        }
-
-        .btn-search {
-            background-color: var(--primary-blue);
-            color: white;
-            font-weight: 600;
-            border: none;
-        }
-
-        .btn-search:hover { background-color: #1d4ed8; color: white; }
-    </style>
-</head>
-<body ng-controller="FactoryInfoController">
-    <jsp:include page="includes/navbar.jsp" />
-
-    <div class="container-fluid px-5">
-        <div class="d-flex justify-content-between align-items-center mt-3 mb-1">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="dashboard.jsp" class="text-decoration-none">Home</a></li>
-                    <li class="breadcrumb-item active">Master</li>
-                    <li class="breadcrumb-item active">Factory Information</li>
-                </ol>
-            </nav>
-        </div>
-
-        <div class="row app-window">
-            <div class="window-header">
-                <i class="bi bi-building-gear"></i> LAB FACTORY INFORMATION MASTER
-            </div>
-
-            <div class="d-flex p-0">
-                <div class="sidebar-panel" style="width: 220px;">
-                    <button type="button" class="btn action-btn" ng-click="clearForm()"><i class="bi bi-file-earmark-plus"></i> New</button>
-                    <button type="button" class="btn action-btn" ng-click="findFactory(factory.seasonYear)"><i class="bi bi-search"></i> Find</button>
-                    <button type="button" class="btn action-btn" ng-click="updateFactory()"><i class="bi bi-pencil-square"></i> Change</button>
-                    <button type="button" class="btn action-btn" ng-click="saveFactory()"><i class="bi bi-floppy"></i> Save</button>
-                    <button type="button" class="btn action-btn" ng-click="clearForm()"><i class="bi bi-x-circle"></i> Cancel</button>
-                    <button type="button" class="btn action-btn" ng-click="deleteFactory()"><i class="bi bi-trash"></i> Delete</button>
-                    
-                    <a href="dashboard.jsp" class="btn action-btn btn-close-app mt-auto"><i class="bi bi-power"></i> Close App</a>
-                </div>
-
-                <div class="flex-grow-1 main-panel">
-                    <form name="factoryForm" novalidate>
-                        
-                        <div class="row">
-                            <div class="col-md-7">
-                                <div class="form-section">
-                                    <span class="section-title">General Information</span>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label class="input-label">Season Year</label>
-                                            <input type="text" class="form-control form-control-sm" ng-model="factory.seasonYear" placeholder="e.g., 2025-2026" required>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="input-label">Start Date</label>
-                                            <input type="date" class="form-control form-control-sm" ng-model="factory.startDate">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="input-label">Start Time</label>
-                                            <input type="time" class="form-control form-control-sm" ng-model="factory.startTime">
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="input-label">Factory Name</label>
-                                        <input type="text" class="form-control form-control-sm" ng-model="factory.factoryName">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="input-label">Complete Address</label>
-                                        <input type="text" class="form-control form-control-sm" ng-model="factory.address">
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4"><label class="input-label">Taluka</label><input type="text" class="form-control form-control-sm" ng-model="factory.taluka"></div>
-                                        <div class="col-md-4"><label class="input-label">District</label><input type="text" class="form-control form-control-sm" ng-model="factory.district"></div>
-                                        <div class="col-md-4"><label class="input-label">PIN Code</label><input type="text" class="form-control form-control-sm" ng-model="factory.pinCode"></div>
-                                    </div>
-                                    <div class="row mb-1">
-                                        <div class="col-md-6"><label class="input-label">E-Mail</label><input type="email" class="form-control form-control-sm" ng-model="factory.email"></div>
-                                        <div class="col-md-6"><label class="input-label">Website</label><input type="url" class="form-control form-control-sm" ng-model="factory.website"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-5">
-                                <div class="form-section">
-                                    <span class="section-title">Regulatory & Technical</span>
-                                    <div class="mb-2">
-                                        <label class="input-label">Clarification Process</label>
-                                        <input type="text" class="form-control form-control-sm" ng-model="factory.clarificationProcess">
-                                    </div>
-                                    <div class="mb-2">
-                                        <label class="input-label">GST Registration No.</label>
-                                        <input type="text" class="form-control form-control-sm" ng-model="factory.gstNo">
-                                    </div>
-                                    <div class="row mb-2">
-                                        <div class="col-6"><label class="input-label">Division</label><input type="text" class="form-control form-control-sm" ng-model="factory.division"></div>
-                                        <div class="col-6"><label class="input-label">Range</label><input type="text" class="form-control form-control-sm" ng-model="factory.range"></div>
-                                    </div>
-                                    <div class="mb-0">
-                                        <label class="input-label">Installed Capacity (TCD)</label>
-                                        <input type="number" step="0.01" class="form-control form-control-sm" ng-model="factory.installedCapacity">
-                                    </div>
-                                </div>
-                                
-                                <div class="form-section">
-                                    <span class="section-title">Key Personnel</span>
-                                    <div class="row mb-2">
-                                        <div class="col-6"><label class="input-label">Managing Director</label><input type="text" class="form-control form-control-sm" ng-model="factory.managingDirector"></div>
-                                        <div class="col-6"><label class="input-label">Works Manager</label><input type="text" class="form-control form-control-sm" ng-model="factory.worksManager"></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-6"><label class="input-label">Chief Chemist</label><input type="text" class="form-control form-control-sm" ng-model="factory.chiefChemist"></div>
-                                        <div class="col-6"><label class="input-label">Lab Incharge</label><input type="text" class="form-control form-control-sm" ng-model="factory.labIncharge"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="search-strip row align-items-center">
-                            <div class="col-md-4 text-end text-muted small fw-bold">QUICK SEASON LOOKUP:</div>
-                            <div class="col-md-4">
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-calendar3"></i></span>
-                                    <input type="text" class="form-control border-start-0" placeholder="Enter Year..." ng-model="searchSeasonYear">
-                                    <button class="btn btn-search px-4" type="button" ng-click="findFactory(searchSeasonYear)">FIND</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
     
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="css/forms.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="contentpanel" id="factory-panel" ng-controller="FactoryInfoController">
+        
+        <style>
+            body { background-color: #f4f6f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+            .erp-form-container { background-color: #ffffff; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-radius: 4px; margin-bottom: 30px; overflow: hidden; }
+            .erp-form-header { background-color: #e0e0e0; color: #b22222; padding: 10px 20px; font-size: 14px; font-weight: bold; text-transform: uppercase; border-bottom: 1px solid #c0c0c0; letter-spacing: 0.5px; }
+            .erp-form-body { padding: 20px; }
+            .label-right { text-align: right; font-size: 13px; color: #444; padding-top: 5px; font-weight: 600; }
+            .required-asterisk { color: #dc3545; margin-left: 2px; }
+            .form-control-sm { font-size: 13px; border-radius: 2px; }
+            .border-success { border-color: #28a745 !important; }
+            .border-danger { border-color: #dc3545 !important; background-color: #fff8f8; }
+            .input-filled { border-color: #28a745 !important; background-color: #f4fdf6 !important; box-shadow: 0 0 0 0.1rem rgba(40, 167, 69, 0.15) !important; }
+            .input-filled-icon { position: absolute; right: 25px; top: 50%; transform: translateY(-50%); color: #28a745; font-size: 12px; pointer-events: none; }
+            .validation-container { position: relative; display: flex; align-items: center; }
+            .error-text { color: #dc3545; font-size: 11px; margin-top: 2px; display: block; }
+            .erp-btn-container { text-align: center; padding: 20px 0; border-top: 1px solid #eee; background-color: #fafafa; }
+            .btn { font-size: 13px; font-weight: 500; border-radius: 3px; }
+            .btn-erp-submit { background-color: #6593b4; color: white; min-width: 120px; border: none; }
+            .btn-erp-reset { background-color: #ffffff; color: #333; min-width: 120px; border: 1px solid #ccc; }
+            .btn-erp-view { background-color: #e5a751; color: white; min-width: 120px; border: none; }
+            .btn-erp-submit:hover, .btn-erp-view:hover { opacity: 0.9; color: white; }
+            .btn-erp-reset:hover { background-color: #f0f0f0; }
+        </style>
+
+        <div class="erp-form-container mt-3 mx-2 bg-white shadow-sm border rounded">
+            
+            <div class="erp-form-header text-white px-3 py-2 fw-bold text-uppercase" style="background-color: #3bb4b4;">
+                LAB FACTORY INFORMATION
+            </div>
+            
+            <form name="factoryForm" class="p-4 erp-form-body" novalidate>
+                
+                <div class="row">
+                    <div class="col-md-6 pe-md-4">
+                        
+                        <div class="row mb-2 align-items-center">
+                            <label class="col-sm-4 label-right">Season Year<span class="required-asterisk">*</span>:</label>
+                            <div class="col-sm-8 position-relative">
+                                <input type="text" name="seasonYear" class="form-control form-control-sm" 
+                                       ng-model="factory.seasonYear" 
+                                       ng-class="{'input-filled': factory.seasonYear}" 
+                                       placeholder="e.g., 2025-2026" required>
+                                <i class="fa fa-check input-filled-icon" ng-show="factory.seasonYear"></i>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2 align-items-center">
+                            <label class="col-sm-4 label-right">Start Date & Time:</label>
+                            <div class="col-sm-4 position-relative">
+                                <input type="text" class="form-control form-control-sm" 
+                                       placeholder="YYYY-MM-DD"
+                                       onfocus="(this.type='date')" onblur="(this.type='text')"
+                                       ng-model="factory.startDate" 
+                                       ng-class="{'input-filled': factory.startDate}">
+                            </div>
+                            <div class="col-sm-4 position-relative">
+                                <input type="text" class="form-control form-control-sm" 
+                                       placeholder="HH:MM"
+                                       onfocus="(this.type='time')" onblur="(this.type='text')"
+                                       ng-model="factory.startTime" 
+                                       ng-class="{'input-filled': factory.startTime}">
+                            </div>
+                        </div>
+
+                        <div class="row mb-2 align-items-center">
+                            <label class="col-sm-4 label-right">Factory Name<span class="required-asterisk">*</span>:</label>
+                            <div class="col-sm-8 position-relative">
+                                <input type="text" name="factoryName" class="form-control form-control-sm" 
+                                       ng-model="factory.factoryName" 
+                                       ng-class="{'input-filled': factory.factoryName}" required>
+                                <i class="fa fa-check input-filled-icon" ng-show="factory.factoryName"></i>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2 align-items-center">
+                            <label class="col-sm-4 label-right">Address:</label>
+                            <div class="col-sm-8 position-relative">
+                                <input type="text" class="form-control form-control-sm" 
+                                       ng-model="factory.address" 
+                                       ng-class="{'input-filled': factory.address}">
+                                <i class="fa fa-check input-filled-icon" ng-show="factory.address"></i>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2 align-items-center">
+                            <label class="col-sm-4 label-right">Taluka / District:</label>
+                            <div class="col-sm-4 position-relative">
+                                <input type="text" class="form-control form-control-sm" placeholder="Taluka" 
+                                       ng-model="factory.taluka" ng-class="{'input-filled': factory.taluka}">
+                            </div>
+                            <div class="col-sm-4 position-relative">
+                                <input type="text" class="form-control form-control-sm" placeholder="District" 
+                                       ng-model="factory.district" ng-class="{'input-filled': factory.district}">
+                            </div>
+                        </div>
+
+                        <div class="row mb-2 align-items-center">
+                            <label class="col-sm-4 label-right">State / PIN Code:</label>
+                            <div class="col-sm-4 position-relative">
+                                <input type="text" class="form-control form-control-sm" placeholder="State" 
+                                       ng-model="factory.state" ng-class="{'input-filled': factory.state}">
+                            </div>
+                            <div class="col-sm-4 position-relative">
+                                <input type="text" class="form-control form-control-sm" placeholder="PIN Code" 
+                                       ng-model="factory.pinCode" ng-class="{'input-filled': factory.pinCode}">
+                            </div>
+                        </div>
+
+                        <div class="row mb-2 align-items-center">
+                            <label class="col-sm-4 label-right">E-Mail:</label>
+                            <div class="col-sm-8 position-relative">
+                                <input type="email" class="form-control form-control-sm" 
+                                       ng-model="factory.email" ng-class="{'input-filled': factory.email}">
+                                <i class="fa fa-check input-filled-icon" ng-show="factory.email"></i>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2 align-items-center">
+                            <label class="col-sm-4 label-right">Website:</label>
+                            <div class="col-sm-8 position-relative">
+                                <input type="url" class="form-control form-control-sm" 
+                                       ng-model="factory.website" ng-class="{'input-filled': factory.website}">
+                                <i class="fa fa-check input-filled-icon" ng-show="factory.website"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 ps-md-4 border-start">
+                        
+                        <div class="row mb-2 align-items-center">
+                            <label class="col-sm-4 label-right">Clarification Process:</label>
+                            <div class="col-sm-8 position-relative">
+                                <input type="text" class="form-control form-control-sm" 
+                                       ng-model="factory.clarificationProcess" ng-class="{'input-filled': factory.clarificationProcess}">
+                                <i class="fa fa-check input-filled-icon" ng-show="factory.clarificationProcess"></i>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2 align-items-center">
+                            <label class="col-sm-4 label-right">Registration No:</label>
+                            <div class="col-sm-8 position-relative">
+                                <input type="text" class="form-control form-control-sm" 
+                                       ng-model="factory.registrationNo" ng-class="{'input-filled': factory.registrationNo}">
+                            </div>
+                        </div>
+
+                        <div class="row mb-2 align-items-center">
+                            <label class="col-sm-4 label-right">GST No<span class="required-asterisk">*</span>:</label>
+                            <div class="col-sm-8 position-relative">
+                                <input type="text" name="gstNo" class="form-control form-control-sm" 
+                                       ng-model="factory.gstNo" ng-class="{'input-filled': factory.gstNo}" required>
+                                <i class="fa fa-check input-filled-icon" ng-show="factory.gstNo"></i>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2 align-items-center">
+                            <label class="col-sm-4 label-right">Division / Range:</label>
+                            <div class="col-sm-4 position-relative">
+                                <input type="text" class="form-control form-control-sm" placeholder="Division" 
+                                       ng-model="factory.division" ng-class="{'input-filled': factory.division}">
+                            </div>
+                            <div class="col-sm-4 position-relative">
+                                <input type="text" class="form-control form-control-sm" placeholder="Range" 
+                                       ng-model="factory.range" ng-class="{'input-filled': factory.range}">
+                            </div>
+                        </div>
+
+                        <div class="row mb-2 align-items-center">
+                            <label class="col-sm-4 label-right">Installed Capacity:</label>
+                            <div class="col-sm-8 position-relative">
+                                <input type="number" step="0.01" class="form-control form-control-sm" 
+                                       ng-model="factory.installedCapacity" ng-class="{'input-filled': factory.installedCapacity != null}">
+                            </div>
+                        </div>
+
+                        <hr class="text-muted mt-4 mb-3">
+                        <h6 class="text-center text-muted text-uppercase mb-3" style="font-size: 12px; font-weight: bold;">Key Personnel</h6>
+
+                        <div class="row mb-2 align-items-center">
+                            <label class="col-sm-4 label-right">Managing Director:</label>
+                            <div class="col-sm-8 position-relative">
+                                <input type="text" class="form-control form-control-sm" 
+                                       ng-model="factory.managingDirector" ng-class="{'input-filled': factory.managingDirector}">
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-2 align-items-center">
+                            <label class="col-sm-4 label-right">Works Manager:</label>
+                            <div class="col-sm-8 position-relative">
+                                <input type="text" class="form-control form-control-sm" 
+                                       ng-model="factory.worksManager" ng-class="{'input-filled': factory.worksManager}">
+                            </div>
+                        </div>
+
+                        <div class="row mb-2 align-items-center">
+                            <label class="col-sm-4 label-right">Chief Chemist:</label>
+                            <div class="col-sm-8 position-relative">
+                                <input type="text" class="form-control form-control-sm" 
+                                       ng-model="factory.chiefChemist" ng-class="{'input-filled': factory.chiefChemist}">
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-2 align-items-center">
+                            <label class="col-sm-4 label-right">Lab Incharge:</label>
+                            <div class="col-sm-8 position-relative">
+                                <input type="text" class="form-control form-control-sm" 
+                                       ng-model="factory.labIncharge" ng-class="{'input-filled': factory.labIncharge}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="erp-btn-container mt-4 pt-3 border-top text-center bg-light">
+                    <button type="button" class="btn btn-erp-submit me-2" ng-click="saveFactory()" ng-disabled="factoryForm.$invalid">
+                        <i class="fa fa-save me-1"></i> Save
+                    </button>
+                    <button type="button" class="btn btn-erp-reset me-2" ng-click="clearForm()">
+                        <i class="fa fa-refresh me-1"></i> Reset
+                    </button>
+                    <button type="button" class="btn btn-erp-view" ng-click="showFindBar = !showFindBar">
+                        <i class="fa fa-search me-1"></i> Find
+                    </button>
+                    
+                    <button type="button" class="btn btn-outline-secondary btn-sm ms-2" ng-show="factory.seasonYear" ng-click="updateFactory()">
+                        <i class="fa fa-edit me-1"></i> Update
+                    </button>
+                    <button type="button" class="btn btn-outline-danger btn-sm ms-2" ng-show="factory.seasonYear" ng-click="deleteFactory()">
+                        <i class="fa fa-trash me-1"></i> Delete
+                    </button>
+                </div>
+                
+                <div class="row mt-3 justify-content-center" ng-show="showFindBar">
+                    <div class="col-md-6 d-flex align-items-center bg-white p-3 border rounded shadow-sm">
+                        <label class="fw-bold me-3 text-nowrap" style="font-size: 13px;">Enter Season Year:</label>
+                        <input type="text" class="form-control form-control-sm me-3 border-info" ng-model="searchSeasonYear" placeholder="YYYY-YYYY">
+                        <button type="button" class="btn btn-sm btn-info text-white px-4 fw-bold" ng-click="findFactory(searchSeasonYear)">Find</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        
+        <script>
+            if (typeof angular !== 'undefined' && typeof window.appContainerCompiled === 'undefined') {
+                try {
+                    var el = document.getElementById('factory-panel');
+                    if (el && !angular.element(el).scope()) {
+                        angular.bootstrap(el, ['factoryApp']);
+                    }
+                } catch(e) {}
+            }
+        </script>
+        
+    </div>
 </body>
 </html>

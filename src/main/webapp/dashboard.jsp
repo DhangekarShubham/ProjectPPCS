@@ -1,171 +1,124 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="sugarErpApp">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Sugar ERP</title>
+    <title>Sugar ERP</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
-    <style>
-        :root {
-            --primary-color: #2c3e50;
-            --accent-color: #6366f1;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-        }
-
-        body { 
-            background-color: var(--bg-color); 
-            font-family: 'Inter', sans-serif; 
-            color: var(--text-main);
-            margin: 0;
-        }
-
-        /* Modern Hero Section */
-        .hero-section {
-            background: linear-gradient(135deg, var(--primary-color) 0%, #1a252f 100%);
-            padding: 80px 0 120px 0;
-            color: white;
-            border-radius: 0 0 50px 50px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        .factory-title { 
-            font-weight: 700;
-            letter-spacing: -1px;
-            text-transform: uppercase;
-            font-size: 2.2rem;
-        }
-
-        .badge-module {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,0.3);
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            font-weight: 600;
-            display: inline-block;
-            margin-top: 15px;
-        }
-
-        /* Interactive Dashboard Cards */
-        .stats-container {
-            margin-top: -60px;
-        }
-
-        .custom-card {
-            background: var(--card-bg);
-            border: none;
-            border-radius: 16px;
-            padding: 30px 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-            height: 100%;
-            display: block;
-            text-decoration: none !important;
-        }
-
-        .custom-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            border-bottom: 4px solid var(--accent-color);
-        }
-
-        .icon-box {
-            width: 60px;
-            height: 60px;
-            background: #eef2ff;
-            color: var(--accent-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            margin: 0 auto 20px auto;
-            font-size: 1.8rem;
-        }
-
-        .card-title {
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: var(--primary-color);
-            margin-bottom: 10px;
-        }
-
-        .card-desc {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="css/style.css">
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    
+    <script src="js/factory_information.js"></script>
+    <script src="js/dailyCrushing.js"></script> <script>var app = angular.module('sugarErpApp', ['factoryApp', 'crushingApp']);</script>
 </head>
 <body>
-    <jsp:include page="includes/navbar.jsp" />
 
-    <header class="hero-section text-center">
-        <div class="container">
-            <h1 class="factory-title">Shri. Chhatrapati S.S.K. Ltd.</h1>
-            <p class="opacity-75">Bhavaninagar, Maharashtra</p>
-            <div class="badge-module">
-                <i class="bi bi-cpu-fill me-2"></i> Chemical Control Module
+    <jsp:include page="includes/header.jsp"/>
+    <jsp:include page="includes/menu.jsp"/>
+
+    <section id="content">
+        <div class="mainpanel" id="app-container">
+            <div class="contentpanel text-center mt-5">
+                <h1 style="color: #bdc3d1; font-size: 80px;"><i class="fa fa-industry"></i></h1>
+                <h3 style="color: #657390; font-weight: 300;">Welcome to Sugar ERP</h3>
             </div>
-            <div class="mt-3 text-white-50 small">System: Sugar Chemical Mill 1</div>
         </div>
-    </header>
+    </section>
 
-    <main class="container stats-container">
-        <div class="row g-4 justify-content-center">
-            
-            <div class="col-md-3">
-                <a href="factoryMaster.jsp" class="custom-card text-center">
-                    <div class="icon-box">
-                        <i class="bi bi-building"></i>
-                    </div>
-                    <h5 class="card-title">Factory Master</h5>
-                    <p class="card-desc">Configure factory settings, seasons, and capacities.</p>
-                </a>
-            </div>
+<script>
+$(document).ready(function() {
+    
+    // 1. Sidebar Toggle (Hamburger)
+    $('#menuToggle').on('click', function(e) {
+        e.preventDefault();
+        $('body').toggleClass('sidebar-collapsed');
+    });
 
-            <div class="col-md-3">
-                <a href="dailyAnalysis.jsp" class="custom-card text-center">
-                    <div class="icon-box">
-                        <i class="bi bi-graph-up-arrow"></i>
-                    </div>
-                    <h5 class="card-title">Daily Analysis</h5>
-                    <p class="card-desc">Record juice analysis, crushing logs, and lab data.</p>
-                </a>
-            </div>
+    // 2. SMOOTH & SLOW Menu Opening Animation
+    $('.menu-item-parent > a').on('click', function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
 
-            <div class="col-md-3">
-                <a href="reports.jsp" class="custom-card text-center">
-                    <div class="icon-box">
-                        <i class="bi bi-file-earmark-bar-graph"></i>
-                    </div>
-                    <h5 class="card-title">Reports</h5>
-                    <p class="card-desc">Generate G-7, technical performance, and shift reports.</p>
-                </a>
-            </div>
+        var parentLi = $(this).closest('.menu-item-parent');
+        var subMenu = parentLi.find('.children');
+        var animationSpeed = 400;
 
-            <div class="col-md-3">
-                <div class="custom-card text-center">
-                    <div class="icon-box">
-                        <i class="bi bi-shield-lock"></i>
-                    </div>
-                    <h5 class="card-title">Security</h5>
-                    <p class="card-desc">User access control and system audit logs.</p>
-                </div>
-            </div>
+        if (!parentLi.hasClass('active')) {
+            $('.menu-item-parent.active').find('.children').slideUp(animationSpeed);
+            $('.menu-item-parent.active').removeClass('active');
+            parentLi.addClass('active');
+            subMenu.stop(true, true).slideDown(animationSpeed);
+        } else {
+            parentLi.removeClass('active');
+            subMenu.stop(true, true).slideUp(animationSpeed);
+        }
+    });
 
-        </div>
-    </main>
+    // 3. SPA AJAX Loader
+    $(document).on('click', '.ajax-link', function(e) {
+        e.preventDefault();
+        var url = $(this).attr('href');
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        // Prevent trying to reload the dashboard inside itself
+        if(url === "dashboard.jsp" || url === "#" || url === "javascript:void(0);") {
+            window.location.href = url; // Do a hard redirect for the home button
+            return;
+        }
+
+        // Highlight sub-link visually
+        $('.nav-sidebar .nav-link').css('color', ''); // Reset all
+        $('.children .nav-link').css('color', '#657390');
+        $(this).css('color', '#259dab');
+
+        // Show a loading spinner so the user knows something is happening
+        $('#app-container').html('<div class="text-center mt-5"><i class="fa fa-spinner fa-spin fa-3x" style="color: #259dab;"></i><h4 class="mt-3" style="color: #657390;">Loading...</h4></div>');
+
+        // Use $.ajax instead of .load() for better error handling
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function(response) {
+                // Try to find .contentpanel in the response.
+                var parsedResponse = $(response);
+                var newContent = parsedResponse.find('.contentpanel').length ? parsedResponse.find('.contentpanel') : parsedResponse;
+
+                // Inject the HTML
+                $('#app-container').html(newContent);
+
+                // Safely re-compile the injected HTML for AngularJS
+                var $injector = angular.element(document.body).injector();
+                if($injector) {
+                    $injector.invoke(['$compile', '$timeout', function($compile, $timeout) {
+                        // Use pure DOM element to prevent jQuery wrapper confusion
+                        var $appContainer = angular.element(document.getElementById('app-container'));
+                        var $scope = $appContainer.scope();
+                        
+                        // Compile the contents specifically
+                        $compile($appContainer.contents())($scope);
+                        
+                        // Use $timeout to safely trigger a digest cycle without conflicts
+                        $timeout(function() {
+                            if (!$scope.$$phase) {
+                                $scope.$apply();
+                            }
+                        });
+                    }]);
+                }
+            },
+            error: function(xhr, status, error) {
+                // Show clear error message if the page fails to load
+                $('#app-container').html('<div class="alert alert-danger mt-5 text-center"><i class="fa fa-exclamation-triangle fa-2x"></i><br>Error loading page: <b>' + url + '</b><br>Please check if the file exists and the server is running.</div>');
+                console.error("AJAX Load Error:", error);
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>
