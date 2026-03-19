@@ -1,7 +1,7 @@
 package com.twd.sugarfactory.serviceinterface;
-import com.twd.sugarfactory.model.DailyMfgDetails;
-import java.util.List;
+
+import com.twd.sugarfactory.model.MfgReportDTO;
 
 public interface ReportMfgDetailsService {
-    List<DailyMfgDetails> generateReport(String reportDate);
+    MfgReportDTO generateReport(String reportDate);
 }

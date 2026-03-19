@@ -26,15 +26,23 @@ public class RunStockServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        String sampleDate = request.getParameter("sampleDate");
+        
+        // Updated to use Season Year and Run Number instead of sampleDate
+        String seasonYear = request.getParameter("seasonYear");
+        String runNumber = request.getParameter("runNumber");
         
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
 
         if ("load".equals(action)) {
-            List<RunStock> list = service.getStockData(sampleDate);
-            out.print(gson.toJson(list));
+            // Note: You will need to update your Service/DAO to accept these two parameters
+            List<RunStock> list = service.getStockData(seasonYear, runNumber);
+            if (list != null) {
+                out.print(gson.toJson(list));
+            } else {
+                out.print("{\"status\":\"error\", \"message\":\"No data found for this Run Number.\"}");
+            }
         }
         out.flush();
     }
@@ -46,31 +54,43 @@ public class RunStockServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
 
-        if ("delete".equals(action)) {
-             String sampleDate = request.getParameter("sampleDate");
-             boolean success = service.deleteStockData(sampleDate);
-             out.print(success ? "{\"status\":\"success\", \"message\":\"Deleted Run Stock Successfully\"}" : "{\"status\":\"error\", \"message\":\"Failed to Delete\"}");
-             out.flush();
-             return;
-        }
-
-        StringBuilder sb = new StringBuilder();
-        BufferedReader reader = request.getReader();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            sb.append(line);
-        }
-
         try {
+            // 1. DELETE ACTION
+            if ("delete".equals(action)) {
+                 String seasonYear = request.getParameter("seasonYear");
+                 String runNumber = request.getParameter("runNumber");
+                 
+                 if (seasonYear != null && runNumber != null) {
+                     boolean success = service.deleteStockData(seasonYear, runNumber);
+                     out.print(success ? "{\"status\":\"success\", \"message\":\"Deleted Run Stock Successfully\"}" : "{\"status\":\"error\", \"message\":\"Failed to Delete Run Stock\"}");
+                 } else {
+                     out.print("{\"status\":\"error\", \"message\":\"Season Year and Run Number are required for deletion.\"}");
+                 }
+                 return;
+            }
+
+            // 2. SAVE OR UPDATE ACTION
+            StringBuilder sb = new StringBuilder();
+            String line;
+            try (BufferedReader reader = request.getReader()) {
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                }
+            }
+
             if ("save".equals(action) || "update".equals(action)) {
                 Type listType = new TypeToken<List<RunStock>>(){}.getType();
                 List<RunStock> stockList = gson.fromJson(sb.toString(), listType);
                 
-                boolean success = service.saveStockData(stockList);
-                if (success) {
-                    out.print("{\"status\":\"success\", \"message\":\"Run Stock Data Saved Successfully.\"}");
+                if (stockList != null && !stockList.isEmpty()) {
+                    boolean success = service.saveStockData(stockList);
+                    if (success) {
+                        out.print("{\"status\":\"success\", \"message\":\"Run Stock Data " + action + "d Successfully.\"}");
+                    } else {
+                        out.print("{\"status\":\"error\", \"message\":\"Database Error: Failed to " + action + " Data.\"}");
+                    }
                 } else {
-                    out.print("{\"status\":\"error\", \"message\":\"Failed to Save Data.\"}");
+                    out.print("{\"status\":\"error\", \"message\":\"Payload is empty.\"}");
                 }
             }
         } catch (Exception e) {

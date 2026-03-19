@@ -9,19 +9,19 @@ public class RunStockServiceImpl implements RunStockService {
     private RunStockDAO dao = new RunStockDAO();
 
     @Override
-    public List<RunStock> getStockData(String sampleDate) {
-        return dao.getRunStockList(sampleDate);
+    public List<RunStock> getStockData(String seasonYear, String runNumber) {
+        return dao.getStockData(seasonYear, runNumber);
     }
 
     @Override
     public boolean saveStockData(List<RunStock> stockList) {
         if (stockList == null || stockList.isEmpty()) return false;
-        return dao.saveRunStockLog(stockList);
+        return dao.saveStockData(stockList);
     }
     
     @Override
-    public boolean deleteStockData(String sampleDate) {
-        if (sampleDate == null || sampleDate.trim().isEmpty()) return false;
-        return dao.deleteRunStockLog(sampleDate);
+    public boolean deleteStockData(String seasonYear, String runNumber) {
+        if (seasonYear == null || runNumber == null) return false;
+        return dao.deleteStockData(seasonYear, runNumber);
     }
 }

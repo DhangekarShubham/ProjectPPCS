@@ -3,7 +3,7 @@ import com.twd.sugarfactory.model.RunStock;
 import java.util.List;
 
 public interface RunStockService {
-    List<RunStock> getStockData(String sampleDate);
+    List<RunStock> getStockData(String seasonYear, String runNumber);
     boolean saveStockData(List<RunStock> stockList);
-    boolean deleteStockData(String sampleDate);
+    boolean deleteStockData(String seasonYear, String runNumber);
 }

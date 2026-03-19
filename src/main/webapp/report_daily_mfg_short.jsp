@@ -3,316 +3,210 @@
 <html lang="mr" ng-app="mfgShortApp">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Crushing Report (Marathi) | Sugar ERP</title>
+    <title>डेली क्रशींग रिपोर्ट (संक्षिप्त)</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    <script src="js/reportMfgShort.js"></script>
-
     <style>
-        :root {
-            --primary-blue: #2563eb;
-            --sidebar-dark: #1e293b;
-            --bg-light: #f1f5f9;
-            --border-color: #e2e8f0;
-            --text-main: #1e293b;
-        }
-
-        body { 
-            background-color: var(--bg-light); 
-            font-family: 'Inter', sans-serif; 
-            color: var(--text-main);
-        }
-
-        /* ERP Layout Window */
-        .app-window { 
-            background: #ffffff; 
-            border: none;
-            border-radius: 12px; 
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            margin-top: 20px;
-        }
-
-        .window-header { 
-            background-color: #ffffff; 
-            padding: 15px 25px; 
-            font-weight: 700; 
-            border-bottom: 1px solid var(--border-color); 
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            letter-spacing: 0.5px;
-        }
-        
-        .window-header i { color: var(--primary-blue); margin-right: 12px; }
-
-        /* Industry Sidebar */
-        .sidebar-panel { 
-            background-color: var(--sidebar-dark); 
-            padding: 25px 15px; 
-            min-height: 800px; 
-        }
-
-        .action-btn { 
-            width: 100%; 
-            margin-bottom: 10px; 
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            color: #cbd5e1;
-            text-align: left;
-            padding: 12px 15px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            border-radius: 8px;
-            font-size: 0.88rem;
-        }
-        
-        .action-btn i { margin-right: 10px; font-size: 1.1rem; }
-
-        .action-btn:hover { 
-            background-color: var(--primary-blue); 
-            color: #ffffff;
-            transform: translateX(5px);
-        }
-
-        /* Main Workspace */
-        .main-panel { background-color: var(--bg-light); padding: 30px; }
-
-        /* Report Specific Styling (Maintaining your exact structure) */
-        .report-paper { 
-            background-color: white; 
-            padding: 50px; 
-            border: 1px solid #d1d5db; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
-            margin: 0 auto; 
-            max-width: 950px; 
-            color: #000;
-        }
-
-        .report-title { 
-            text-align: center; 
-            font-weight: 800; 
-            font-size: 1.4rem; 
-            margin-bottom: 5px; 
-        }
-
-        .report-subtitle { 
-            text-align: center; 
-            font-weight: 700; 
-            font-size: 1.1rem; 
-            margin-bottom: 15px; 
-        }
-
-        /* Marathi Typography & Numeric Mono-spacing */
-        .marathi-text { font-family: 'Mangal', 'Arial Unicode MS', sans-serif; }
-        
-        .table-report { margin-bottom: 15px; width: 100%; border-collapse: collapse; border: 1.5px solid #000; }
-        .table-report th { 
-            background-color: #f3f4f6 !important; 
-            border: 1px solid #000; 
-            text-align: center; 
-            padding: 8px; 
-            font-size: 0.85rem; 
-            font-weight: 800;
-        }
-        .table-report td { 
-            border: 1px solid #000; 
-            padding: 6px 12px; 
-            font-size: 0.9rem; 
-            font-family: 'JetBrains Mono', monospace; /* Professional alignment for numbers */
-        }
-        
-        .text-label { font-family: 'Mangal', sans-serif !important; font-weight: 600; }
-
+        /* --- PRINT CSS OVERRIDES --- */
         @media print {
-            body { background: white; }
-            .navbar, .sidebar-panel, .btn-outline-dark, form, .alert { display: none !important; }
-            .main-panel { padding: 0; background: white; }
-            .app-window { box-shadow: none; margin: 0; border: none; }
-            .window-header { display: none; }
-            .report-paper { box-shadow: none; border: none; padding: 20px; width: 100%; max-width: 100%; }
+            .no-print, .alert, nav, header, footer { 
+                display: none !important; 
+            }
+            body, html {
+                background-color: #ffffff !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            #printableArea { 
+                position: relative !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important; 
+                box-shadow: none !important; 
+                border: none !important; 
+                margin: 0 !important; 
+                padding: 0 !important;
+                display: block !important;
+            }
+            .pdf-table { width: 100% !important; border-collapse: collapse !important; }
+            .pdf-table th, .pdf-table td { border: 1px solid #000 !important; color: #000 !important; }
+            .pdf-table th { 
+                background-color: #f1f5f9 !important; 
+                -webkit-print-color-adjust: exact !important; 
+                print-color-adjust: exact !important; 
+            }
         }
+        
+        /* --- SCREEN & REPORT STYLING --- */
+        .marathi-font { font-family: 'Mangal', 'Arial Unicode MS', sans-serif; }
+        .report-header-title { font-size: 20px; font-weight: 800; text-align: center; color: #000; }
+        .report-header-subtitle { font-size: 16px; font-weight: bold; text-align: center; margin-bottom: 20px; text-decoration: underline; }
+        .report-meta-info { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 10px; font-size: 14px; color: #000; }
+        
+        .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        .pdf-table th, .pdf-table td { border: 1px solid #000; padding: 5px 8px; font-size: 12px; color: #000; }
+        .pdf-table th { background-color: #f8fafc; text-align: center; }
+        .val-col { text-align: right; font-family: 'JetBrains Mono', monospace; font-weight: bold; }
+        .label-col { font-weight: bold; color: #333; }
+        .bg-grey { background-color: #f1f5f9; }
     </style>
 </head>
-<body ng-controller="MfgShortController">
-    <jsp:include page="includes/navbar.jsp" />
+<body class="marathi-font">
 
-    <div class="container-fluid px-5 mb-5">
-        <div class="d-flex justify-content-between align-items-center mt-3 mb-1">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 small fw-bold">
-                    <li class="breadcrumb-item"><a href="dashboard.jsp" class="text-decoration-none">Home</a></li>
-                    <li class="breadcrumb-item active text-muted">Marathi Reports</li>
-                    <li class="breadcrumb-item active text-primary">Daily Crushing Short</li>
-                </ol>
-            </nav>
-        </div>
-
-        <div class="row app-window">
-            <div class="window-header">
-                <i class="bi bi-file-earmark-text-fill"></i> DAILY MANUFACTURING SHORT (MARATHI) REPORT ENGINE
+    <div class="contentpanel" ng-controller="MfgShortController">
+        
+        <link href="css/forms.css" rel="stylesheet">
+        
+        <div class="erp-form-container mt-3 mx-2 bg-white shadow-sm border rounded no-print">
+            <div class="erp-form-header text-white px-3 py-2 fw-bold text-uppercase" style="background-color: #3bb4b4;">
+                <i class="fa fa-file-text-o me-2"></i> डेली क्रशींग रिपोर्ट (संक्षिप्त)
             </div>
             
-            <div class="row m-0 p-0">
-                <div class="col-md-2 sidebar-panel">
-                    <button type="button" class="btn action-btn mt-2 text-white" ng-click="printReport()">
-                        <i class="bi bi-printer-fill text-info"></i> Print Report
-                    </button>
-                    <button type="button" class="btn action-btn">
-                        <i class="bi bi-file-earmark-pdf-fill text-danger"></i> Export to PDF
-                    </button>
-                    <button type="button" class="btn action-btn">
-                        <i class="bi bi-file-earmark-excel-fill text-success"></i> Export to Excel
-                    </button>
-                    
-                    <a href="dashboard.jsp" class="btn action-btn mt-5 bg-danger bg-opacity-10 text-danger border-danger border-opacity-25">
-                        <i class="bi bi-power"></i> Close Engine
-                    </a>
+            <div class="row align-items-center bg-light p-3 mx-0 border-bottom">
+                <div class="col-md-4 d-flex align-items-center">
+                    <label class="text-muted small fw-bold text-uppercase me-2 mb-0" style="white-space: nowrap;">तारीख निवडा:</label>
+                    <div class="input-group input-group-sm shadow-sm">
+                        <input type="text" class="form-control border-primary text-center fw-bold text-primary" 
+                               placeholder="DD/MM/YYYY" ng-model="manualDateText" ng-change="syncFromText()" maxlength="10">
+                        <input type="date" class="form-control border-primary px-1" 
+                               ng-model="searchDate" ng-change="syncFromPicker()" 
+                               style="max-width: 40px; cursor: pointer;">
+                    </div>
                 </div>
 
-                <div class="col-md-10 main-panel">
-                    
-                    <form name="searchForm" class="mb-5 bg-white p-4 border rounded shadow-sm w-75 mx-auto" novalidate>
-                        <div class="row align-items-center justify-content-center">
-                            <label class="col-auto fw-bold text-muted text-uppercase small">Select Report Date:</label>
-                            <div class="col-auto">
-                                <div class="input-group input-group-sm">
-                                    <span class="input-group-text bg-white border-secondary"><i class="bi bi-calendar3"></i></span>
-                                    <input type="date" class="form-control border-secondary" ng-model="selectedDate" required>
-                                </div>
-                            </div>
-                            <div class="col-auto">
-                                <button type="button" class="btn btn-sm btn-primary px-4 fw-bold shadow-sm" ng-click="generateReport()">
-                                    <i class="bi bi-gear-wide-connected me-2"></i>GENERATE
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-
-                    <div id="printableArea" class="report-paper marathi-text shadow" ng-show="isDataLoaded">
-                        <div class="text-center border-bottom border-3 border-dark mb-4 pb-2">
-                            <h3 class="report-title">श्री. छत्रपती सहकारी साखर कारखाना लि., भवानीनगर, ता. इंदापूर जि. पुणे.</h3>
-                            <h5 class="report-subtitle">डेली क्रशींग रिपोर्ट <br> (एकत्रीत संक्षिप्त अहवाल)</h5>
-                        </div>
-                        
-                        <div class="row mb-3" style="font-size: 0.95rem; font-weight: bold;">
-                            <div class="col-4">क्रॉपडे : <span class="text-primary">{{ reportData.cropDay }}</span></div>
-                            <div class="col-4 text-center">हंगाम २०२५-२०२६</div>
-                            <div class="col-4 text-end">दिनांक : {{ displayDate }}</div>
-                        </div>
-
-                        <table class="table table-report table-sm mb-4">
-                            <thead>
-                                <tr>
-                                    <th rowspan="2" style="width: 5%;">अ. न.</th>
-                                    <th rowspan="2" style="width: 25%;">तपशील</th>
-                                    <th rowspan="2" style="width: 15%;">आज</th>
-                                    <th colspan="2" style="width: 30%;">हंगाम २०२५-२०२६</th>
-                                    <th colspan="2" style="width: 25%;">मागील हंगाम २०२४-२०२५</th>
-                                </tr>
-                                <tr>
-                                    <th>आजपर्यंत</th>
-                                    <th>%</th>
-                                    <th>आज</th>
-                                    <th>आजपर्यंत</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="text-center" rowspan="5" style="vertical-align: top;">१.</td>
-                                    <td class="text-label bg-light">ऊस गळीत (मे. टन)</td>
-                                    <td class="bg-light"></td><td class="bg-light"></td><td class="bg-light"></td><td class="bg-light"></td><td class="bg-light"></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-label" style="padding-left: 20px;">सभासद</td>
-                                    <td class="text-end fw-bold">{{ reportData.caneMemberToday | number:3 }}</td>
-                                    <td class="text-end fw-bold text-primary">{{ reportData.caneMemberTodate | number:3 }}</td>
-                                    <td></td><td class="text-end">-</td><td class="text-end">-</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-label" style="padding-left: 20px;">बि. सभासद</td>
-                                    <td class="text-end fw-bold">{{ reportData.caneNonMemberToday | number:3 }}</td>
-                                    <td class="text-end fw-bold text-primary">{{ reportData.caneNonMemberTodate | number:3 }}</td>
-                                    <td></td><td class="text-end">-</td><td class="text-end">-</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-label" style="padding-left: 20px;">इतर</td>
-                                    <td class="text-end fw-bold">{{ reportData.caneOtherToday | number:3 }}</td>
-                                    <td class="text-end fw-bold text-primary">{{ reportData.caneOtherTodate | number:3 }}</td>
-                                    <td></td><td class="text-end">-</td><td class="text-end">-</td>
-                                </tr>
-                                <tr class="bg-light">
-                                    <td class="text-label fw-bold" style="padding-left: 20px;">एकूण</td>
-                                    <td class="text-end fw-bold">{{ reportData.caneTotalToday | number:3 }}</td>
-                                    <td class="text-end fw-bold text-primary">{{ reportData.caneTotalTodate | number:3 }}</td>
-                                    <td></td><td class="text-end fw-bold">-</td><td class="text-end fw-bold">-</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center" rowspan="7" style="vertical-align: top;">२.</td>
-                                    <td class="text-label bg-light">साखर पोती (क्विंटल)</td>
-                                    <td class="bg-light"></td><td class="bg-light"></td><td class="bg-light"></td><td class="bg-light"></td><td class="bg-light"></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-label" style="padding-left: 20px;">एल-३०</td>
-                                    <td class="text-end">{{ reportData.sugarL30Today | number:2 }}</td>
-                                    <td class="text-end">{{ reportData.sugarL30Todate | number:2 }}</td>
-                                    <td></td><td class="text-end">-</td><td class="text-end">-</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-label" style="padding-left: 20px;">एम-३०</td>
-                                    <td class="text-end">{{ reportData.sugarM30Today | number:2 }}</td>
-                                    <td class="text-end">{{ reportData.sugarM30Todate | number:2 }}</td>
-                                    <td></td><td class="text-end">-</td><td class="text-end">-</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-label" style="padding-left: 20px;">एस १-३०</td>
-                                    <td class="text-end">{{ reportData.sugarS130Today | number:2 }}</td>
-                                    <td class="text-end">{{ reportData.sugarS130Todate | number:2 }}</td>
-                                    <td></td><td class="text-end">-</td><td class="text-end">-</td>
-                                </tr>
-                                <tr class="bg-light">
-                                    <td class="text-label fw-bold" style="padding-left: 20px;">एकूण</td>
-                                    <td class="text-end fw-bold">{{ reportData.sugarTotalToday | number:2 }}</td>
-                                    <td class="text-end fw-bold text-primary">{{ reportData.sugarTotalTodate | number:2 }}</td>
-                                    <td></td><td class="text-end fw-bold">-</td><td class="text-end fw-bold">-</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        
-                        <div class="row mt-5 pt-5">
-                            <div class="col-4 text-center">
-                                <div style="border-top: 1.5px solid #000; width: 80%; margin: 0 auto 5px auto;"></div>
-                                <span class="fw-bold small">लॅब इंचार्ज</span>
-                            </div>
-                            <div class="col-4 text-center">
-                                <div style="border-top: 1.5px solid #000; width: 80%; margin: 0 auto 5px auto;"></div>
-                                <span class="fw-bold small">चीफ केमिस्ट</span>
-                            </div>
-                            <div class="col-4 text-center">
-                                <div style="border-top: 1.5px solid #000; width: 80%; margin: 0 auto 5px auto;"></div>
-                                <span class="fw-bold small">मॅनेजिंग डायरेक्टर</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="alert alert-custom w-75 mx-auto text-center border-0 shadow-sm" ng-hide="isDataLoaded" style="background: #eef2ff; color: #4338ca;">
-                        <i class="bi bi-info-circle-fill me-2"></i>
-                        <strong>अहवाल सूचना:</strong> कृपया तारीख निवडा आणि संक्षिप्त मराठी अहवाल पाहण्यासाठी Generate वर क्लिक करा.
-                    </div>
-
+                <div class="col-md-5">
+                    <button type="button" class="btn btn-sm btn-primary fw-bold px-4 me-2 shadow-sm" ng-click="generateReport()" style="background-color: #6593b4; border: none;">
+                        <i class="fa fa-cogs me-1"></i> Generate
+                    </button>
+                    <button type="button" class="btn btn-sm btn-warning fw-bold px-4 text-white shadow-sm" ng-click="printReport()" style="background-color: #e5a751; border: none;" ng-disabled="!isDataLoaded">
+                        <i class="fa fa-print me-1"></i> Print / PDF
+                    </button>
+                    <button type="button" class="btn btn-sm btn-light fw-bold px-4 border shadow-sm" ng-click="clearReport()">
+                        <i class="fa fa-refresh me-1"></i> Reset
+                    </button>
                 </div>
             </div>
         </div>
+
+        <div class="erp-form-container mx-2 mt-4 p-5 bg-white shadow border rounded" id="printableArea" ng-show="isDataLoaded">
+            
+            <div class="report-header-title">श्री. छत्रपती सहकारी साखर कारखाना लि., भवानीनगर, ता. इंदापूर जि. पुणे. [cite: 13]</div>
+            <div class="report-header-subtitle">डेली क्रशींग रिपोर्ट (एकत्रीत संक्षिप्त अहवाल) [cite: 16, 17]</div>
+            
+            <div class="report-meta-info">
+                <div>क्रॉपडे: {{ reportData.cropDay || '१' }} [cite: 14, 15]</div>
+                <div>हंगाम: २०२५-२०२६ [cite: 18]</div>
+                <div>दिनांक: {{ displayDate }} [cite: 19]</div>
+            </div>
+
+            <table class="pdf-table">
+                <thead>
+                    <tr>
+                        <th rowspan="2" style="width: 5%;">अ. न.</th>
+                        <th rowspan="2" style="width: 25%;">तपशील</th>
+                        <th rowspan="2" style="width: 15%;">आज</th>
+                        <th colspan="2">हंगाम २०२५-२०२६ [cite: 18]</th>
+                        <th colspan="2">मागील हंगाम २०२४-२०२५</th>
+                    </tr>
+                    <tr>
+                        <th style="width: 15%;">आजपर्यंत</th>
+                        <th style="width: 10%;">%</th>
+                        <th style="width: 15%;">आज</th>
+                        <th style="width: 15%;">आजपर्यंत</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center" rowspan="5">१</td>
+                        <td class="label-col bg-grey">ऊस गळीत (मे. टन)</td>
+                        <td class="bg-grey"></td><td class="bg-grey"></td><td class="bg-grey"></td><td class="bg-grey"></td><td class="bg-grey"></td>
+                    </tr>
+                    <tr>
+                        <td>सभासद</td>
+                        <td class="val-col">{{ reportData.caneMemberToday | number:3 }}</td>
+                        <td class="val-col">{{ reportData.caneMemberTodate | number:3 }}</td>
+                        <td></td><td>-</td><td>-</td>
+                    </tr>
+                    <tr>
+                        <td>बि. सभासद</td>
+                        <td class="val-col">{{ reportData.caneNonMemberToday | number:3 }}</td>
+                        <td class="val-col">{{ reportData.caneNonMemberTodate | number:3 }}</td>
+                        <td></td><td>-</td><td>-</td>
+                    </tr>
+                    <tr>
+                        <td>इतर</td>
+                        <td class="val-col">{{ reportData.caneOtherToday | number:3 }}</td>
+                        <td class="val-col">{{ reportData.caneOtherTodate | number:3 }}</td>
+                        <td></td><td>-</td><td>-</td>
+                    </tr>
+                    <tr class="bg-grey">
+                        <td class="label-col">एकूण</td>
+                        <td class="val-col">{{ reportData.caneTotalToday | number:3 }}</td>
+                        <td class="val-col">{{ reportData.caneTotalTodate | number:3 }}</td>
+                        <td></td><td>-</td><td>-</td>
+                    </tr>
+
+                    <tr>
+                        <td class="text-center" rowspan="5">२</td>
+                        <td class="label-col bg-grey">साखर पोती (क्विंटल)</td>
+                        <td class="bg-grey"></td><td class="bg-grey"></td><td class="bg-grey"></td><td class="bg-grey"></td><td class="bg-grey"></td>
+                    </tr>
+                    <tr>
+                        <td>एल-३०</td>
+                        <td class="val-col">{{ reportData.sugarL30Today | number:2 }}</td>
+                        <td class="val-col">{{ reportData.sugarL30Todate | number:2 }}</td>
+                        <td></td><td>-</td><td>-</td>
+                    </tr>
+                    <tr>
+                        <td>एम-३०</td>
+                        <td class="val-col">{{ reportData.sugarM30Today | number:2 }}</td>
+                        <td class="val-col">{{ reportData.sugarM30Todate | number:2 }}</td>
+                        <td></td><td>-</td><td>-</td>
+                    </tr>
+                    <tr>
+                        <td>एस १-३०</td>
+                        <td class="val-col">{{ reportData.sugarS130Today | number:2 }}</td>
+                        <td class="val-col">{{ reportData.sugarS130Todate | number:2 }}</td>
+                        <td></td><td>-</td><td>-</td>
+                    </tr>
+                    <tr class="bg-grey">
+                        <td class="label-col">एकूण</td>
+                        <td class="val-col">{{ reportData.sugarTotalToday | number:2 }}</td>
+                        <td class="val-col">{{ reportData.sugarTotalTodate | number:2 }}</td>
+                        <td></td><td>-</td><td>-</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="pdf-table">
+                <tbody>
+                    <tr>
+                        <td style="width: 50%;">कंडेन्सर पाणी तापमान इनलेट: <b>{{ reportData.inletTemp }}°C</b></td>
+                        <td style="width: 50%;">कंडेन्सर पाणी तापमान आउटलेट: <b>{{ reportData.outletTemp }}°C</b></td>
+                    </tr>
+                    <tr>
+                        <td>रिकव्हरी % ऊस: <b>{{ reportData.recoveryPct }}%</b></td>
+                        <td>को-जनरेशन युनिट्स: <b>{{ reportData.cogenUnits }}</b></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="margin-top: 60px; display: flex; justify-content: space-between; text-align: center; font-weight: bold; font-size: 14px;">
+                <div style="width: 30%;">लॅब इनचार्ज [cite: 30]</div>
+                <div style="width: 30%;">चीफ केमिस्ट [cite: 31]</div>
+                <div style="width: 30%;">मॅनेजिंग डायरेक्टर</div>
+            </div>
+
+        </div>
+
+        <div class="alert alert-light w-75 mx-auto text-center border shadow-sm mt-5 text-muted no-print" ng-hide="isDataLoaded">
+            <i class="fa fa-info-circle fa-2x mb-3 text-primary d-block"></i>
+            <h6 class="fw-bold">अहवाल उपलब्ध नाही</h6>
+            <p class="small mb-0">कृपया तारीख निवडा आणि <strong>Generate</strong> वर क्लिक करा.</p>
+        </div>
+
     </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="js/reportMfgShort.js"></script>
+
 </body>
 </html>

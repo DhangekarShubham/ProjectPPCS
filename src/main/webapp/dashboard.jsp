@@ -28,6 +28,10 @@
 <script src="js/stoppageReason.js"></script>
 <script src="js/rt7cStock.js"></script>
 <script src="js/rt8c.js"></script>
+<script src="js/runStock.js"></script>
+<script src="js/reportMfgDetails.js"></script>
+ <script src="js/reportMfgShort.js"></script>
+
 <script>
     var app = angular.module('sugarErpApp', [
         'factoryApp', 
@@ -37,7 +41,10 @@
         'stockApp',
         'stoppageApp',
         'rt7cApp', 
-        'rt8cApp'     
+        'rt8cApp',
+        'runStockApp',
+        'mfgReportApp',
+        'mfgShortApp'
     ]);
 </script></head>
 <body>

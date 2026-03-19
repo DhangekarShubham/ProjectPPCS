@@ -1,6 +1,7 @@
 package com.twd.sugarfactory.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.twd.sugarfactory.model.DailyMfgShort;
 import com.twd.sugarfactory.service.ReportMfgShortServiceImpl;
 import com.twd.sugarfactory.serviceinterface.ReportMfgShortService;
@@ -26,18 +27,29 @@ public class GenerateMfgShortServlet extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
+        
+        // Use JsonObject to create a structured response matching the JS expectations
+        JsonObject jsonResp = new JsonObject();
 
         try {
             DailyMfgShort reportData = service.generateReport(reportDate);
-            if(reportData != null) {
-                out.print(gson.toJson(reportData));
+            
+            // Logic to verify if data exists for the selected date
+            if (reportData != null && reportData.getReportDate() != null) {
+                jsonResp.addProperty("status", "success");
+                // Convert the POJO to a JSON tree to nest it under 'data'
+                jsonResp.add("data", gson.toJsonTree(reportData));
             } else {
-                out.print("{}"); 
+                // If no data is found, return an error status to keep the report hidden
+                jsonResp.addProperty("status", "error");
+                jsonResp.addProperty("message", "Selected date has no crushing records.");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            out.print("{}"); 
+            jsonResp.addProperty("status", "error");
+            jsonResp.addProperty("message", "Server Error: " + e.getMessage());
         } finally {
+            out.print(gson.toJson(jsonResp));
             out.flush();
         }
     }
