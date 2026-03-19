@@ -23,18 +23,18 @@ public class RT8CServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        String reportDate = request.getParameter("reportDate");
+        String seasonYear = request.getParameter("seasonYear"); // Updated to seasonYear
         
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
 
         if ("find".equals(action)) {
-            RT8CPerformance data = service.getRT8CData(reportDate);
+            RT8CPerformance data = service.getRT8CData(seasonYear);
             if (data != null) {
                 out.print(gson.toJson(data));
             } else {
-                out.print("{\"status\":\"error\", \"message\":\"No data found for this date.\"}");
+                out.print("{\"status\":\"error\", \"message\":\"No data found for this season.\"}");
             }
         }
         out.flush();
@@ -48,8 +48,8 @@ public class RT8CServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         if ("delete".equals(action)) {
-             String reportDate = request.getParameter("reportDate");
-             boolean success = service.deleteRT8CData(reportDate);
+             String seasonYear = request.getParameter("seasonYear"); // Updated
+             boolean success = service.deleteRT8CData(seasonYear);
              out.print(success ? "{\"status\":\"success\", \"message\":\"Deleted Successfully\"}" : "{\"status\":\"error\", \"message\":\"Failed to Delete\"}");
              out.flush();
              return;

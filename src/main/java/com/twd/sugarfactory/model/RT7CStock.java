@@ -1,20 +1,44 @@
 package com.twd.sugarfactory.model;
 
 public class RT7CStock {
-    private String stockDate;
-    private String reportMonth; // e.g., "2026-02"
-    private Integer materialId; // Links to material_master
-    private String materialName; 
-    private String tabCategory; // "PROCESS", "SUGAR", "OLD" for UI filtering
+    // Header Fields (New)
+    private String rt7cNumber;
+    private String seasonYear;
+    private String startDate;
+    private String endDate;
+    private String stockDate; // Maps to sample_date
+    private String actualDate;
     
-    private Double quantity; // For Sugar/Molasses (Qtls)
-    private Double volume;   // For Process goods (HL)
+    // Detail Fields (Existing)
+    private String reportMonth; 
+    private Integer materialId; 
+    private String materialName; 
+    private String tabCategory; 
+    
+    private Double quantity; 
+    private Double volume;   
     private Double spGravity;
     private Double brixPercent;
     private Double polPercent;
     private Double purityPercent;
 
     public RT7CStock() {}
+
+    // Getters and Setters
+    public String getRt7cNumber() { return rt7cNumber; }
+    public void setRt7cNumber(String rt7cNumber) { this.rt7cNumber = rt7cNumber; }
+
+    public String getSeasonYear() { return seasonYear; }
+    public void setSeasonYear(String seasonYear) { this.seasonYear = seasonYear; }
+
+    public String getStartDate() { return startDate; }
+    public void setStartDate(String startDate) { this.startDate = startDate; }
+
+    public String getEndDate() { return endDate; }
+    public void setEndDate(String endDate) { this.endDate = endDate; }
+
+    public String getActualDate() { return actualDate; }
+    public void setActualDate(String actualDate) { this.actualDate = actualDate; }
 
     public String getStockDate() { return stockDate; }
     public void setStockDate(String stockDate) { this.stockDate = stockDate; }
