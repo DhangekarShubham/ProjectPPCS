@@ -1,7 +1,6 @@
 var app = angular.module('chemicalApp', []);
 
 app.controller('ChemicalController', function($scope, $http) {
-    alert("alert");
     $scope.sampleDate = "";
     $scope.chemicalList = [];
 

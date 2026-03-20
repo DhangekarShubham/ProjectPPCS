@@ -30,23 +30,14 @@
 <script src="js/rt8c.js"></script>
 <script src="js/runStock.js"></script>
 <script src="js/reportMfgDetails.js"></script>
- <script src="js/reportMfgShort.js"></script>
+<script src="js/reportMfgShort.js"></script>
 
 <script>
-    var app = angular.module('sugarErpApp', [
-        'factoryApp', 
-        'crushingApp', 
-        'analysisApp',
-        'chemicalApp',
-        'stockApp',
-        'stoppageApp',
-        'rt7cApp', 
-        'rt8cApp',
-        'runStockApp',
-        'mfgReportApp',
-        'mfgShortApp'
-    ]);
-</script></head>
+	var app = angular.module('sugarErpApp', [ 'factoryApp', 'crushingApp',
+			'analysisApp', 'chemicalApp', 'stockApp', 'stoppageApp', 'rt7cApp',
+			'rt8cApp', 'runStockApp', 'mfgReportApp', 'mfgShortApp' ]);
+</script>
+</head>
 <body>
 
 	<jsp:include page="includes/header.jsp" />
@@ -65,93 +56,150 @@
 	</section>
 
 	<script>
-$(document).ready(function() {
-    
-    // 1. Sidebar Toggle (Hamburger)
-    $('#menuToggle').on('click', function(e) {
-        e.preventDefault();
-        $('body').toggleClass('sidebar-collapsed');
-    });
+		$(document)
+				.ready(
+						function() {
 
-    // 2. SMOOTH & SLOW Menu Opening Animation
-    $('.menu-item-parent > a').on('click', function(e) {
-        e.preventDefault();
-        e.stopImmediatePropagation();
+							// 1. Sidebar Toggle (Hamburger)
+							$('#menuToggle').on('click', function(e) {
+								e.preventDefault();
+								$('body').toggleClass('sidebar-collapsed');
+							});
 
-        var parentLi = $(this).closest('.menu-item-parent');
-        var subMenu = parentLi.find('.children');
-        var animationSpeed = 400;
+							// 2. SMOOTH & SLOW Menu Opening Animation
+							$('.menu-item-parent > a').on(
+									'click',
+									function(e) {
+										e.preventDefault();
+										e.stopImmediatePropagation();
 
-        if (!parentLi.hasClass('active')) {
-            $('.menu-item-parent.active').find('.children').slideUp(animationSpeed);
-            $('.menu-item-parent.active').removeClass('active');
-            parentLi.addClass('active');
-            subMenu.stop(true, true).slideDown(animationSpeed);
-        } else {
-            parentLi.removeClass('active');
-            subMenu.stop(true, true).slideUp(animationSpeed);
-        }
-    });
+										var parentLi = $(this).closest(
+												'.menu-item-parent');
+										var subMenu = parentLi
+												.find('.children');
+										var animationSpeed = 400;
 
-    // 3. SPA AJAX Loader
-    $(document).on('click', '.ajax-link', function(e) {
-        e.preventDefault();
-        var url = $(this).attr('href');
+										if (!parentLi.hasClass('active')) {
+											$('.menu-item-parent.active').find(
+													'.children').slideUp(
+													animationSpeed);
+											$('.menu-item-parent.active')
+													.removeClass('active');
+											parentLi.addClass('active');
+											subMenu.stop(true, true).slideDown(
+													animationSpeed);
+										} else {
+											parentLi.removeClass('active');
+											subMenu.stop(true, true).slideUp(
+													animationSpeed);
+										}
+									});
 
-        // Prevent trying to reload the dashboard inside itself
-        if(url === "dashboard.jsp" || url === "#" || url === "javascript:void(0);") {
-            window.location.href = url; // Do a hard redirect for the home button
-            return;
-        }
+							// 3. SPA AJAX Loader
+							$(document)
+									.on(
+											'click',
+											'.ajax-link',
+											function(e) {
+												e.preventDefault();
+												var url = $(this).attr('href');
 
-        // Highlight sub-link visually
-        $('.nav-sidebar .nav-link').css('color', ''); // Reset all
-        $('.children .nav-link').css('color', '#657390');
-        $(this).css('color', '#259dab');
+												// Prevent trying to reload the dashboard inside itself
+												if (url === "dashboard.jsp"
+														|| url === "#"
+														|| url === "javascript:void(0);") {
+													window.location.href = url; // Do a hard redirect for the home button
+													return;
+												}
 
-        // Show a loading spinner so the user knows something is happening
-        $('#app-container').html('<div class="text-center mt-5"><i class="fa fa-spinner fa-spin fa-3x" style="color: #259dab;"></i><h4 class="mt-3" style="color: #657390;">Loading...</h4></div>');
+												// Highlight sub-link visually
+												$('.nav-sidebar .nav-link')
+														.css('color', ''); // Reset all
+												$('.children .nav-link').css(
+														'color', '#657390');
+												$(this).css('color', '#259dab');
 
-        // Use $.ajax instead of .load() for better error handling
-        $.ajax({
-            url: url,
-            type: 'GET',
-            success: function(response) {
-                // Try to find .contentpanel in the response.
-                var parsedResponse = $(response);
-                var newContent = parsedResponse.find('.contentpanel').length ? parsedResponse.find('.contentpanel') : parsedResponse;
+												// Show a loading spinner so the user knows something is happening
+												$('#app-container')
+														.html(
+																'<div class="text-center mt-5"><i class="fa fa-spinner fa-spin fa-3x" style="color: #259dab;"></i><h4 class="mt-3" style="color: #657390;">Loading...</h4></div>');
 
-                // Inject the HTML
-                $('#app-container').html(newContent);
+												// Use $.ajax instead of .load() for better error handling
+												$
+														.ajax({
+															url : url,
+															type : 'GET',
+															success : function(
+																	response) {
+																// Try to find .contentpanel in the response.
+																var parsedResponse = $(response);
+																var newContent = parsedResponse
+																		.find('.contentpanel').length ? parsedResponse
+																		.find('.contentpanel')
+																		: parsedResponse;
 
-                // Safely re-compile the injected HTML for AngularJS
-                var $injector = angular.element(document.body).injector();
-                if($injector) {
-                    $injector.invoke(['$compile', '$timeout', function($compile, $timeout) {
-                        // Use pure DOM element to prevent jQuery wrapper confusion
-                        var $appContainer = angular.element(document.getElementById('app-container'));
-                        var $scope = $appContainer.scope();
-                        
-                        // Compile the contents specifically
-                        $compile($appContainer.contents())($scope);
-                        
-                        // Use $timeout to safely trigger a digest cycle without conflicts
-                        $timeout(function() {
-                            if (!$scope.$$phase) {
-                                $scope.$apply();
-                            }
-                        });
-                    }]);
-                }
-            },
-            error: function(xhr, status, error) {
-                // Show clear error message if the page fails to load
-                $('#app-container').html('<div class="alert alert-danger mt-5 text-center"><i class="fa fa-exclamation-triangle fa-2x"></i><br>Error loading page: <b>' + url + '</b><br>Please check if the file exists and the server is running.</div>');
-                console.error("AJAX Load Error:", error);
-            }
-        });
-    });
-});
-</script>
+																// Inject the HTML
+																$(
+																		'#app-container')
+																		.html(
+																				newContent);
+
+																// Safely re-compile the injected HTML for AngularJS
+																var $injector = angular
+																		.element(
+																				document.body)
+																		.injector();
+																if ($injector) {
+																	$injector
+																			.invoke([
+																					'$compile',
+																					'$timeout',
+																					function(
+																							$compile,
+																							$timeout) {
+																						// Use pure DOM element to prevent jQuery wrapper confusion
+																						var $appContainer = angular
+																								.element(document
+																										.getElementById('app-container'));
+																						var $scope = $appContainer
+																								.scope();
+
+																						// Compile the contents specifically
+																						$compile(
+																								$appContainer
+																										.contents())
+																								(
+																										$scope);
+
+																						// Use $timeout to safely trigger a digest cycle without conflicts
+																						$timeout(function() {
+																							if (!$scope.$$phase) {
+																								$scope
+																										.$apply();
+																							}
+																						});
+																					} ]);
+																}
+															},
+															error : function(
+																	xhr,
+																	status,
+																	error) {
+																// Show clear error message if the page fails to load
+																$(
+																		'#app-container')
+																		.html(
+																				'<div class="alert alert-danger mt-5 text-center"><i class="fa fa-exclamation-triangle fa-2x"></i><br>Error loading page: <b>'
+																						+ url
+																						+ '</b><br>Please check if the file exists and the server is running.</div>');
+																console
+																		.error(
+																				"AJAX Load Error:",
+																				error);
+															}
+														});
+											});
+						});
+	</script>
 </body>
 </html>

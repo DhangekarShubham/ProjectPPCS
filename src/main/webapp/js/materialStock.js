@@ -1,7 +1,6 @@
 var app = angular.module('stockApp', []);
 
 app.controller('StockController', function($scope, $http) {
-    alert("aa");
     $scope.sampleDate = "";
     $scope.stockList = []; 
 
