@@ -67,16 +67,24 @@ app.controller('RT7CController', function($scope, $http, $filter) {
             
             $scope.initForm();
             
+            // FIX: Force the Stock Date UI field to display the date we just searched for.
+            // This guarantees the date picker populates even if the DB returns null for the left join.
+            $scope.rt7c.stockDate = new Date(searchDate); 
+            
+            var headersPopulated = false; // Flag to prevent overwriting headers in the loop
+
             // Distribute flat DB records back into the 4 screens
             angular.forEach(dbList, function(item) {
-                // Populate global header from the first item
-                if(!$scope.rt7c.stockDate) {
+                
+                // Populate global header from the first item that actually has data
+                if(!headersPopulated && item.rt7cNumber) {
                     $scope.rt7c.rt7cNumber = item.rt7cNumber || "";
                     $scope.rt7c.seasonYear = item.seasonYear || "2018-2019";
                     if(item.startDate) $scope.rt7c.startDate = new Date(item.startDate);
                     if(item.endDate) $scope.rt7c.endDate = new Date(item.endDate);
-                    if(item.stockDate) $scope.rt7c.stockDate = new Date(item.stockDate);
                     if(item.actualDate) $scope.rt7c.actualDate = new Date(item.actualDate);
+                    
+                    headersPopulated = true; 
                 }
 
                 // Push data to correct tab based on material name

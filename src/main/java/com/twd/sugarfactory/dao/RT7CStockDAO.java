@@ -19,13 +19,14 @@ public class RT7CStockDAO {
         List<RT7CStock> list = new ArrayList<>();
         
         // Added the new header fields to the SELECT query
+     // Add s.sample_date to the second line of the query
         String sql = "SELECT m.material_id, m.material_name, m.category, " +
-                     "s.quantity_qtls, s.volume_hl, s.specific_gravity, s.brix_percent, s.pol_percent, s.purity_percent, " +
+                     "s.sample_date, s.quantity_qtls, s.volume_hl, s.specific_gravity, s.brix_percent, s.pol_percent, s.purity_percent, " +
                      "s.rt7c_number, s.season_year, s.start_date, s.end_date, s.actual_date " +
                      "FROM material_master m " +
                      "LEFT JOIN material_stock_log s ON m.material_id = s.material_id AND s.sample_date = ? AND s.report_type = 'RT7C' " +
                      "WHERE m.category IN ('IN_PROCESS', 'SUGAR_GRADE', 'BY_PRODUCT', 'OLD_STOCK') ORDER BY m.material_id";
-                     
+        
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             
@@ -47,6 +48,8 @@ public class RT7CStockDAO {
                 stock.setSeasonYear(rs.getString("season_year"));
                 stock.setStartDate(rs.getString("start_date"));
                 stock.setEndDate(rs.getString("end_date"));
+                stock.setStockDate(rs.getString("sample_date"));
+                
                 stock.setActualDate(rs.getString("actual_date"));
 
                 // Detail Data
