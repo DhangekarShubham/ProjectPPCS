@@ -1,335 +1,226 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="analysisApp">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analysis Report | Sugar ERP</title>
+    <title>Daily Analysis Report | Sugar ERP</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
-    <style>
-        :root {
-            --primary-blue: #2563eb;
-            --sidebar-dark: #1e293b;
-            --bg-light: #f1f5f9;
-            --border-color: #e2e8f0;
-            --text-main: #1e293b;
-        }
-
-        body { 
-            background-color: var(--bg-light); 
-            font-family: 'Inter', sans-serif; 
-            color: var(--text-main);
-        }
-
-        /* ERP Layout */
-        .app-window { 
-            background: #ffffff; 
-            border-radius: 12px; 
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            margin-top: 20px;
-            border: none;
-        }
-
-        .window-header { 
-            background-color: #ffffff; 
-            padding: 15px 25px; 
-            font-weight: 700; 
-            border-bottom: 1px solid var(--border-color); 
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            letter-spacing: 0.5px;
-        }
-        
-        .window-header i { color: var(--primary-blue); margin-right: 12px; }
-
-        /* Sidebar Actions */
-        .sidebar-panel { 
-            background-color: var(--sidebar-dark); 
-            padding: 25px 15px; 
-            min-height: 800px; 
-        }
-
-        .action-btn { 
-            width: 100%; 
-            margin-bottom: 10px; 
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            color: #cbd5e1;
-            text-align: left;
-            padding: 12px 15px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            border-radius: 8px;
-            font-size: 0.88rem;
-        }
-        
-        .action-btn i { margin-right: 10px; font-size: 1.1rem; }
-
-        .action-btn:hover { 
-            background-color: var(--primary-blue); 
-            color: #ffffff;
-            transform: translateX(5px);
-        }
-
-        /* Report Controls */
-        .filter-card {
-            background: #ffffff;
-            border: 1px solid var(--border-color);
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-        }
-
-        /* --- Report Paper Styling --- */
-        .report-paper { 
-            background-color: white; 
-            padding: 50px; 
-            border: 1px solid #d1d5db; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
-            margin: 0 auto; 
-            max-width: 900px; 
-            color: #000;
-        }
-
-        .report-header-section {
-            border-bottom: 3px solid #000;
-            margin-bottom: 25px;
-            padding-bottom: 10px;
-        }
-
-        .report-title { 
-            text-align: center; 
-            font-weight: 800; 
-            font-size: 1.6rem; 
-            text-transform: uppercase;
-            margin-bottom: 2px;
-        }
-
-        .report-subtitle { 
-            text-align: center; 
-            font-weight: 600; 
-            font-size: 1.1rem; 
-            color: #4b5563;
-        }
-
-        /* High Contrast Table for Reports */
-        .table-report { width: 100%; margin-bottom: 20px; border: 1.5px solid #000; }
-        .table-report th { 
-            background-color: #f3f4f6 !important; 
-            border: 1px solid #000; 
-            text-align: center; 
-            padding: 8px; 
-            font-size: 0.75rem; 
-            text-transform: uppercase;
-            font-weight: 700;
-        }
-        .table-report td { 
-            border: 1px solid #000; 
-            padding: 6px 10px; 
-            font-size: 0.85rem; 
-            font-family: 'JetBrains Mono', monospace; 
-        }
-        
-        .section-header { 
-            background-color: #000 !important; 
-            color: #fff !important; 
-            font-weight: bold; 
-            text-align: center !important; 
-        }
-        
-        .signature-line {
-            border-top: 1.5px solid #000;
-            width: 80%;
-            margin: 0 auto 5px auto;
-        }
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> <style>
+        /* --- PRINT CSS OVERRIDES --- */
         @media print {
-            body { background: white; }
-            .navbar, .sidebar-panel, .filter-card, .btn-outline-dark { display: none !important; }
-            .main-panel { padding: 0; background: white; }
-            .app-window { box-shadow: none; margin: 0; border: none; }
-            .window-header { display: none; }
-            .report-paper { box-shadow: none; border: none; padding: 20px; width: 100%; max-width: 100%; }
+            .no-print, .alert, nav, header, footer { 
+                display: none !important; 
+            }
+            body, html {
+                background-color: #ffffff !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            #printableArea { 
+                position: relative !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important; 
+                box-shadow: none !important; 
+                border: none !important; 
+                margin: 0 !important; 
+                padding: 0 !important;
+                display: block !important;
+            }
+            .pdf-table { width: 100% !important; border-collapse: collapse !important; }
+            .pdf-table th, .pdf-table td { border: 1px solid #000 !important; color: #000 !important; }
+            .pdf-table th, .section-header { 
+                background-color: #f1f5f9 !important; 
+                -webkit-print-color-adjust: exact !important; 
+                print-color-adjust: exact !important; 
+            }
+            .section-header {
+                background-color: #000 !important;
+                color: #fff !important;
+            }
+        }
+        
+        /* --- SCREEN & REPORT STYLING --- */
+        :root { --primary-blue: #2563eb; --bg-light: #f1f5f9; --text-main: #1e293b; }
+        body { background-color: var(--bg-light); font-family: 'Inter', sans-serif; color: var(--text-main); }
+        
+        .report-header-title { font-size: 22px; font-weight: 800; text-align: center; color: #000; letter-spacing: 0.5px; margin-bottom: 5px; }
+        .report-header-subtitle { font-size: 16px; font-weight: bold; text-align: center; margin-bottom: 25px; color: #333; text-decoration: underline; }
+        .report-meta-info { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 15px; font-size: 14px; color: #000; }
+        
+        .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1.5px solid #000; }
+        .pdf-table th, .pdf-table td { border: 1px solid #000; padding: 6px 10px; font-size: 13px; color: #000; }
+        .pdf-table th { background-color: #f8fafc; text-align: center; font-weight: bold; text-transform: uppercase; }
+        
+        .section-header { background-color: #000 !important; color: #fff !important; font-weight: bold; text-align: center !important; text-transform: uppercase; font-size: 14px; padding: 8px !important; }
+        .val-col { text-align: right; font-family: 'JetBrains Mono', monospace; font-weight: bold; }
+        .label-col { font-weight: 600; color: #333; }
+        
+        .signature-line { border-top: 1.5px solid #000; width: 80%; margin: 0 auto 5px auto; }
+        
+        /* Hide Angular curly braces before load */
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+            display: none !important;
         }
     </style>
 </head>
 <body>
-    <jsp:include page="includes/navbar.jsp" />
 
-    <div class="container-fluid px-5">
-        <div class="d-flex justify-content-between align-items-center mt-3 mb-1">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 small fw-bold">
-                    <li class="breadcrumb-item"><a href="dashboard.jsp" class="text-decoration-none">Home</a></li>
-                    <li class="breadcrumb-item active text-muted">Reports</li>
-                    <li class="breadcrumb-item active text-primary">Daily Analysis</li>
-                </ol>
-            </nav>
-        </div>
-
-        <div class="row app-window">
-            <div class="window-header">
-                <i class="bi bi-file-earmark-bar-graph-fill"></i> ANALYTICAL REPORT ENGINE
-            </div>
-            
-            <div class="row m-0 p-0">
-                <div class="col-md-2 sidebar-panel">
-                    <button type="button" class="btn action-btn mt-2" onclick="window.print()">
-                        <i class="bi bi-printer-fill"></i> Print Report
-                    </button>
-                    <button type="button" class="btn action-btn">
-                        <i class="bi bi-file-earmark-pdf-fill text-danger"></i> Export PDF
-                    </button>
-                    <button type="button" class="btn action-btn">
-                        <i class="bi bi-file-earmark-excel-fill text-success"></i> Export Excel
-                    </button>
-                    <a href="dashboard.jsp" class="btn action-btn mt-5 bg-danger bg-opacity-10 text-danger border-danger border-opacity-25">
-                        <i class="bi bi-power"></i> Close Engine
-                    </a>
+    <div class="contentpanel ng-cloak" ng-controller="AnalysisController">
+        
+        <div class="container-fluid mt-3 mb-4 no-print">
+            <div class="card shadow-sm border-0">
+                <div class="card-header text-white px-3 py-2 fw-bold text-uppercase" style="background-color: #3bb4b4;">
+                    <i class="fa fa-file-text-o me-2"></i> Analytical Report Engine
                 </div>
-
-                <div class="col-md-10 main-panel p-4">
-                    
-                    <div class="filter-card shadow-sm mx-auto" style="max-width: 900px;">
-                        <form action="GenerateDailyAnalysisServlet" method="GET" class="row g-3 align-items-end justify-content-center">
-                            <div class="col-auto">
-                                <label class="small fw-bold text-muted text-uppercase mb-1 d-block">Select Report Date</label>
-                                <div class="input-group input-group-sm">
-                                    <span class="input-group-text bg-white"><i class="bi bi-calendar3"></i></span>
-                                    <input type="date" class="form-control" name="reportDate" required>
-                                </div>
-                            </div>
-                            <div class="col-auto">
-                                <button type="submit" class="btn btn-sm btn-primary px-4 fw-bold shadow-sm">
-                                    <i class="bi bi-gear-wide-connected me-2"></i>GENERATE REPORT
-                                </button>
-                            </div>
-                        </form>
+                
+                <div class="card-body bg-light p-3 border-bottom d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center" style="width: 40%;">
+                        <label class="text-muted small fw-bold text-uppercase me-3 mb-0" style="white-space: nowrap;">Report Date:</label>
+                        
+                        
+                        <div class="input-group input-group-sm shadow-sm">
+                            <input type="text" class="form-control border-primary text-center fw-bold text-primary" 
+                                   placeholder="DD/MM/YYYY" ng-model="manualDateText" ng-change="syncFromText()" maxlength="10">
+                            <input type="date" class="form-control border-primary px-1" 
+                                   ng-model="searchDate" ng-change="syncFromPicker()" 
+                                   style="max-width: 40px; cursor: pointer;">
+                        </div>
+                        
+                        
                     </div>
 
-                    <div id="printableArea" class="report-paper">
-                        <div class="report-header-section text-center">
-                            <h3 class="report-title">Shri. Chhatrapati S.S.K. Ltd, Bhavaninagar.</h3>
-                            <h5 class="report-subtitle">Daily Laboratory Analysis Report</h5>
-                        </div>
-                        
-                        <div class="row mb-3" style="font-size: 0.9rem;">
-                            <div class="col-6"><strong>CRUSHING SEASON:</strong> 2025-2026</div>
-                            <div class="col-6 text-end"><strong>REPORT DATE:</strong> 15-DEC-2025</div>
-                        </div>
-
-                        <div class="row g-2">
-                            <div class="col-md-6">
-                                <table class="table-report">
-                                    <thead>
-                                        <tr><th colspan="2" class="section-header">Time & Throughput</th></tr>
-                                        <tr><th>Particulars</th><th class="text-end">Value</th></tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr><td>Actual Working Hours</td><td class="text-end fw-bold">21.50</td></tr>
-                                        <tr><td>Total Lost Hours</td><td class="text-end">2.50</td></tr>
-                                        <tr><td>Member Cane (MT)</td><td class="text-end">3050.00</td></tr>
-                                        <tr><td>Non-Member Cane (MT)</td><td class="text-end">250.00</td></tr>
-                                        <tr class="fw-bold" style="border-top: 2px solid #000;"><td>Total Crushed (MT)</td><td class="text-end">3300.00</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div class="col-md-6">
-                                <table class="table-report">
-                                    <thead>
-                                        <tr><th colspan="2" class="section-header">Corrections & Recovery</th></tr>
-                                        <tr><th>Particulars</th><th class="text-end">Value</th></tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr><td>Dirt Correction (%)</td><td class="text-end">0.55</td></tr>
-                                        <tr><td>Recovery Correction</td><td class="text-end">0.00</td></tr>
-                                        <tr><td>Undetermined Losses</td><td class="text-end">0.18</td></tr>
-                                        <tr><td>Condenser Inlet (°C)</td><td class="text-end">32.50</td></tr>
-                                        <tr><td>Condenser Outlet (°C)</td><td class="text-end">45.20</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="row g-2 mt-2">
-                            <div class="col-md-6">
-                                <table class="table-report">
-                                    <thead>
-                                        <tr><th colspan="3" class="section-header">By-Product Analysis</th></tr>
-                                        <tr><th>Item</th><th class="text-end">Pol %</th><th class="text-end">Moist %</th></tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr><td>Bagasse</td><td class="text-end">2.15</td><td class="text-end">49.50</td></tr>
-                                        <tr><td>Filter Cake</td><td class="text-end">1.85</td><td class="text-end">70.20</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div class="col-md-6">
-                                <table class="table-report">
-                                    <thead>
-                                        <tr><th colspan="2" class="section-header">Sugar Production (Bags)</th></tr>
-                                        <tr><th>Grade Grade</th><th class="text-end">Units</th></tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr><td>M-30 (50 Kg)</td><td class="text-end">4,500</td></tr>
-                                        <tr><td>S1-30 (50 Kg)</td><td class="text-end">850</td></tr>
-                                        <tr class="fw-bold" style="border-top: 2px solid #000;"><td>Total Bags</td><td class="text-end">5,350</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="row mt-2">
-                            <div class="col-12">
-                                <table class="table-report">
-                                    <thead>
-                                        <tr><th colspan="4" class="section-header">Process Products Analysis</th></tr>
-                                        <tr>
-                                            <th style="width: 40%; text-align: left;">Product Name</th>
-                                            <th class="text-end">Brix %</th>
-                                            <th class="text-end">Pol %</th>
-                                            <th class="text-end">Purity %</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr><td>Primary Juice</td><td class="text-end">19.85</td><td class="text-end">16.80</td><td class="text-end">84.63</td></tr>
-                                        <tr><td>Mixed Juice</td><td class="text-end">14.50</td><td class="text-end">11.90</td><td class="text-end">82.06</td></tr>
-                                        <tr><td>Clear Juice</td><td class="text-end">15.10</td><td class="text-end">12.45</td><td class="text-end">82.45</td></tr>
-                                        <tr><td>Final Molasses</td><td class="text-end">86.10</td><td class="text-end">27.01</td><td class="text-end">31.37</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        
-                        <div class="row mt-5 pt-5">
-                            <div class="col-4 text-center small fw-bold">
-                                <div class="signature-line"></div>
-                                LAB CHEMIST
-                            </div>
-                            <div class="col-4 text-center small fw-bold">
-                                <div class="signature-line"></div>
-                                CHIEF CHEMIST
-                            </div>
-                            <div class="col-4 text-center small fw-bold">
-                                <div class="signature-line"></div>
-                                MANAGING DIRECTOR
-                            </div>
-                        </div>
-                    </div></div>
+                    <div>
+                        <button type="button" class="btn btn-sm btn-primary fw-bold px-4 me-2 shadow-sm" ng-click="findData()" style="background-color: #6593b4; border: none;">
+                            <i class="fa fa-cogs me-1"></i> Generate
+                        </button>
+                        <button type="button" class="btn btn-sm btn-warning fw-bold px-4 text-white shadow-sm" ng-click="printReport()" style="background-color: #e5a751; border: none;" ng-disabled="!isDataLoaded">
+                            <i class="fa fa-print me-1"></i> Print / PDF
+                        </button>
+                        <button type="button" class="btn btn-sm btn-light fw-bold px-4 border shadow-sm" ng-click="clearForm()">
+                            <i class="fa fa-refresh me-1"></i> Reset
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <div class="container mt-4 p-5 bg-white shadow border rounded" id="printableArea" ng-show="isDataLoaded">
+            
+            <div class="report-header-title">Shri. Chhatrapati S.S.K. Ltd, Bhavaninagar.</div>
+            <div class="report-header-subtitle">Daily Laboratory Analysis Report</div>
+            
+            <div class="report-meta-info">
+                <div>CRUSHING SEASON: {{ analysis.seasonYear || '2025-2026' }}</div>
+                <div>REPORT DATE: {{ displayDate }}</div>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <table class="pdf-table">
+                        <thead>
+                            <tr><th colspan="2" class="section-header">Time & Throughput</th></tr>
+                            <tr><th>Particulars</th><th class="text-end" style="width: 30%;">Value</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="label-col">Actual Working Hours</td><td class="val-col">{{ formatNumber(analysis.workingHours) }}</td></tr>
+                            <tr><td class="label-col">Total Lost Hours</td><td class="val-col">{{ formatNumber(analysis.lostHours) }}</td></tr>
+                            <tr><td class="label-col">Member Cane (MT)</td><td class="val-col">{{ formatNumber(analysis.memberCane) }}</td></tr>
+                            <tr><td class="label-col">Non-Member Cane (MT)</td><td class="val-col">{{ formatNumber(analysis.nonMemberCane) }}</td></tr>
+                            <tr style="border-top: 2px solid #000;"><td class="label-col fw-bold">Total Crushed (MT)</td><td class="val-col text-primary">{{ formatNumber(analysis.totalCrushed) }}</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-md-6">
+                    <table class="pdf-table">
+                        <thead>
+                            <tr><th colspan="2" class="section-header">Corrections & Recovery</th></tr>
+                            <tr><th>Particulars</th><th class="text-end" style="width: 30%;">Value</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="label-col">Dirt Correction (%)</td><td class="val-col">{{ formatNumber(analysis.dirtCorrection) }}</td></tr>
+                            <tr><td class="label-col">Recovery Correction</td><td class="val-col">{{ formatNumber(analysis.recoveryCorrection) }}</td></tr>
+                            <tr><td class="label-col">Undetermined Losses</td><td class="val-col">{{ formatNumber(analysis.undeterminedLosses) }}</td></tr>
+                            <tr><td class="label-col">Condenser Inlet (°C)</td><td class="val-col">{{ formatNumber(analysis.condenserInlet) }}</td></tr>
+                            <tr><td class="label-col">Condenser Outlet (°C)</td><td class="val-col">{{ formatNumber(analysis.condenserOutlet) }}</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row g-3 mt-1">
+                <div class="col-md-6">
+                    <table class="pdf-table">
+                        <thead>
+                            <tr><th colspan="3" class="section-header">By-Product Analysis</th></tr>
+                            <tr><th>Item</th><th class="text-end">Pol %</th><th class="text-end">Moist %</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="label-col">Bagasse</td><td class="val-col">{{ formatNumber(analysis.bagassePol) }}</td><td class="val-col">{{ formatNumber(analysis.bagasseMoist) }}</td></tr>
+                            <tr><td class="label-col">Filter Cake</td><td class="val-col">{{ formatNumber(analysis.filterCakePol) }}</td><td class="val-col">{{ formatNumber(analysis.filterCakeMoist) }}</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-md-6">
+                    <table class="pdf-table">
+                        <thead>
+                            <tr><th colspan="2" class="section-header">Sugar Production (Bags)</th></tr>
+                            <tr><th>Grade</th><th class="text-end">Units</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="label-col">M-30 (50 Kg)</td><td class="val-col">{{ formatInt(analysis.sugarM30) }}</td></tr>
+                            <tr><td class="label-col">S1-30 (50 Kg)</td><td class="val-col">{{ formatInt(analysis.sugarS130) }}</td></tr>
+                            <tr style="border-top: 2px solid #000;"><td class="label-col fw-bold">Total Bags</td><td class="val-col text-primary">{{ formatInt(analysis.totalBags) }}</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row mt-1">
+                <div class="col-12">
+                    <table class="pdf-table"> 
+                        <thead>
+                            <tr><th colspan="4" class="section-header">Process Products Analysis</th></tr>
+                            <tr>
+                                <th style="width: 40%; text-align: left; padding-left: 15px;">Product Name</th>
+                                <th class="text-end">Brix %</th>
+                                <th class="text-end">Pol %</th>
+                                <th class="text-end">Purity %</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="label-col" style="padding-left: 15px;">Primary Juice</td><td class="val-col">{{ formatNumber(analysis.pjBrix) }}</td><td class="val-col">{{ formatNumber(analysis.pjPole) }}</td><td class="val-col">{{ formatNumber(analysis.pjPurity) }}</td></tr>
+                            <tr><td class="label-col" style="padding-left: 15px;">Mixed Juice</td><td class="val-col">{{ formatNumber(analysis.mjBrix) }}</td><td class="val-col">{{ formatNumber(analysis.mjPole) }}</td><td class="val-col">{{ formatNumber(analysis.mjPurity) }}</td></tr>
+                            <tr><td class="label-col" style="padding-left: 15px;">Clear Juice</td><td class="val-col">{{ formatNumber(analysis.cjBrix) }}</td><td class="val-col">{{ formatNumber(analysis.cjPole) }}</td><td class="val-col">{{ formatNumber(analysis.cjPurity) }}</td></tr>
+                            <tr><td class="label-col" style="padding-left: 15px;">Final Molasses</td><td class="val-col">{{ formatNumber(analysis.fmBrix) }}</td><td class="val-col">{{ formatNumber(analysis.fmPole) }}</td><td class="val-col">{{ formatNumber(analysis.fmPurity) }}</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div style="margin-top: 60px; display: flex; justify-content: space-between; text-align: center; font-weight: bold; font-size: 13px; color: #000;">
+                <div style="width: 30%;"><div class="signature-line"></div>LAB CHEMIST</div>
+                <div style="width: 30%;"><div class="signature-line"></div>CHIEF CHEMIST</div>
+                <div style="width: 30%;"><div class="signature-line"></div>MANAGING DIRECTOR</div>
+            </div>
+
+        </div>
+
+        <div class="alert alert-light w-75 mx-auto text-center border shadow-sm mt-5 text-muted no-print" ng-hide="isDataLoaded">
+            <i class="fa fa-info-circle fa-2x mb-3 text-primary d-block"></i>
+            <h6 class="fw-bold">No Report Data Loaded</h6>
+            <p class="small mb-0">Please select an Analysis Date and click <strong>Generate</strong> to view the records.</p>
+        </div>
+
     </div>
-    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="js/reportDailyAnalysis.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

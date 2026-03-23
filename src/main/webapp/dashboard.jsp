@@ -31,11 +31,13 @@
 <script src="js/runStock.js"></script>
 <script src="js/reportMfgDetails.js"></script>
 <script src="js/reportMfgShort.js"></script>
+<script src="js/reportDailyAnalysis.js"></script>
+
 
 <script>
 	var app = angular.module('sugarErpApp', [ 'factoryApp', 'crushingApp',
 			'analysisApp', 'chemicalApp', 'stockApp', 'stoppageApp', 'rt7cApp',
-			'rt8cApp', 'runStockApp', 'mfgReportApp', 'mfgShortApp' ]);
+			'rt8cApp', 'runStockApp', 'mfgReportApp', 'mfgShortApp','analysisAppReport' ]);
 </script>
 </head>
 <body>
