@@ -2,7 +2,7 @@
 <div class="leftpanel">
     
     <div class="leftpanel-profile">
-        <img src="asset/image/file.enc" alt="Profile" onerror="this.src='https://ui-avatars.com/api/?name=Admin&background=259dab&color=fff';">
+        <img src="asset/image/profilepic.png" alt="Profile" onerror="this.src='https://ui-avatars.com/api/?name=Admin&background=259dab&color=fff';">
         <div class="profile-info">
             <p class="profile-name"><%= session.getAttribute("username") != null ? session.getAttribute("username") : "Admin User" %></p>
             <p class="profile-sub"><i class="fa fa-circle text-success me-1" style="font-size: 8px;"></i> Online</p>
