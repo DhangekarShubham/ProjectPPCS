@@ -1,57 +1,73 @@
 var app = angular.module('weeklyReportApp', []);
-
 app.controller('WeeklyReportController', function($scope, $http, $filter) {
-    
-    // Default values
-    $scope.weekNo = 12;
-    $scope.fromDate = new Date("2025-12-08");
-    $scope.toDate = new Date("2025-12-14");
-    
-    $scope.displayFromDate = "";
-    $scope.displayToDate = "";
-    
-    $scope.report = {};
     $scope.isDataLoaded = false;
+    $scope.weekNo = 1;
+    $scope.fromDate = new Date("2025-10-15");
+    $scope.toDate = new Date("2025-10-21");
 
     $scope.generateReport = function() {
-        if (!$scope.fromDate || !$scope.toDate || !$scope.weekNo) {
-            alert("Please fill in all search parameters.");
-            return;
-        }
-        
-        if ($scope.fromDate > $scope.toDate) {
-            alert("From Date cannot be after To Date.");
-            return;
-        }
-
-        var formattedFrom = $filter('date')($scope.fromDate, 'yyyy-MM-dd');
-        var formattedTo = $filter('date')($scope.toDate, 'yyyy-MM-dd');
-        
+        $scope.loading = true;
         $scope.displayFromDate = $filter('date')($scope.fromDate, 'dd/MM/yyyy');
         $scope.displayToDate = $filter('date')($scope.toDate, 'dd/MM/yyyy');
 
-        var url = 'GenerateWeeklyReportServlet?weekNo=' + $scope.weekNo + 
-                  '&fromDate=' + formattedFrom + '&toDate=' + formattedTo;
+        var params = "action=getWeeklyReport" +
+            "&weekNo=" + $scope.weekNo +
+            "&fromDate=" + $filter('date')($scope.fromDate, 'yyyy-MM-dd') +
+            "&toDate=" + $filter('date')($scope.toDate, 'yyyy-MM-dd');
 
-        $http.get(url).then(function(response) {
-            if(response.data && response.data.weekNo) {
-                 $scope.report = response.data;
-                 $scope.isDataLoaded = true;
+        $http({
+            method: 'POST',
+            url: 'report_weekly.jsp',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: params
+        }).then(function(res) {
+            $scope.loading = false;
+            if (res.data.error) {
+                alert(res.data.error);
             } else {
-                 alert("No data found for the selected period.");
-                 $scope.isDataLoaded = false;
+                $scope.report = res.data;
+                $scope.isDataLoaded = true;
             }
-        }, function(error) {
-            alert("Error fetching report data.");
-            $scope.isDataLoaded = false;
+        }, function(err) {
+            $scope.loading = false;
+            alert("Request Failed. Status: " + err.status);
         });
     };
+    $scope.printReport = function() { window.print(); };
+});	var app = angular.module('weeklyReportApp', []);
+	app.controller('WeeklyReportController', function($scope, $http, $filter) {
+	    $scope.isDataLoaded = false;
+	    $scope.weekNo = 1;
+	    $scope.fromDate = new Date("2025-10-15");
+	    $scope.toDate = new Date("2025-10-21");
 
-    $scope.printReport = function() {
-        if(!$scope.isDataLoaded) {
-            alert("Please generate the report first.");
-            return;
-        }
-        window.print();
-    };
-});
+	    $scope.generateReport = function() {
+	        $scope.loading = true;
+	        $scope.displayFromDate = $filter('date')($scope.fromDate, 'dd/MM/yyyy');
+	        $scope.displayToDate = $filter('date')($scope.toDate, 'dd/MM/yyyy');
+
+	        var params = "action=getWeeklyReport" +
+	            "&weekNo=" + $scope.weekNo +
+	            "&fromDate=" + $filter('date')($scope.fromDate, 'yyyy-MM-dd') +
+	            "&toDate=" + $filter('date')($scope.toDate, 'yyyy-MM-dd');
+
+	        $http({
+	            method: 'POST',
+	            url: 'report_weekly.jsp',
+	            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+	            data: params
+	        }).then(function(res) {
+	            $scope.loading = false;
+	            if (res.data.error) {
+	                alert(res.data.error);
+	            } else {
+	                $scope.report = res.data;
+	                $scope.isDataLoaded = true;
+	            }
+	        }, function(err) {
+	            $scope.loading = false;
+	            alert("Request Failed. Status: " + err.status);
+	        });
+	    };
+	    $scope.printReport = function() { window.print(); };
+	});
