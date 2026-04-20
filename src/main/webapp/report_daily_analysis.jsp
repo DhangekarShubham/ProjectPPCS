@@ -1,71 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en" ng-app="analysisApp">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Analysis Report | Sugar ERP</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> <style>
-        /* --- PRINT CSS OVERRIDES --- */
-        @media print {
-            .no-print, .alert, nav, header, footer { 
-                display: none !important; 
-            }
-            body, html {
-                background-color: #ffffff !important;
-                margin: 0 !important;
-                padding: 0 !important;
-            }
-            #printableArea { 
-                position: relative !important;
-                left: 0 !important;
-                top: 0 !important;
-                width: 100% !important; 
-                box-shadow: none !important; 
-                border: none !important; 
-                margin: 0 !important; 
-                padding: 0 !important;
-                display: block !important;
-            }
-            .pdf-table { width: 100% !important; border-collapse: collapse !important; }
-            .pdf-table th, .pdf-table td { border: 1px solid #000 !important; color: #000 !important; }
-            .pdf-table th, .section-header { 
-                background-color: #f1f5f9 !important; 
-                -webkit-print-color-adjust: exact !important; 
-                print-color-adjust: exact !important; 
-            }
-            .section-header {
-                background-color: #000 !important;
-                color: #fff !important;
-            }
-        }
-        
-        /* --- SCREEN & REPORT STYLING --- */
-        :root { --primary-blue: #2563eb; --bg-light: #f1f5f9; --text-main: #1e293b; }
-        body { background-color: var(--bg-light); font-family: 'Inter', sans-serif; color: var(--text-main); }
-        
-        .report-header-title { font-size: 22px; font-weight: 800; text-align: center; color: #000; letter-spacing: 0.5px; margin-bottom: 5px; }
-        .report-header-subtitle { font-size: 16px; font-weight: bold; text-align: center; margin-bottom: 25px; color: #333; text-decoration: underline; }
-        .report-meta-info { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 15px; font-size: 14px; color: #000; }
-        
-        .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1.5px solid #000; }
-        .pdf-table th, .pdf-table td { border: 1px solid #000; padding: 6px 10px; font-size: 13px; color: #000; }
-        .pdf-table th { background-color: #f8fafc; text-align: center; font-weight: bold; text-transform: uppercase; }
-        
-        .section-header { background-color: #000 !important; color: #fff !important; font-weight: bold; text-align: center !important; text-transform: uppercase; font-size: 14px; padding: 8px !important; }
-        .val-col { text-align: right; font-family: 'JetBrains Mono', monospace; font-weight: bold; }
-        .label-col { font-weight: 600; color: #333; }
-        
-        .signature-line { border-top: 1.5px solid #000; width: 80%; margin: 0 auto 5px auto; }
-        
-        /* Hide Angular curly braces before load */
-        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-            display: none !important;
-        }
-    </style>
 </head>
 <body>
 
