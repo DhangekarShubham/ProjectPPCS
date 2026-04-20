@@ -1,167 +1,62 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en" ng-app="stockReportApp">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Ledger Report | Sugar ERP</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    <script src="js/reportDailyStock.js"></script>
 
     <style>
-        :root {
-            --primary-blue: #2563eb;
-            --sidebar-dark: #1e293b;
-            --bg-light: #f1f5f9;
-            --border-color: #e2e8f0;
-            --text-main: #1e293b;
-        }
-
-        body { 
-            background-color: var(--bg-light); 
-            font-family: 'Inter', sans-serif; 
-            color: var(--text-main);
-        }
-
-        /* ERP Layout Window */
-        .app-window { 
-            background: #ffffff; 
-            border: none;
-            border-radius: 12px; 
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            margin-top: 20px;
-        }
-
-        .window-header { 
-            background-color: #ffffff; 
-            padding: 15px 25px; 
-            font-weight: 700; 
-            border-bottom: 1px solid var(--border-color); 
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-        
-        .window-header i { color: var(--primary-blue); margin-right: 12px; }
-
-        /* Modern Sidebar */
-        .sidebar-panel { 
-            background-color: var(--sidebar-dark); 
-            padding: 25px 15px; 
-            min-height: 800px; 
-        }
-
-        .action-btn { 
-            width: 100%; 
-            margin-bottom: 10px; 
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            color: #cbd5e1;
-            text-align: left;
-            padding: 12px 15px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            border-radius: 8px;
-            font-size: 0.88rem;
-        }
-        
-        .action-btn i { margin-right: 10px; font-size: 1.1rem; }
-
-        .action-btn:hover { 
-            background-color: var(--primary-blue); 
-            color: #ffffff;
-            transform: translateX(5px);
-        }
-
-        /* Main Workspace */
-        .main-panel { background-color: var(--bg-light); padding: 30px; }
-
-        /* Report Paper Styling */
-        .report-paper { 
-            background-color: white; 
-            padding: 50px; 
-            border: 1px solid #d1d5db; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
-            margin: 0 auto; 
-            max-width: 950px; 
-            color: #000;
-        }
-
-        .report-title { 
-            text-align: center; 
-            font-weight: 800; 
-            font-size: 1.5rem; 
-            margin-bottom: 5px; 
-            text-transform: uppercase;
-        }
-
-        .report-subtitle { 
-            text-align: center; 
-            font-weight: 700; 
-            font-size: 1.1rem; 
-            margin-bottom: 30px;
-            text-decoration: underline;
-            text-underline-offset: 5px;
-        }
-
-        /* Industry Standard Ledger Table */
-        .table-report { width: 100%; border-collapse: collapse; border: 1.5px solid #000; }
-        
-        .table-report th { 
-            background-color: #f3f4f6 !important; 
-            border: 1px solid #000; 
-            text-align: center; 
-            padding: 10px; 
-            font-size: 0.75rem; 
-            text-transform: uppercase;
-            font-weight: 800;
-        }
-        
-        .table-report td { 
-            border: 1px solid #000; 
-            padding: 8px 12px; 
-            font-size: 0.85rem; 
-            font-family: 'JetBrains Mono', monospace; /* Professional numeric alignment */
-        }
-        
-        .section-header { 
-            background-color: #000 !important; 
-            color: #fff !important; 
-            font-weight: 800 !important; 
-            text-transform: uppercase;
-            font-size: 0.8rem !important;
-            font-family: 'Inter', sans-serif !important;
-            padding: 8px 15px !important;
-        }
-        
-        .product-name { font-family: 'Inter', sans-serif !important; font-weight: 600; color: #1f2937; }
-
-        /* Signature Lines */
-        .sig-container { margin-top: 80px; }
-        .sig-box { border-top: 1.5px solid #000; width: 85%; margin: 0 auto; padding-top: 5px; font-size: 0.8rem; font-weight: 700; }
-
+        /* --- PRINT CSS OVERRIDES --- */
         @media print {
-            body { background: white; }
-            .navbar, .sidebar-panel, .btn-outline-dark, form, .alert { display: none !important; }
-            .main-panel { padding: 0; background: white; }
-            .app-window { box-shadow: none; margin: 0; border: none; }
-            .window-header { display: none; }
-            .report-paper { box-shadow: none; border: none; padding: 20px; width: 100%; max-width: 100%; }
+            /* 1. Completely hide the search bar, navbars, and alerts */
+            .no-print, .alert, nav, header, footer { 
+                display: none !important; 
+            }
+            
+            /* 2. Reset the page background to pure white */
+            body, html {
+                background-color: #ffffff !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            /* 3. Make the report flow naturally (fixes the blank page bug) */
+            #printableArea { 
+                position: relative !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important; 
+                box-shadow: none !important; 
+                border: none !important; 
+                margin: 0 !important; 
+                padding: 0 !important;
+                display: block !important;
+            }
+            
+            /* 4. Force browsers to print the black table borders and grey headers */
+            .pdf-table { width: 100% !important; border-collapse: collapse !important; }
+            .pdf-table th, .pdf-table td { border: 1px solid #000 !important; color: #000 !important; }
+            .pdf-table th { 
+                background-color: #f1f5f9 !important; 
+                -webkit-print-color-adjust: exact !important; 
+                print-color-adjust: exact !important; 
+            }
         }
+        
+        /* --- SCREEN CSS --- */
+        .report-header-title { font-size: 22px; font-weight: 800; text-align: center; color: #000; letter-spacing: 0.5px; }
+        .report-header-subtitle { font-size: 16px; font-weight: bold; text-align: center; margin-bottom: 25px; color: #333; text-decoration: underline; }
+        .report-meta-info { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 10px; font-size: 14px; color: #000; }
+        
+        .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
+        .pdf-table th, .pdf-table td { border: 1px solid #000; padding: 6px 10px; font-size: 13px; color: #000; }
+        .pdf-table th { background-color: #f1f5f9; font-weight: bold; }
+        .val-col { text-align: right; font-family: monospace; font-size: 14px; }
     </style>
 </head>
 <body ng-controller="StockReportController">
-    <jsp:include page="includes/navbar.jsp" />
+    <link href="css/forms.css" rel="stylesheet">
 
     <div class="container-fluid px-5 mb-5">
         <div class="d-flex justify-content-between align-items-center mt-3 mb-1">
@@ -174,46 +69,35 @@
             </nav>
         </div>
 
-        <div class="row app-window">
-            <div class="window-header">
-                <i class="bi bi-journal-check"></i> DAILY STOCK LEDGER REPORT GENERATION
+         <div class="erp-form-container mt-3 mx-2 bg-white shadow-sm border rounded no-print">
+            <div class="erp-form-header text-white px-3 py-2 fw-bold text-uppercase" style="background-color: #3bb4b4;">
+                <i class="fa fa-file-text-o me-2"></i> DAILY STOCK LEDGER REPORT GENERATION
             </div>
-            
-            <div class="row m-0 p-0">
-                <div class="col-md-2 sidebar-panel">
-                    <button type="button" class="btn action-btn mt-2 text-white" ng-click="printReport()">
-                        <i class="bi bi-printer-fill text-info"></i> Print Ledger
-                    </button>
-                    <button type="button" class="btn action-btn">
-                        <i class="bi bi-file-earmark-pdf-fill text-danger"></i> Export PDF
-                    </button>
-                    <button type="button" class="btn action-btn">
-                        <i class="bi bi-file-earmark-excel-fill text-success"></i> Export Excel
-                    </button>
-                    
-                    <a href="dashboard.jsp" class="btn action-btn mt-5 bg-danger bg-opacity-10 text-danger border-danger border-opacity-25">
-                        <i class="bi bi-power"></i> Close Engine
-                    </a>
-                </div>
+           
 
                 <div class="col-md-10 main-panel">
                     
-                    <form name="searchForm" class="mb-5 bg-white p-4 border rounded shadow-sm w-75 mx-auto" novalidate>
-                        <div class="row align-items-center justify-content-center">
-                            <label class="col-auto fw-bold text-muted text-uppercase small">Select Valuation Date:</label>
-                            <div class="col-auto">
-                                <div class="input-group input-group-sm">
-                                    <span class="input-group-text bg-white border-secondary"><i class="bi bi-calendar-event"></i></span>
-                                    <input type="date" class="form-control border-secondary" ng-model="selectedDate" required>
-                                </div>
-                            </div>
-                            <div class="col-auto">
-                                <button type="button" class="btn btn-sm btn-primary px-4 fw-bold shadow-sm" ng-click="generateReport()">
-                                    <i class="bi bi-gear-wide-connected me-2"></i>GENERATE LEDGER
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    
+                       	<div class="row align-items-center bg-light p-3 mx-0 border-bottom">
+						 <div class="col-md-4 d-flex align-items-center">
+                             <label class="text-muted small fw-bold text-uppercase me-2 mb-0" style="white-space: nowrap;">Select Valuation Date:</label>
+                             <input type="date" class="form-control form-control-sm border-primary" ng-model="selectedDate">
+                         </div>
+                          <div class="col-md-6">
+                            <button type="button" class="btn btn-sm btn-primary fw-bold px-4 me-2 shadow-sm" ng-click="generateReport()" style="background-color: #6593b4; border: none;">
+	                        	<i class="fa fa-cogs me-1"></i> Generate Ledger
+		                    </button>
+		                    <button type="button" class="btn btn-sm btn-warning fw-bold px-4 text-white shadow-sm" ng-click="printReport()" style="background-color: #e5a751; border: none;" ng-disabled="!isDataLoaded">
+		                        <i class="fa fa-print me-1"></i> Print / PDF
+		                    </button>
+		                    <button type="button" class="btn btn-sm btn-light fw-bold px-4 border shadow-sm" ng-click="clearReport()">
+		                        <i class="fa fa-refresh me-1"></i> Reset
+		                    </button>
+		                    <button type="button" class="btn action-btn text-warning" ng-click="testClick()">TEST ANGULAR</button>
+                         </div>
+                      </div>
+                 </div>
+   
 
                     <div id="printableArea" class="report-paper shadow" ng-show="isDataLoaded">
                         <div class="text-center border-bottom border-3 border-dark mb-4 pb-2">
@@ -222,7 +106,7 @@
                         </div>
                         
                         <div class="row mb-3" style="font-size: 0.9rem; font-weight: bold;">
-                            <div class="col-4">CRUSHING SEASON: {{ sugarList[0].seasonYear }}</div>
+                            <div class="col-4">CRUSHING SEASON: {{ sugarList.length > 0 ? sugarList[0].seasonYear : '' }}</div>
                             <div class="col-4 text-center">UNIT: 01 (COMBINE)</div>
                             <div class="col-4 text-end">LEDGER DATE: {{ displayDate }}</div>
                         </div>
@@ -292,16 +176,14 @@
                         </div>
                     </div>
                     
-                    <div class="alert alert-custom w-75 mx-auto text-center border-0 shadow-sm" ng-hide="isDataLoaded" style="background: #eef2ff; color: #4338ca;">
-                        <i class="bi bi-info-circle-fill me-2"></i>
-                        <strong>System Notice:</strong> Please select a valuation date and click Generate to retrieve the official stock ledger.
-                    </div>
+                   <div class="alert alert-light w-75 mx-auto text-center border shadow-sm mt-5 text-muted" ng-hide="isDataLoaded">
+			            <i class="fa fa-info-circle fa-2x mb-3 text-primary d-block"></i>
+			            <h6 class="fw-bold">No Report Data Loaded</h6>
+			            <p class="small mb-0">Please enter a date from the top menu and click <strong>Generate</strong> to view the Daily Manufacturing Details.</p>
+			        </div>
 
                 </div>
             </div>
-        </div>
-    </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

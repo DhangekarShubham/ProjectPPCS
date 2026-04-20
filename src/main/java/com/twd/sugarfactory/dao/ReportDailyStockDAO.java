@@ -24,19 +24,26 @@ public class ReportDailyStockDAO {
         // *Note: In a full system, opening balance is yesterday's closing balance.
         
         String sql = "SELECT m.material_id, m.material_name, m.unit_of_measure, m.category, " +
-                     // Subquery for production on the given date
-                     "(SELECT COALESCE(SUM(no_of_bags),0)/2 FROM daily_sugar_production WHERE material_id = m.material_id AND sample_date = ?) as prod_today, " +
-                     // Subquery for production BEFORE the given date (to calculate opening balance)
-                     "(SELECT COALESCE(SUM(no_of_bags),0)/2 FROM daily_sugar_production WHERE material_id = m.material_id AND sample_date < ?) as prod_past " +
-                     "FROM material_master m " +
-                     "WHERE m.category IN ('SUGAR_GRADE', 'BY_PRODUCT') " +
-                     "ORDER BY m.category DESC, m.material_id ASC";
+
+             // Production TODAY
+             "(SELECT COALESCE(SUM(no_of_bags),0)/2 " +
+             " FROM daily_sugar_production " +
+             " WHERE material_id = m.material_id AND crush_date = ?) as prod_today, " +
+
+             // Production BEFORE date (Opening)
+             "(SELECT COALESCE(SUM(no_of_bags),0)/2 " +
+             " FROM daily_sugar_production " +
+             " WHERE material_id = m.material_id AND crush_date < ?) as prod_past " +
+             //IN_PROCESS, CHEMICAL
+             "FROM material_master m " +
+             "WHERE m.category IN ('SUGAR_GRADE','BY_PRODUCT') " + 
+             "ORDER BY m.category DESC, m.material_id ASC";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             
-            ps.setString(1, reportDate);
-            ps.setString(2, reportDate);
+        	ps.setDate(1, java.sql.Date.valueOf(reportDate));
+        	ps.setDate(2, java.sql.Date.valueOf(reportDate));
             ResultSet rs = ps.executeQuery();
             
             int sugarCount = 1;

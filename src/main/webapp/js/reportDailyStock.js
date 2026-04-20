@@ -1,7 +1,5 @@
-var app = angular.module('stockReportApp', []);
-
 app.controller('StockReportController', function($scope, $http, $filter) {
-    
+	console.log("Controller loaded");
     $scope.selectedDate = new Date(); 
     $scope.displayDate = "";
     
@@ -10,7 +8,10 @@ app.controller('StockReportController', function($scope, $http, $filter) {
     $scope.totals = {};
     
     $scope.isDataLoaded = false;
-
+	$scope.testClick = function() {
+	    alert("Angular Working ✅");
+	    console.log("Stock Report Angular OK");
+	};
     $scope.generateReport = function() {
         if (!$scope.selectedDate) {
             alert("Please select a date to generate the report.");
@@ -41,10 +42,10 @@ app.controller('StockReportController', function($scope, $http, $filter) {
                      if (row.category === 'SUGAR_GRADE') {
                          $scope.sugarList.push(row);
                          // Accumulate sugar totals
-                         $scope.totals.opening += row.openingBalance;
-                         $scope.totals.prod += row.productionToday;
-                         $scope.totals.dispatch += row.dispatchSale;
-                         $scope.totals.closing += row.closingBalance;
+						 $scope.totals.opening += (row.openingBalance || 0);
+						 $scope.totals.prod += (row.productionToday || 0);
+						 $scope.totals.dispatch += (row.dispatchSale || 0);
+						 $scope.totals.closing += (row.closingBalance || 0);
                      } else {
                          $scope.byProductList.push(row);
                      }
