@@ -22,7 +22,7 @@ public interface StoppageService {
      * @param stoppageId Primary key of the log
      * @return StoppageLog object
      */
-    StoppageLog getStoppageData(Integer stoppageId);
+    StoppageLog getStoppageById(Integer stoppageId);
 
     /**
      * Deletes a specific downtime log.

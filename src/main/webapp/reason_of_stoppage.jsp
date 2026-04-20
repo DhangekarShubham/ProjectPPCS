@@ -50,7 +50,7 @@
         <div class="erp-form-header px-3 py-2">
             <i class="fa fa-exclamation-triangle me-2"></i> DOWNTIME LOG - REASON OF STOPPAGE
         </div>
-        
+       <!--  <h1>{{ 5 + 5 }}</h1> -->
         <form name="stoppageForm" class="p-4" novalidate>
             
             <div class="row mb-4 align-items-center bg-light p-3 border rounded mx-1 shadow-sm">
@@ -141,6 +141,7 @@
                     <button type="button" class="btn btn-erp btn-find px-4 text-white me-2" ng-click="findData()">
                         <i class="fa fa-search me-1"></i> Find Record
                     </button>
+                  
                     
                     <button type="button" class="btn btn-erp btn-outline-secondary px-3 ms-2" 
                             ng-show="stoppage.stoppageId" ng-click="saveData('update')">

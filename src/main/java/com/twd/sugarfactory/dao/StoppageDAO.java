@@ -54,7 +54,7 @@ public class StoppageDAO {
 
             // 3. Insert into Daily Transaction Log
             try (PreparedStatement psLog = conn.prepareStatement(sqlLog, Statement.RETURN_GENERATED_KEYS)) {
-                psLog.setString(1, log.getStoppageDate());
+            	psLog.setDate(1, java.sql.Date.valueOf(log.getStoppageDate()));
                 psLog.setString(2, reasonCode);
                 psLog.setDouble(3, log.getTotalTime() != null ? log.getTotalTime() : 0.0);
                 psLog.executeUpdate();
@@ -99,7 +99,7 @@ public class StoppageDAO {
 
             // Update Log Table
             try (PreparedStatement psLog = conn.prepareStatement(sqlLog)) {
-                psLog.setString(1, log.getStoppageDate());
+            	psLog.setDate(1, java.sql.Date.valueOf(log.getStoppageDate()));
                 psLog.setDouble(2, log.getTotalTime());
                 psLog.setInt(3, log.getStoppageId());
                 psLog.executeUpdate();

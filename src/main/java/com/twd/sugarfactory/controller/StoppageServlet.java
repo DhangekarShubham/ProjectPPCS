@@ -31,22 +31,31 @@ public class StoppageServlet extends HttpServlet {
         try {
             if ("find".equals(action)) {
                 String idParam = request.getParameter("stoppageId");
+
+                JsonObject jsonResp = new JsonObject();
+
                 if (idParam != null && !idParam.isEmpty()) {
                     Integer stoppageId = Integer.parseInt(idParam);
-                    StoppageLog log = service.getStoppageData(stoppageId);
-                    
+                    StoppageLog log = service.getStoppageById(stoppageId);
+
                     if (log != null) {
-                        out.print(gson.toJson(log));
+                        jsonResp.addProperty("status", "success");
+                        jsonResp.add("data", gson.toJsonTree(log));
                     } else {
-                        out.print("{\"status\":\"error\", \"message\":\"Downtime log #" + stoppageId + " not found.\"}");
+                        jsonResp.addProperty("status", "error");
+                        jsonResp.addProperty("message", "Downtime log #" + stoppageId + " not found.");
                     }
                 } else {
-                    out.print("{\"status\":\"error\", \"message\":\"Stoppage ID is required for search.\"}");
+                    jsonResp.addProperty("status", "error");
+                    jsonResp.addProperty("message", "Stoppage ID is required for search.");
                 }
+
+                out.print(gson.toJson(jsonResp));
             }
         } catch (NumberFormatException e) {
             out.print("{\"status\":\"error\", \"message\":\"Invalid Stoppage ID format.\"}");
         } catch (Exception e) {
+            e.printStackTrace(); // important for debugging
             out.print("{\"status\":\"error\", \"message\":\"Server Error: " + e.getMessage() + "\"}");
         } finally {
             out.flush();

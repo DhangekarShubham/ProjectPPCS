@@ -36,24 +36,34 @@ app.controller('StoppageController', function($scope, $http) {
         });
     };
 
-    $scope.findData = function() {
-        var idToSearch = prompt("Enter Stoppage Reference Number to Find:");
-        if (!idToSearch) return;
+	$scope.findData = function() {
+	    var idToSearch = prompt("Enter Stoppage Reference Number to Find:");
+	    if (!idToSearch) return;
 
-        $http.get('StoppageServlet?action=find&stoppageId=' + idToSearch)
-        .then(function(response) {
-            if(response.data.status === 'error') {
-                 alert(response.data.message);
-                 $scope.clearForm();
-            } else {
-                 // Convert string date back to Date object for the <input type="date">
-                 if (response.data.stoppageDate) {
-                     response.data.stoppageDate = new Date(response.data.stoppageDate);
-                 }
-                 $scope.stoppage = response.data;
-            }
-        });
-    };
+	    $http.get('StoppageServlet?action=find&stoppageId=' + idToSearch)
+	    .then(function(response) {
+
+	        console.log("API Response:", response.data);
+
+	        if (response.data.status === 'error') {
+	            alert(response.data.message);
+	            $scope.clearForm();
+	            return;
+	        }
+
+	        var data = response.data.data;
+
+	        // Convert date properly
+	        if (data.stoppageDate) {
+	            var parts = data.stoppageDate.split("-");
+	            data.stoppageDate = new Date(parts[0], parts[1]-1, parts[2]);
+	        }
+
+	        // 🔥 Force Angular refresh
+	       $scope.stoppage = angular.copy(data);
+
+	    });
+	};
 
     $scope.deleteData = function() {
         if (!$scope.stoppage.stoppageId) return;

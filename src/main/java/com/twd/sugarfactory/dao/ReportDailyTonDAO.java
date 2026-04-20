@@ -37,9 +37,9 @@ public class ReportDailyTonDAO {
         try (Connection conn = getConnection()) {
             
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setString(1, reportDate);
-                ps.setString(2, reportDate);
-                ps.setString(3, reportDate);
+            	ps.setDate(1, java.sql.Date.valueOf(reportDate));
+            	ps.setDate(2, java.sql.Date.valueOf(reportDate));
+            	ps.setDate(3, java.sql.Date.valueOf(reportDate));
                 ResultSet rs = ps.executeQuery();
                 
                 if (rs.next()) {
