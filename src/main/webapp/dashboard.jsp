@@ -34,11 +34,10 @@
 <script src="js/reportDailyAnalysis.js"></script>
 <script src="js/reportDailyTon.js"></script>
 
-
 <script>
 	var app = angular.module('sugarErpApp', [ 'factoryApp', 'crushingApp',
 			'analysisApp', 'chemicalApp', 'stockApp', 'stoppageApp', 'rt7cApp',
-			'rt8cApp', 'runStockApp', 'mfgReportApp', 'mfgShortApp','analysisAppReport','dailyTonApp' ]);
+			'rt8cApp', 'runStockApp', 'mfgReportApp', 'mfgShortApp','analysisAppReport','dailyTonApp']);
 </script>
 </head>
 <body>
