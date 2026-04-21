@@ -1,11 +1,10 @@
 var app = angular.module('rt8cStockTransaction', []);
 
-angular.module('sugarErpApp').controller('Rt8cStockEntryController', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
+// 'sugarErpApp' च्या ऐवजी थेट 'app' (rt8cStockTransaction) ला Controller जोडा
+app.controller('Rt8cStockEntryController', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
     
-    // 1. Initialize the Form Data Structure
     $scope.initForm = function() {
         $scope.rt8cEntry = {
-            // Header Fields
             seasonYear: "2025-2026", 
             seasonStartDate: null,
             crushingEndDate: null,
@@ -13,34 +12,15 @@ angular.module('sugarErpApp').controller('Rt8cStockEntryController', ['$scope', 
             processEndDate: null,
             processEndTime: null,
             
-            // The 24 Specific Technical Fields
             data: {
-                ownEstateCane: null,
-                gateCane: null,
-                outStationCane: null,
-                areaHarvested: null,
-                otherThanRailCane: null,
-                caneMembers: null,
-                caneNonMembers: null,
-                areaUnderFarm: null,
-                areaUnderCane: null,
-                roriSugarBags: null,
-                extraFuelStdBagPct: null,
-                processSteamPct: null,
-                
-                avgYieldPerHectare: null,
-                avgYieldAdsali: null,
-                avgYieldPlant: null,
-                avgYieldRatoon: null,
-                avgPrepIndex: null,
-                avgTempAddedWater: null,
-                
-                bagasseUsedFuel: null,
-                bagasseUsedSugarPlant: null,
-                bagasseUsedByProducts: null,
-                bagasseUsedCogen: null,
-                bagasseUsedOliver: null,
-                bagasseSold: null
+                ownEstateCane: null, gateCane: null, outStationCane: null,
+                areaHarvested: null, otherThanRailCane: null, caneMembers: null,
+                caneNonMembers: null, areaUnderFarm: null, areaUnderCane: null,
+                roriSugarBags: null, extraFuelStdBagPct: null, processSteamPct: null,
+                avgYieldPerHectare: null, avgYieldAdsali: null, avgYieldPlant: null,
+                avgYieldRatoon: null, avgPrepIndex: null, avgTempAddedWater: null,
+                bagasseUsedFuel: null, bagasseUsedSugarPlant: null, bagasseUsedByProducts: null,
+                bagasseUsedCogen: null, bagasseUsedOliver: null, bagasseSold: null
             }
         };
 
@@ -67,7 +47,6 @@ angular.module('sugarErpApp').controller('Rt8cStockEntryController', ['$scope', 
         return d;
     }
 
-    // 2. Find Data
     $scope.findData = function() {
         var searchSeason = prompt("Enter Season Year to Find (e.g., 2025-2026):", $scope.rt8cEntry.seasonYear);
         if (!searchSeason) return;
@@ -94,7 +73,6 @@ angular.module('sugarErpApp').controller('Rt8cStockEntryController', ['$scope', 
         });
     };
 
-    // 3. Save or Update Data
     $scope.saveData = function(actionType) {
         if (!$scope.rt8cEntry.seasonYear) {
             alert("Please enter the Season Year before saving.");
@@ -118,7 +96,6 @@ angular.module('sugarErpApp').controller('Rt8cStockEntryController', ['$scope', 
         });
     };
 
-    // 4. Delete Data
     $scope.deleteData = function() {
         if (!$scope.rt8cEntry.seasonYear) {
             alert("Please specify a Season Year to delete.");

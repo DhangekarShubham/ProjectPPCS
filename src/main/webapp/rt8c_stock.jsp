@@ -31,18 +31,20 @@
             border-radius: 4px;
             padding: 20px;
             margin: 20px;
-            background-color: #f8f9fa;
+            background-color: #ffffff; /* Changed to white to match your screenshot */
+            box-shadow: 0 1px 4px rgba(0,0,0,0.02);
         }
         
         .top-inputs-box label {
             color: #555;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
             margin-bottom: 5px;
             display: block;
         }
 
+        /* 🟢 Added proper borders for inputs 🟢 */
         .top-inputs-box input {
             border: 1px solid #ced4da;
             border-radius: 4px;
@@ -50,6 +52,7 @@
             font-size: 14px;
             width: 100%;
             transition: border-color 0.2s ease;
+            background-color: #fff;
         }
 
         .top-inputs-box input:focus {
@@ -60,7 +63,6 @@
 
         .border-green { border-color: #28a745 !important; }
 
-        /* Inner Data Rows */
         .data-row-container {
             padding: 10px 30px 30px 30px;
         }
@@ -133,27 +135,27 @@
                     <div class="row align-items-end g-3 justify-content-center text-center">
                         <div class="col-md-2">
                             <label>Season Year</label>
-                            <input type="text" class="border-green text-center fw-bold" ng-model="rt8cEntry.seasonYear" placeholder="2025-2026" required>
+                            <input type="text" class="form-control border-green text-center fw-bold" ng-model="rt8cEntry.seasonYear" placeholder="2025-2026" required>
                         </div>
                         <div class="col-md-2">
                             <label>Season Start Date</label>
-                            <input type="date" class="text-muted" ng-model="rt8cEntry.seasonStartDate">
+                            <input type="date" class="form-control text-muted" ng-model="rt8cEntry.seasonStartDate">
                         </div>
                         <div class="col-md-2">
                             <label>Crushing End Date</label>
-                            <input type="date" class="text-muted" ng-model="rt8cEntry.crushingEndDate">
+                            <input type="date" class="form-control text-muted" ng-model="rt8cEntry.crushingEndDate">
                         </div>
                         <div class="col-md-2">
                             <label>Crushing End Time</label>
-                            <input type="time" class="text-muted" ng-model="rt8cEntry.crushingEndTime">
+                            <input type="time" class="form-control text-muted" ng-model="rt8cEntry.crushingEndTime">
                         </div>
                         <div class="col-md-2">
                             <label>Process End Date</label>
-                            <input type="date" class="text-muted" ng-model="rt8cEntry.processEndDate">
+                            <input type="date" class="form-control text-muted" ng-model="rt8cEntry.processEndDate">
                         </div>
                         <div class="col-md-2">
                             <label>Process End Time</label>
-                            <input type="time" class="text-muted" ng-model="rt8cEntry.processEndTime">
+                            <input type="time" class="form-control text-muted" ng-model="rt8cEntry.processEndTime">
                         </div>
                     </div>
                 </div>
@@ -178,7 +180,7 @@
                             ]">
                                 <label class="col-sm-7 data-label ps-3">{{ field.label }}</label>
                                 <div class="col-sm-5">
-                                    <input type="number" step="0.001" class="data-input" placeholder="0.000" ng-model="rt8cEntry.data[field.model]">
+                                    <input type="number" step="0.001" class="form-control data-input" placeholder="0.000" ng-model="rt8cEntry.data[field.model]">
                                 </div>
                             </div>
                         </div>
@@ -200,7 +202,7 @@
                             ]">
                                 <label class="col-sm-7 data-label">{{ field.label }}</label>
                                 <div class="col-sm-5">
-                                    <input type="number" step="0.001" class="data-input" placeholder="0.000" ng-model="rt8cEntry.data[field.model]">
+                                    <input type="number" step="0.001" class="form-control data-input" placeholder="0.000" ng-model="rt8cEntry.data[field.model]">
                                 </div>
                             </div>
                         </div>
