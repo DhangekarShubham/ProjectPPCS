@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
 --
 -- Host: localhost    Database: sugar_plant_erp
 -- ------------------------------------------------------
--- Server version	8.0.44
+-- Server version	8.0.42
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,6 +14,64 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `batch_dropdown_options`
+--
+
+DROP TABLE IF EXISTS `batch_dropdown_options`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `batch_dropdown_options` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `field_name` varchar(50) NOT NULL,
+  `option_value` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `field_name` (`field_name`),
+  CONSTRAINT `batch_dropdown_options_ibfk_1` FOREIGN KEY (`field_name`) REFERENCES `batch_form_configuration` (`field_name`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `batch_dropdown_options`
+--
+
+LOCK TABLES `batch_dropdown_options` WRITE;
+/*!40000 ALTER TABLE `batch_dropdown_options` DISABLE KEYS */;
+INSERT INTO `batch_dropdown_options` VALUES (1,'process_module','ALL - Full Recalculation (Global Update)'),(2,'process_module','CRUSHING - Daily Crushing & Recovery Logs'),(3,'process_module','STOCK - Inventory & Material Valuation'),(4,'process_module','LOSSES - Technical Analysis & Losses'),(5,'process_module','ALL - Full Recalculation (Global Update)'),(6,'process_module','CRUSHING - Daily Crushing & Recovery Logs'),(7,'process_module','STOCK - Inventory & Material Valuation'),(8,'process_module','LOSSES - Technical Analysis & Losses'),(9,'process_module','ALL - Full Recalculation (Global Update)'),(10,'process_module','CRUSHING - Daily Crushing & Recovery Logs'),(11,'process_module','STOCK - Inventory & Material Valuation'),(12,'process_module','LOSSES - Technical Analysis & Losses');
+/*!40000 ALTER TABLE `batch_dropdown_options` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `batch_form_configuration`
+--
+
+DROP TABLE IF EXISTS `batch_form_configuration`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `batch_form_configuration` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `field_name` varchar(50) NOT NULL,
+  `field_label` varchar(100) NOT NULL,
+  `field_type` varchar(20) NOT NULL,
+  `icon_class` varchar(50) DEFAULT 'bi-gear',
+  `is_required` tinyint(1) DEFAULT '0',
+  `display_order` int NOT NULL,
+  `is_active` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `field_name` (`field_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `batch_form_configuration`
+--
+
+LOCK TABLES `batch_form_configuration` WRITE;
+/*!40000 ALTER TABLE `batch_form_configuration` DISABLE KEYS */;
+INSERT INTO `batch_form_configuration` VALUES (1,'from_date','From Date','date','bi-calendar-event',1,1,1),(2,'to_date','To Date','date','bi-calendar-check',1,2,1),(3,'process_module','Select Processing Module','select','bi-hdd-network',1,3,1);
+/*!40000 ALTER TABLE `batch_form_configuration` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `chemical_consumption_log`
@@ -162,7 +220,7 @@ CREATE TABLE `daily_crushing_log` (
 
 LOCK TABLES `daily_crushing_log` WRITE;
 /*!40000 ALTER TABLE `daily_crushing_log` DISABLE KEYS */;
-INSERT INTO `daily_crushing_log` VALUES ('2024-10-24','2025-2026',1,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,0.00,0.00,'06:00:00',0.000),('2025-10-15','2025-2026',2,2850.500,650.000,0.000,0.000,0.000,0.000,102.300,32.50,45.20,0,0.000,0,0.000,0,0.000,0.550,0.000,0.180,0.00,0.00,'06:00:00',0.000),('2025-10-16','2025-2026',3,2900.000,700.000,0.000,0.000,0.000,0.000,110.450,31.80,47.90,0,0.000,0,0.000,0,0.000,0.021,0.011,0.115,0.00,0.00,'06:00:00',0.000),('2025-10-17','2025-2026',4,3100.250,450.000,0.000,0.000,0.000,0.000,115.000,33.10,49.50,0,0.000,0,0.000,0,0.000,0.019,0.010,0.130,0.00,0.00,'06:00:00',0.000),('2025-10-18','2025-2026',5,3050.000,550.000,0.000,0.000,0.000,0.000,108.300,32.70,48.80,0,0.000,0,0.000,0,0.000,0.022,0.012,0.125,0.00,0.00,'06:00:00',0.000),('2025-10-19','2025-2026',6,2750.000,850.000,0.000,0.000,0.000,0.000,98.600,31.50,46.50,0,0.000,0,0.000,0,0.000,0.020,0.010,0.110,0.00,0.00,'06:00:00',0.000),('2025-10-20','2025-2026',7,3200.000,350.000,0.000,0.000,0.000,0.000,120.100,34.20,51.00,0,0.000,0,0.000,0,0.000,0.025,0.015,0.140,0.00,0.00,'06:00:00',0.000),('2025-10-21','2025-2026',8,3150.000,480.000,0.000,0.000,0.000,0.000,112.000,32.00,47.50,0,0.000,0,0.000,0,0.000,0.020,0.010,0.122,0.00,0.00,'06:00:00',0.000),('2025-10-22','2025-2026',9,3000.500,520.000,0.000,0.000,0.000,0.000,107.500,31.00,46.20,0,0.000,0,0.000,0,0.000,0.021,0.011,0.118,0.00,0.00,'06:00:00',0.000),('2025-10-23','2025-2026',10,2920.000,610.000,0.000,0.000,0.000,0.000,104.200,32.50,48.00,0,0.000,0,0.000,0,0.000,0.023,0.013,0.128,0.00,0.00,'06:00:00',0.000),('2025-10-24','2025-2026',11,3350.000,250.000,0.000,0.000,0.000,0.000,125.400,33.50,50.10,0,0.000,0,0.000,0,0.000,0.020,0.010,0.135,0.00,0.00,'06:00:00',0.000),('2025-11-01','2025-2026',12,3075.000,0.000,0.000,0.000,0.000,8.260,0.000,38.00,41.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,0.00,0.00,'06:00:00',0.000),('2026-03-17','2025-2026',13,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,0.00,0.00,'06:00:00',0.000),('2026-03-18','2025-2026',22,0.000,0.000,0.000,1232.000,121.000,21.000,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,2.00,11.00,'12',222.000),('2026-03-20','2025-2026',23,0.000,0.000,0.000,0.000,0.000,0.000,74.320,38.00,41.00,5,0.000,2,0.000,6,0.000,0.420,0.000,0.000,0.00,0.00,'06:00:00',0.000);
+INSERT INTO `daily_crushing_log` VALUES ('2024-10-24','2025-2026',1,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,0.00,0.00,'06:00:00',0.000),('2025-10-11','2025-2026',2,0.000,0.000,0.000,640.000,200.000,20.000,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,50.00,2450.00,'06:00:00',550.000),('2025-10-12','2025-2026',2,0.000,0.000,0.000,540.000,500.000,50.000,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,550.00,5450.00,'06:00:00',550.000),('2025-10-13','2025-2026',2,0.000,0.000,0.000,580.000,80.000,80.000,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,850.00,850.00,'06:00:00',5580.000),('2025-10-14','2025-2026',2,0.000,0.000,0.000,1580.000,180.000,180.000,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,1850.00,150.00,'06:00:00',15580.000),('2025-10-15','2025-2026',2,2850.500,650.000,0.000,188.000,18.000,180.000,102.300,32.50,45.20,0,0.000,0,0.000,0,0.000,0.550,0.000,0.180,880.00,1580.00,'06:00:00',151.000),('2025-10-16','2025-2026',3,2900.000,700.000,0.000,0.000,0.000,0.000,110.450,31.80,47.90,0,0.000,0,0.000,0,0.000,0.021,0.011,0.115,0.00,0.00,'06:00:00',0.000),('2025-10-17','2025-2026',4,3100.250,450.000,0.000,0.000,0.000,0.000,115.000,33.10,49.50,0,0.000,0,0.000,0,0.000,0.019,0.010,0.130,0.00,0.00,'06:00:00',0.000),('2025-10-18','2025-2026',5,3050.000,550.000,0.000,0.000,0.000,0.000,108.300,32.70,48.80,0,0.000,0,0.000,0,0.000,0.022,0.012,0.125,0.00,0.00,'06:00:00',0.000),('2025-10-19','2025-2026',6,2750.000,850.000,0.000,0.000,0.000,0.000,98.600,31.50,46.50,0,0.000,0,0.000,0,0.000,0.020,0.010,0.110,0.00,0.00,'06:00:00',0.000),('2025-10-20','2025-2026',7,3200.000,350.000,0.000,0.000,0.000,0.000,120.100,34.20,51.00,0,0.000,0,0.000,0,0.000,0.025,0.015,0.140,0.00,0.00,'06:00:00',0.000),('2025-10-21','2025-2026',8,3150.000,480.000,0.000,0.000,0.000,0.000,112.000,32.00,47.50,0,0.000,0,0.000,0,0.000,0.020,0.010,0.122,0.00,0.00,'06:00:00',0.000),('2025-10-22','2025-2026',2,3000.500,520.000,0.000,0.000,0.000,0.000,107.500,31.00,46.20,0,0.000,0,0.000,0,0.000,0.021,0.011,0.118,0.00,0.00,'6',0.000),('2025-10-23','2025-2026',10,2920.000,610.000,0.000,0.000,0.000,0.000,104.200,32.50,48.00,0,0.000,0,0.000,0,0.000,0.023,0.013,0.128,0.00,0.00,'06:00:00',0.000),('2025-10-24','2025-2026',11,3350.000,250.000,0.000,0.000,0.000,0.000,125.400,33.50,50.10,0,0.000,0,0.000,0,0.000,0.020,0.010,0.135,0.00,0.00,'06:00:00',0.000),('2025-11-01','2025-2026',12,3075.000,0.000,0.000,0.000,0.000,8.260,0.000,38.00,41.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,0.00,0.00,'06:00:00',0.000),('2026-03-17','2025-2026',13,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,0.00,0.00,'06:00:00',0.000),('2026-03-18','2025-2026',22,0.000,0.000,0.000,1232.000,121.000,21.000,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,2.00,11.00,'12',222.000),('2026-03-20','2025-2026',23,0.000,0.000,0.000,0.000,0.000,0.000,74.320,38.00,41.00,5,0.000,2,0.000,6,0.000,0.420,0.000,0.000,0.00,0.00,'06:00:00',0.000),('2026-04-14','2025-2026',2,0.000,0.000,0.000,532.000,34354.000,354.000,0.000,0.00,0.00,0,0.000,0,0.000,0,0.000,0.000,0.000,0.000,345.00,453.00,'5534',45.000);
 /*!40000 ALTER TABLE `daily_crushing_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -215,7 +273,7 @@ CREATE TABLE `daily_stoppage_log` (
   PRIMARY KEY (`stoppage_id`),
   KEY `fk_stoppage_reason` (`reason_code`),
   CONSTRAINT `fk_stoppage_reason` FOREIGN KEY (`reason_code`) REFERENCES `stoppage_reason_master` (`reason_code`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -224,7 +282,7 @@ CREATE TABLE `daily_stoppage_log` (
 
 LOCK TABLES `daily_stoppage_log` WRITE;
 /*!40000 ALTER TABLE `daily_stoppage_log` DISABLE KEYS */;
-INSERT INTO `daily_stoppage_log` VALUES (1,'2026-03-18','DEBUG_101',1.50,'2026-03-18 11:33:26'),(2,'2026-03-18','TEST_123',1.50,'2026-03-18 11:43:50'),(3,'2025-10-15','M01',2.50,'2025-10-15 10:00:00'),(4,'2025-10-17','E01',4.00,'2025-10-17 12:00:00'),(5,'2025-10-18','P01',0.80,'2025-10-18 14:00:00');
+INSERT INTO `daily_stoppage_log` VALUES (1,'2026-03-18','DEBUG_101',1.50,'2026-03-18 11:33:26'),(2,'2026-03-18','TEST_123',1.50,'2026-03-18 11:43:50'),(3,'2025-10-15','M01',2.50,'2025-10-15 10:00:00'),(4,'2025-10-17','E01',4.00,'2025-10-17 12:00:00'),(5,'2025-10-18','P01',0.80,'2025-10-18 14:00:00'),(6,'2026-04-20','RAIN_652423',3.00,'2026-04-21 05:34:12');
 /*!40000 ALTER TABLE `daily_stoppage_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -291,6 +349,62 @@ INSERT INTO `daily_time_account` VALUES ('2024-10-24',0.00,0.00,0.00,0.00,0.00,0
 UNLOCK TABLES;
 
 --
+-- Table structure for table `dropdown_options`
+--
+
+DROP TABLE IF EXISTS `dropdown_options`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `dropdown_options` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `field_name` varchar(50) NOT NULL,
+  `option_value` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `field_name` (`field_name`),
+  CONSTRAINT `dropdown_options_ibfk_1` FOREIGN KEY (`field_name`) REFERENCES `factory_form_configuration` (`field_name`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `dropdown_options`
+--
+
+LOCK TABLES `dropdown_options` WRITE;
+/*!40000 ALTER TABLE `dropdown_options` DISABLE KEYS */;
+/*!40000 ALTER TABLE `dropdown_options` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `factory_form_configuration`
+--
+
+DROP TABLE IF EXISTS `factory_form_configuration`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `factory_form_configuration` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `field_name` varchar(50) NOT NULL,
+  `field_label` varchar(100) NOT NULL,
+  `field_type` varchar(20) NOT NULL,
+  `is_required` tinyint(1) DEFAULT '0',
+  `display_order` int NOT NULL,
+  `is_active` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `field_name` (`field_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `factory_form_configuration`
+--
+
+LOCK TABLES `factory_form_configuration` WRITE;
+/*!40000 ALTER TABLE `factory_form_configuration` DISABLE KEYS */;
+INSERT INTO `factory_form_configuration` VALUES (1,'season_year','Season Year','text',1,1,1),(2,'start_date','Start Date','date',0,2,1),(3,'start_time','Start Time','time',0,3,1),(4,'factory_name','Factory Name','text',1,4,1),(5,'address','Address','text',0,5,1),(6,'taluka','Taluka','text',0,6,1),(7,'district','District','text',0,7,1),(8,'state','State','text',0,8,1),(9,'pin_code','PIN Code','text',0,9,1),(10,'email','E-Mail','email',0,10,1),(11,'website','Website','text',0,11,1),(12,'clarification_process','Clarification Process','text',0,12,1),(13,'registration_no','Registration No','text',0,13,1),(14,'gst_no','GST No','text',1,14,1),(15,'division','Division','text',0,15,1),(16,'range','Range','text',0,16,1),(17,'installed_capacity','Installed Capacity','number',0,17,1),(18,'managing_director','Managing Director','text',0,18,1),(19,'works_manager','Works Manager','text',0,19,1),(20,'chief_chemist','Chief Chemist','text',0,20,1),(21,'lab_incharge','Lab Incharge','text',0,21,1);
+/*!40000 ALTER TABLE `factory_form_configuration` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `factory_master`
 --
 
@@ -333,7 +447,7 @@ CREATE TABLE `factory_master` (
 
 LOCK TABLES `factory_master` WRITE;
 /*!40000 ALTER TABLE `factory_master` DISABLE KEYS */;
-INSERT INTO `factory_master` VALUES ('2021-2022','2021-10-15','09:00:00','Apex Sugar Mills','Plot 45, Industrial Area','Karad','Satara','Maharashtra','415110','224455','02164','contact@apexsugar.com','www.apexsugar.com','Double Sulphitation','REG1001','GST123','FSSAI123',5.50,'Pune','South',5000.00,'A.S. Deshmukh','R.P. Patil','S.K. Kulkarni','M.V. Joshi'),('2022-2023','2022-10-15','09:00:00','Apex Sugar Mills','Plot 45, Industrial Area','Karad','Satara','Maharashtra','415110','224455','02164','contact@apexsugar.com','www.apexsugar.com','Double Sulphitation','REG1001','GST123','FSSAI123',5.50,'Pune','South',5000.00,'A.S. Deshmukh','R.P. Patil','S.K. Kulkarni','M.V. Joshi'),('2023-2024','2023-10-15','09:00:00','Apex Sugar Mills','Plot 45, Industrial Area','Karad','Satara','Maharashtra','415110','224455','02164','contact@apexsugar.com','www.apexsugar.com','Double Sulphitation','REG1001','GST123','FSSAI123',5.50,'Pune','South',5000.00,'A.S. Deshmukh','R.P. Patil','S.K. Kulkarni','M.V. Joshi'),('2024-2025','2024-10-15','09:00:00','Apex Sugar Mills','Plot 45, Industrial Area','Karad','Satara','Maharashtra','415110','224455','02164','contact@apexsugar.com','www.apexsugar.com','Double Sulphitation','REG1001','GST123','FSSAI123',5.50,'Pune','South',5000.00,'A.S. Deshmukh','R.P. Patil','S.K. Kulkarni','M.V. Joshi'),('2025-2026','2025-10-15','09:00:00','Apex Sugar Mills','Plot 45, Industrial Area','Karad','Satara','Maharashtra','415110','224455','02164','contact@apexsugar.com','www.apexsugar.com','Double Sulphitation','REG1001','GST123','FSSAI123',5.50,'Pune','South',5000.00,'A.S. Deshmukh','R.P. Patil','S.K. Kulkarni','M.V. Joshi');
+INSERT INTO `factory_master` VALUES ('2021-2022','2026-03-27','17:48:00','Apex Sugar Mills','Plot 45, Industrial Area','Karad','Satara','Maharashtra','415110','224455','02164','contact@apexsugar.com','www.apexsugar.com','Double Sulphitation','REG1001','GST123','FSSAI123',5.50,'Pune','South',5000.00,'A.S. Deshmukh','R.P. Patil','S.K. Kulkarni','M.V. Joshi'),('2022-2023','2022-10-15','09:00:00','Apex Sugar Mills','Plot 45, Industrial Area','Karad','Satara','Maharashtra','415110','224455','02164','contact@apexsugar.com','www.apexsugar.com','Double Sulphitation','REG1001','GST123','FSSAI123',5.50,'Pune','South',5000.00,'A.S. Deshmukh','R.P. Patil','S.K. Kulkarni','M.V. Joshi'),('2023-2024','2023-10-15','09:00:00','Apex Sugar Mills','Plot 45, Industrial Area','Karad','Satara','Maharashtra','415110','224455','02164','contact@apexsugar.com','www.apexsugar.com','Double Sulphitation','REG1001','GST123','FSSAI123',5.50,'Pune','South',5000.00,'A.S. Deshmukh','R.P. Patil','S.K. Kulkarni','M.V. Joshi'),('2024-2025','2024-10-15','09:00:00','Apex Sugar Mills','Plot 45, Industrial Area','Karad','Satara','Maharashtra','415110','224455','02164','contact@apexsugar.com','www.apexsugar.com','Double Sulphitation','REG1001','GST123','FSSAI123',5.50,'Pune','South',5000.00,'A.S. Deshmukh','R.P. Patil','S.K. Kulkarni','M.V. Joshi'),('2025-2026','2025-10-15','09:00:00','Apex Sugar Mills','Plot 45, Industrial Area','Karad','Satara','Maharashtra','415110','224455','02164','contact@apexsugar.com','www.apexsugar.com','Double Sulphitation','REG1001','GST123','FSSAI123',5.50,'Pune','South',5000.00,'A.S. Deshmukh','R.P. Patil','S.K. Kulkarni','M.V. Joshi');
 /*!40000 ALTER TABLE `factory_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -565,7 +679,7 @@ CREATE TABLE `stoppage_reason_master` (
 
 LOCK TABLES `stoppage_reason_master` WRITE;
 /*!40000 ALTER TABLE `stoppage_reason_master` DISABLE KEYS */;
-INSERT INTO `stoppage_reason_master` VALUES ('DEBUG_101','MECHANICAL','Testing Save','???????? ?????'),('E01','ELECTRICAL','Power Failure (Grid)','????? ???? ????????'),('M01','MECHANICAL','Donally Chute Jam','????? ????? ???'),('P01','PROCESS','Evaporator Cleaning','??????????? ????????'),('TEST_123','MECHANICAL','Test Save','????? ??? ???');
+INSERT INTO `stoppage_reason_master` VALUES ('DEBUG_101','MECHANICAL','Testing Save','???????? ?????'),('E01','ELECTRICAL','Power Failure (Grid)','????? ???? ????????'),('M01','MECHANICAL','Donally Chute Jam','????? ????? ???'),('P01','PROCESS','Evaporator Cleaning','??????????? ????????'),('RAIN_652423','RAIN','ghgfhfg','fghfg'),('TEST_123','MECHANICAL','Test Save','????? ??? ???');
 /*!40000 ALTER TABLE `stoppage_reason_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -628,4 +742,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-03-23 16:18:04
+-- Dump completed on 2026-04-21 14:09:26
