@@ -1,13 +1,12 @@
-// Initialize the module for the SPA architecture
-var app = angular.module('rt8cApp', []);
+var app = angular.module('rt8cStockTransaction', []);
 
-app.controller('RT8CController', function($scope, $http, $filter) {
+angular.module('sugarErpApp').controller('Rt8cStockEntryController', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
     
     // 1. Initialize the Form Data Structure
     $scope.initForm = function() {
-        $scope.rt8c = {
+        $scope.rt8cEntry = {
             // Header Fields
-            seasonYear: null, // Default matching the legacy UI
+            seasonYear: "2025-2026", 
             seasonStartDate: null,
             crushingEndDate: null,
             crushingEndTime: null,
@@ -45,34 +44,32 @@ app.controller('RT8CController', function($scope, $http, $filter) {
             }
         };
 
-        // Reset form validation states if the form object exists
-        if($scope.rt8cForm) {
-            $scope.rt8cForm.$setPristine();
-            $scope.rt8cForm.$setUntouched();
+        if($scope.rt8cEntryForm) {
+            $scope.rt8cEntryForm.$setPristine();
+            $scope.rt8cEntryForm.$setUntouched();
         }
     };
 
-    // Run initialization immediately on load
     $scope.initForm();
 
     $scope.clearForm = function() {
         $scope.initForm();
     };
 
-    // Helper function to safely parse time strings (HH:mm:ss) back to JS Date objects for HTML5 Time Inputs
     function parseTime(timeString) {
         if (!timeString) return null;
         var d = new Date();
         var time = timeString.match(/(\d+)(?::(\d\d))?\s*(p?)/);
+        if(!time) return null;
         d.setHours(parseInt(time[1]) + (time[3] ? 12 : 0));
         d.setMinutes(parseInt(time[2]) || 0);
         d.setSeconds(0, 0);
         return d;
     }
 
-    // 2. Find Data (Based on Season Year)
+    // 2. Find Data
     $scope.findData = function() {
-        var searchSeason = prompt("Enter Season Year to Find (e.g., 2018-2019):", $scope.rt8c.seasonYear);
+        var searchSeason = prompt("Enter Season Year to Find (e.g., 2025-2026):", $scope.rt8cEntry.seasonYear);
         if (!searchSeason) return;
 
         $http.get('RT8CServlet?action=find&seasonYear=' + searchSeason)
@@ -80,22 +77,17 @@ app.controller('RT8CController', function($scope, $http, $filter) {
             if(response.data.status === 'error') {
                  alert(response.data.message);
                  $scope.clearForm();
-                 $scope.rt8c.seasonYear = searchSeason;
+                 $scope.rt8cEntry.seasonYear = searchSeason;
             } else {
-                 // Load data from backend
-                 $scope.rt8c = response.data;
+                 $scope.rt8cEntry = response.data;
+                 if(!$scope.rt8cEntry.data) $scope.rt8cEntry.data = {};
                  
-                 // Ensure nested data object exists
-                 if(!$scope.rt8c.data) $scope.rt8c.data = {};
+                 if($scope.rt8cEntry.seasonStartDate) $scope.rt8cEntry.seasonStartDate = new Date($scope.rt8cEntry.seasonStartDate);
+                 if($scope.rt8cEntry.crushingEndDate) $scope.rt8cEntry.crushingEndDate = new Date($scope.rt8cEntry.crushingEndDate);
+                 if($scope.rt8cEntry.processEndDate) $scope.rt8cEntry.processEndDate = new Date($scope.rt8cEntry.processEndDate);
                  
-                 // Re-format date and time strings to Date objects for HTML5 inputs
-                 if($scope.rt8c.seasonStartDate) $scope.rt8c.seasonStartDate = new Date($scope.rt8c.seasonStartDate);
-                 if($scope.rt8c.crushingEndDate) $scope.rt8c.crushingEndDate = new Date($scope.rt8c.crushingEndDate);
-                 if($scope.rt8c.processEndDate) $scope.rt8c.processEndDate = new Date($scope.rt8c.processEndDate);
-                 
-                 // Parse Times
-                 if($scope.rt8c.crushingEndTime) $scope.rt8c.crushingEndTime = parseTime($scope.rt8c.crushingEndTime);
-                 if($scope.rt8c.processEndTime) $scope.rt8c.processEndTime = parseTime($scope.rt8c.processEndTime);
+                 if($scope.rt8cEntry.crushingEndTime) $scope.rt8cEntry.crushingEndTime = parseTime($scope.rt8cEntry.crushingEndTime);
+                 if($scope.rt8cEntry.processEndTime) $scope.rt8cEntry.processEndTime = parseTime($scope.rt8cEntry.processEndTime);
             }
         }, function(error) {
             alert("Error communicating with server.");
@@ -104,20 +96,19 @@ app.controller('RT8CController', function($scope, $http, $filter) {
 
     // 3. Save or Update Data
     $scope.saveData = function(actionType) {
-        if (!$scope.rt8c.seasonYear) {
+        if (!$scope.rt8cEntry.seasonYear) {
             alert("Please enter the Season Year before saving.");
             return;
         }
 
-        // Create a copy of the payload to format dates and times properly before sending to the backend
-        var payload = angular.copy($scope.rt8c);
+        var payload = angular.copy($scope.rt8cEntry);
         
-        payload.seasonStartDate = $filter('date')($scope.rt8c.seasonStartDate, 'yyyy-MM-dd');
-        payload.crushingEndDate = $filter('date')($scope.rt8c.crushingEndDate, 'yyyy-MM-dd');
-        payload.processEndDate = $filter('date')($scope.rt8c.processEndDate, 'yyyy-MM-dd');
+        payload.seasonStartDate = $filter('date')($scope.rt8cEntry.seasonStartDate, 'yyyy-MM-dd');
+        payload.crushingEndDate = $filter('date')($scope.rt8cEntry.crushingEndDate, 'yyyy-MM-dd');
+        payload.processEndDate = $filter('date')($scope.rt8cEntry.processEndDate, 'yyyy-MM-dd');
         
-        payload.crushingEndTime = $filter('date')($scope.rt8c.crushingEndTime, 'HH:mm:ss');
-        payload.processEndTime = $filter('date')($scope.rt8c.processEndTime, 'HH:mm:ss');
+        payload.crushingEndTime = $filter('date')($scope.rt8cEntry.crushingEndTime, 'HH:mm:ss');
+        payload.processEndTime = $filter('date')($scope.rt8cEntry.processEndTime, 'HH:mm:ss');
 
         $http.post('RT8CServlet?action=' + actionType, payload)
         .then(function(response) {
@@ -129,14 +120,13 @@ app.controller('RT8CController', function($scope, $http, $filter) {
 
     // 4. Delete Data
     $scope.deleteData = function() {
-        if (!$scope.rt8c.seasonYear) {
+        if (!$scope.rt8cEntry.seasonYear) {
             alert("Please specify a Season Year to delete.");
             return;
         }
         
-        if (confirm("Are you sure you want to delete RT-8(C) Technical Performance data for " + $scope.rt8c.seasonYear + "?")) {
-            // Using POST to delete by Season Year
-            $http.post('RT8CServlet?action=delete&seasonYear=' + $scope.rt8c.seasonYear)
+        if (confirm("Are you sure you want to delete RT-8(C) Technical Performance data for " + $scope.rt8cEntry.seasonYear + "?")) {
+            $http.post('RT8CServlet?action=delete&seasonYear=' + $scope.rt8cEntry.seasonYear)
             .then(function(response) {
                 alert(response.data.message);
                 if(response.data.status === 'success') {
@@ -145,4 +135,4 @@ app.controller('RT8CController', function($scope, $http, $filter) {
             });
         }
     };
-});
+}]);

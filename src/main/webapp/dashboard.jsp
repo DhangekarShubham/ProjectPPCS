@@ -22,7 +22,6 @@
     <script src="js/chemicalConsumption.js"></script>
     <script src="js/materialStock.js"></script>
     <script src="js/stoppageReason.js"></script>
-    <script src="js/rt7cStock.js"></script>
     <script src="js/rt8c.js"></script>
     <script src="js/runStock.js"></script>
     <script src="js/reportMfgDetails.js"></script>
@@ -32,14 +31,17 @@
     <script src="js/reportWeekly.js"></script>
     <script src="js/reportRt7c.js"></script>
     <script src="js/reportRt8c.js"></script> 
+    <script src="js/rt7cStock.js"></script>
 
     <script>
-        // FIXED: Removed 'Rt7cReportController' from the dependency array. 
-        // Only the module name 'rt7cApp' belongs here.
+        // rt7cStockTransaction is included for the transaction page.
+        // rt7cApp is included for the report page.
+        // There are no conflicts because they use distinct names now.
         var app = angular.module('sugarErpApp', [
             'factoryApp', 'crushingApp', 'analysisApp', 'chemicalApp', 
             'stockApp', 'stoppageApp', 'rt7cApp', 'rt8cApp', 'runStockApp', 
-            'mfgReportApp', 'mfgShortApp', 'analysisAppReport', 'dailyTonApp', 'weeklyReportApp'
+            'mfgReportApp', 'mfgShortApp', 'analysisAppReport', 'dailyTonApp', 'weeklyReportApp',
+            'rt7cStockTransaction','rt8cStockTransaction'
         ]);
     </script>
 </head>
