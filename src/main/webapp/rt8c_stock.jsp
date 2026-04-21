@@ -204,7 +204,7 @@
                                 <div class="col-sm-5">
                                     <input type="number" step="0.001" class="form-control data-input" placeholder="0.000" ng-model="rt8cEntry.data[field.model]">
                                 </div>
-                            </div>
+                            </div> 
                         </div>
 
                     </div>

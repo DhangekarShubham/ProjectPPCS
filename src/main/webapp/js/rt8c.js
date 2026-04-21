@@ -93,7 +93,7 @@ app.controller('Rt8cStockEntryController', ['$scope', '$http', '$filter', functi
             alert(response.data.message);
         }, function(error) {
             alert("Error communicating with server.");
-        });
+        }); 
     };
 
     $scope.deleteData = function() {
