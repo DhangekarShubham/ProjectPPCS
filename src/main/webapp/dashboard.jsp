@@ -32,6 +32,7 @@
     <script src="js/reportRt7c.js"></script>
     <script src="js/reportRt8c.js"></script>  
     <script src="js/rt7cStock.js"></script>
+    <script src="js/reportDailyStock.js"></script>
 
     <script>
         // rt7cStockTransaction is included for the transaction page.
@@ -41,7 +42,7 @@
             'factoryApp', 'crushingApp', 'analysisApp', 'chemicalApp', 
             'stockApp', 'stoppageApp', 'rt7cApp', 'rt8cApp', 'runStockApp', 
             'mfgReportApp', 'mfgShortApp', 'analysisAppReport', 'dailyTonApp', 'weeklyReportApp',
-            'rt7cStockTransaction','rt8cStockTransaction'
+            'rt7cStockTransaction','rt8cStockTransaction','stockReportApp'
         ]);
     </script>
 </head>
