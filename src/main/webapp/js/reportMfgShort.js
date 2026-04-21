@@ -1,7 +1,6 @@
 var app = angular.module('mfgShortApp', []);
 
 app.controller('MfgShortController', function($scope, $http, $filter) {
-    alert("alet")
     // Initialize State
     $scope.init = function() {
         $scope.searchDate = new Date(); 

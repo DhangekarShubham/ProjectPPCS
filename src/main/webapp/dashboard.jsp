@@ -31,6 +31,7 @@
     <script src="js/reportDailyTon.js"></script>
     <script src="js/reportWeekly.js"></script>
     <script src="js/reportRt7c.js"></script>
+    <script src="js/reportRt8c.js"></script> 
 
     <script>
         // FIXED: Removed 'Rt7cReportController' from the dependency array. 
