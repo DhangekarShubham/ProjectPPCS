@@ -1,8 +1,39 @@
 var app = angular.module('rt8cStockTransaction', []);
 
-// 'sugarErpApp' च्या ऐवजी थेट 'app' (rt8cStockTransaction) ला Controller जोडा
 app.controller('Rt8cStockEntryController', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
     
+    // Define the Left Column Fields
+    $scope.leftColumnFields = [
+        {label: 'Own Estate Cane', model: 'ownEstateCane'},
+        {label: 'Gate Cane', model: 'gateCane'},
+        {label: 'Out Station Cane', model: 'outStationCane'},
+        {label: 'Area Harvested', model: 'areaHarvested'},
+        {label: 'Other than Rail Cane', model: 'otherThanRailCane'},
+        {label: 'Cane Provided By Members', model: 'caneMembers'},
+        {label: 'Cane Provided By Non Members', model: 'caneNonMembers'},
+        {label: 'Area Under Farm', model: 'areaUnderFarm'},
+        {label: 'Area Under Cane', model: 'areaUnderCane'},
+        {label: 'Rori Sugar Bags', model: 'roriSugarBags'},
+        {label: 'Extra Fuel Inte of Std Bag % cane', model: 'extraFuelStdBagPct'},
+        {label: 'Process Steam % Cane', model: 'processSteamPct'}
+    ];
+
+    // Define the Right Column Fields
+    $scope.rightColumnFields = [
+        {label: 'Average Yield Per Hectare', model: 'avgYieldPerHectare'},
+        {label: 'Average Yield Per Hectare Adsali', model: 'avgYieldAdsali'},
+        {label: 'Average Yield Per Hectare Plant', model: 'avgYieldPlant'},
+        {label: 'Average Yield Per Hectare Ratoon', model: 'avgYieldRatoon'},
+        {label: 'Average Preparatory Index', model: 'avgPrepIndex'},
+        {label: 'Average Temperature of Added Water', model: 'avgTempAddedWater'},
+        {label: 'Bagasse used as Fuel', model: 'bagasseUsedFuel'},
+        {label: 'Bagasse used for Sugar Plant', model: 'bagasseUsedSugarPlant'},
+        {label: 'Bagasse used for By-Products', model: 'bagasseUsedByProducts'},
+        {label: 'Bagasse used for Co-Generation', model: 'bagasseUsedCogen'},
+        {label: 'Bagasse used for Oliver', model: 'bagasseUsedOliver'},
+        {label: 'Bagasse Sold', model: 'bagasseSold'}
+    ];
+
     $scope.initForm = function() {
         $scope.rt8cEntry = {
             seasonYear: "2025-2026", 
