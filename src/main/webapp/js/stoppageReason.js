@@ -25,7 +25,11 @@ app.controller('StoppageController', function($scope, $http) {
         var payload = angular.copy($scope.stoppage);
         payload.stoppageDate = formattedDate;
 
-        $http.post('StoppageServlet?action=' + actionType, payload)
+        $http({
+            method: 'POST',
+            url: 'StoppageServlet?action=' + actionType,
+            data: payload
+        })
         .then(function(response) {
             alert(response.data.message);
             if(response.data.status === 'success') {
@@ -40,7 +44,10 @@ app.controller('StoppageController', function($scope, $http) {
 	    var idToSearch = prompt("Enter Stoppage Reference Number to Find:");
 	    if (!idToSearch) return;
 
-	    $http.get('StoppageServlet?action=find&stoppageId=' + idToSearch)
+	    $http({
+            method: 'GET',
+            url: 'StoppageServlet?action=find&stoppageId=' + idToSearch
+        })
 	    .then(function(response) {
 
 	        console.log("API Response:", response.data);
@@ -69,7 +76,10 @@ app.controller('StoppageController', function($scope, $http) {
         if (!$scope.stoppage.stoppageId) return;
         
         if (confirm("Permanently delete Stoppage Log #" + $scope.stoppage.stoppageId + "?")) {
-            $http.post('StoppageServlet?action=delete&stoppageId=' + $scope.stoppage.stoppageId)
+            $http({
+                method: 'POST',
+                url: 'StoppageServlet?action=delete&stoppageId=' + $scope.stoppage.stoppageId
+            })
             .then(function(response) {
                 alert(response.data.message);
                 if(response.data.status === 'success') {

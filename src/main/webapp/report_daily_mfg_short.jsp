@@ -65,11 +65,11 @@
                 <div class="col-md-4 d-flex align-items-center">
                     <label class="text-muted small fw-bold text-uppercase me-2 mb-0" style="white-space: nowrap;">तारीख निवडा:</label>
                     <div class="input-group input-group-sm shadow-sm">
-                        <input type="text" class="form-control border-primary text-center fw-bold text-primary" 
-                               placeholder="DD/MM/YYYY" ng-model="manualDateText" ng-change="syncFromText()" maxlength="10">
+                       <!--  <input type="text" class="form-control border-primary text-center fw-bold text-primary" 
+                               placeholder="DD/MM/YYYY" ng-model="manualDateText" ng-change="syncFromText()" maxlength="10"> -->
                         <input type="date" class="form-control border-primary px-1" 
                                ng-model="searchDate" ng-change="syncFromPicker()" 
-                               style="max-width: 40px; cursor: pointer;">
+                               style="max-width: 300px; cursor: pointer;">
                     </div>
                 </div>
 
